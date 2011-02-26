@@ -1,3 +1,11 @@
+#|
+  This file is a part of Caveman package.
+  URL: http://github.com/fukamachi/caveman
+  Copyright (c) 2011 Eitarow Fukamachi <e.arrows@gmail.com>
+
+  Caveman is freely distributable under the LLGPL License.
+|#
+
 (in-package :cl-user)
 (defpackage caveman-asd
   (:use :cl :asdf))
@@ -8,7 +16,9 @@
   :author "Eitarow Fukamachi"
   :license "LLGPL"
   :depends-on (:clack
-               :ponzu.db)
+               :ponzu.db
+               :cl-annot
+               :cl-ppcre)
   :components ((:module "src"
                 :components
-                ())))
+                ((:file "route")))))
