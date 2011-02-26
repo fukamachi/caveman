@@ -8,12 +8,15 @@
 
 (clack.util:namespace caveman.view
   (:use :cl
-        :clack))
+        :clack)
+  (:import-from :cl-markup
+                :markup)
+  (:export :headers))
 
 (cl-annot:enable-annot-syntax)
 
 @export
-(defvar *default-content-type* "text/html")
+(defvar *default-content-type* "text/html; charset=utf-8")
 
 @export
 (defclass <view> (<component>)

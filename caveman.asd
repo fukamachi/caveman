@@ -18,9 +18,11 @@
   :depends-on (:clack
                :ponzu.db
                :cl-annot
-               :cl-ppcre)
+               :cl-ppcre
+               :cl-markup)
   :components ((:module "src"
                 :components
                 ((:file "caveman" :depends-on ("route"))
                  (:file "route" :depends-on ("view"))
-                 (:file "view")))))
+                 (:file "view")
+                 (:file "layout" :depends-on ("view"))))))

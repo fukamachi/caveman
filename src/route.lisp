@@ -60,10 +60,10 @@ Example:
                                 append (list
                                          (intern (symbol-name key) :keyword)
                                          val))))
-                     (setf (slot-value req 'clack.request:query-parameters)
+                     (setf (slot-value req 'clack.request:query-parameter)
                            (append
                             params
-                            (slot-value req 'clack.request:query-parameters)))
+                            (slot-value req 'clack.request:query-parameter)))
                      (return (call fn req)))))
           finally (return '(404 nil nil)))))
 
