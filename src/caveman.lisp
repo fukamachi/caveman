@@ -8,12 +8,29 @@
 
 (clack.util:namespace caveman
   (:use :cl
-        :clack)
+        :clack
+        :clack.builder
+        :clack.middleware.static)
+  (:import-from :cl-annot.doc
+                :doc)
   (:import-from :caveman.route
                 :routing))
 
 (cl-annot:enable-annot-syntax)
 
+@doc "
+Static directory pathname.
+This must ends with slash('/').
+"
+@export
+(defvar *static-directory* nil)
+
 @export
 (defun start (&key (port 8080) debug)
-  (clackup #'routing :port port :debug debug))
+  (let ((app (if *static-directory*
+                 (builder
+                  (<clack-middleware-static>
+                   :path *static-directory*)
+                  #'routing)
+                 #'routing)))
+    (clackup app :port port :debug debug)))
