@@ -13,18 +13,21 @@
 (cl-annot:enable-annot-syntax)
 
 @export
-(defvar *default-content-type "text/html")
+(defvar *default-content-type* "text/html")
 
 @export
 (defclass <view> (<component>)
      ((headers :initarg :headers
-               :initform `(:content-type ,*default-content-type)
+               :initform `(:content-type ,*default-content-type*)
                :accessor headers)))
 
 @export
-(defmethod call ((this <view>) arg)
-  @ignore arg
-  `(200 ,(headers this) ,(render this)))
+(defmethod call ((this <view>) params)
+  `(200 ,(headers this) ,(render this params)))
 
 @export
-(defgeneric render (view))
+(defmethod call ((this function) params)
+  `(200 (:content-type ,*default-content-type*) ,(funcall this params)))
+
+@export
+(defgeneric render (view params))

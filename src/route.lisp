@@ -9,6 +9,7 @@
 (clack.util:namespace caveman.route
   (:use :cl
         :clack)
+  (:shadowing-import-from :caveman.view :call)
   (:import-from :cl-ppcre
                 :scan-to-strings)
   (:import-from :clack.request
