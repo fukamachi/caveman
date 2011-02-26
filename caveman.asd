@@ -21,4 +21,5 @@
                :cl-ppcre)
   :components ((:module "src"
                 :components
-                ((:file "route")))))
+                ((:file "caveman" :depends-on ("route"))
+                 (:file "route")))))
