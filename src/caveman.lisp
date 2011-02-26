@@ -42,6 +42,9 @@ This must ends with slash('/').
 (defvar *server-type* :hunchentoot)
 
 @export
+(defvar *acceptor* nil)
+
+@export
 (defun start (&key (port 8080) debug lazy)
   (when *init-file*
     (let ((init-file (merge-pathnames *init-file* *application-root*)))
@@ -55,4 +58,14 @@ This must ends with slash('/').
                    :path (merge-pathnames *static-directory* *application-root*))
                   #'routing)
                  #'routing)))
-    (clackup app :port port :debug debug :server *server-type*)))
+    (setf *acceptor*
+          (clackup app :port port :debug debug :server *server-type*))))
+
+@export
+(defun stop ()
+  (funcall
+   (intern "STOP"
+           (concatenate 'string
+                        "CLACK.HANDLER."
+                        (symbol-name *server-type*)))
+   *acceptor*))
