@@ -39,6 +39,9 @@ This must ends with slash('/').
 (defvar *init-file* #p"init.lisp")
 
 @export
+(defvar *server-type* :hunchentoot)
+
+@export
 (defun start (&key (port 8080) debug lazy)
   (when *init-file*
     (let ((init-file (merge-pathnames *init-file* *application-root*)))
@@ -52,4 +55,4 @@ This must ends with slash('/').
                    :path (merge-pathnames *static-directory* *application-root*))
                   #'routing)
                  #'routing)))
-    (clackup app :port port :debug debug)))
+    (clackup app :port port :debug debug :server *server-type*)))
