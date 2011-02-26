@@ -26,7 +26,8 @@ This must ends with slash('/').
 (defvar *static-directory* nil)
 
 @export
-(defun start (&key (port 8080) debug)
+(defun start (&key (port 8080) debug lazy)
+  (setf *clack-builder-lazy-p* lazy)
   (let ((app (if *static-directory*
                  (builder
                   (<clack-middleware-static>
