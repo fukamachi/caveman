@@ -22,4 +22,5 @@
   :components ((:module "src"
                 :components
                 ((:file "caveman" :depends-on ("route"))
-                 (:file "route")))))
+                 (:file "route")
+                 (:file "view")))))
