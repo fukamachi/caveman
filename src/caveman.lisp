@@ -13,6 +13,8 @@
         :clack.middleware.static)
   (:import-from :cl-annot.doc
                 :doc)
+  (:import-from :cl-fad
+                :file-exists-p)
   (:import-from :caveman.route
                 :routing)
   (:import-from :caveman.model
@@ -34,13 +36,20 @@ This must ends with slash('/').
 (defvar *static-directory* #p"public/")
 
 @export
+(defvar *init-file* #p"init.lisp")
+
+@export
 (defun start (&key (port 8080) debug lazy)
+  (when *init-file*
+    (let ((init-file (merge-pathnames *init-file* *application-root*)))
+      (when (file-exists-p init-file)
+        (load init-file))))
   (setf *clack-builder-lazy-p* lazy)
   (database-setup)
   (let ((app (if *static-directory*
                  (builder
                   (<clack-middleware-static>
-                   :path *static-directory*)
+                   :path (merge-pathnames *static-directory* *application-root*))
                   #'routing)
                  #'routing)))
     (clackup app :port port :debug debug)))
