@@ -11,6 +11,8 @@
         :clack)
   (:import-from :cl-ppcre
                 :scan-to-strings)
+  (:import-from :clack.request
+                :make-request)
   (:import-from :clack.app.route
                 :url-rule->regex)
   (:import-from :cl-annot.util
@@ -50,8 +52,18 @@ Example:
             do (multiple-value-bind (matchp res)
                    (scan-to-strings re path-info)
                  (when matchp
-                   (return (eval `(destructuring-bind ,vars (coerce ,res 'list)
-                                    (call ,fn ',req))))))
+                   (let ((req (make-request req))
+                         (params
+                          (loop for key in vars
+                                for val in (coerce res 'list)
+                                append (list
+                                         (intern (symbol-name key) :keyword)
+                                         val))))
+                     (setf (slot-value req 'clack.request:query-parameters)
+                           (append
+                            params
+                            (slot-value req 'clack.request:query-parameters)))
+                     (return (call fn req)))))
           finally (return '(404 nil nil)))))
 
 @doc "
@@ -60,7 +72,7 @@ Useful annotation to define actions.
 Example:
   ;; for Function
   @url GET \"/login\"
-  (defun login ()
+  (defun login (req)
     ;; response
     )
 
@@ -100,7 +112,7 @@ Example:
 @doc:SYNOPSIS "
     ;; for Function
     @url GET \"/login\"
-    (defun login ()
+    (defun login (req)
       ;; response
       )
     
