@@ -8,6 +8,8 @@
 
 (clack.util:namespace caveman.layout
   (:use :cl)
+  (:import-from :caveman
+                :*application-name*)
   (:import-from :caveman.view
                 :<view>
                 :render
@@ -29,7 +31,7 @@
                    :initform nil
                    :accessor stylesheets)
       (title :initarg :title
-             :initform ""
+             :initform *application-name*
              :accessor title)))
 
 @export
