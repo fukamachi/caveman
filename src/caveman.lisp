@@ -71,7 +71,7 @@
 This returns a Clack Application."
   (let ((method (getf req :request-method))
         (path-info (getf req :path-info)))
-    (loop for rule in (routing-rules this)
+    (loop for rule in (reverse (routing-rules this))
           for (meth (re vars) fn) = (cdr rule)
           if (string= meth method)
             do (multiple-value-bind (matchp res)
@@ -90,3 +90,12 @@ This returns a Clack Application."
                             (slot-value req 'clack.request:query-parameter)))
                      (return (call fn req)))))
           finally (return '(404 nil nil)))))
+
+@export
+(defmethod add-route ((this <app>) routing-rule)
+  (setf (routing-rules this)
+        (delete (car routing-rule)
+                (routing-rules this)
+                :key #'car))
+  (push routing-rule
+        (routing-rules this)))
