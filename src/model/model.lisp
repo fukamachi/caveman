@@ -40,7 +40,7 @@
 (defvar *database-type* :sqlite3)
 
 @export
-(defvar *database-connection-spec* '("db/test.sqlite3"))
+(defvar *database-connection-spec* '("sqlite3.db"))
 
 @export
 (defun database-setup ()

@@ -23,10 +23,9 @@
                :cl-markup)
   :components ((:module "src"
                 :components
-                ((:file "caveman" :depends-on ("route" "model"))
+                ((:file "caveman" :depends-on ("model"))
                  (:file "route" :depends-on ("view"))
                  (:file "view")
-                 (:file "layout" :depends-on ("caveman" "view"))
                  (:module "model"
                   :components
                   ((:file "model" :depends-on ("record" "table"))

@@ -11,61 +11,82 @@
         :clack
         :clack.builder
         :clack.middleware.static)
-  (:import-from :cl-annot.doc
-                :doc)
+  (:import-from :cl-ppcre
+                :scan-to-strings)
   (:import-from :cl-fad
                 :file-exists-p)
-  (:import-from :caveman.route
-                :routing)
+  (:import-from :clack.request
+                :make-request)
   (:import-from :caveman.model
-                :database-setup))
+                :database-setup)
+  (:import-from :cl-annot.doc
+                :doc))
 
 (cl-annot:enable-annot-syntax)
 
 @export
-(defvar *application-name* "Caveman")
+(defclass <app> (<component>)
+     ((name :initarg :name :initform ""
+            :accessor application-name)
+      (root :initarg :root :initform #p"./"
+            :accessor application-root)
+      (static-path :initarg :static-path :initform #p"public/"
+                   :accessor static-path)
+      (init-file :initarg :init-file :initform #p"init.lisp"
+                 :accessor init-file)
+      (port :initarg :port :initform 8080
+            :accessor port)
+      (server :initarg :server :initform :hunchentoot
+              :accessor server)
+      (routing-rules :initarg routing-rules :initform nil
+                     :accessor routing-rules)))
 
 @export
-(defvar *application-root* #p"./")
-
-@doc "
-Static directory pathname.
-This must ends with slash('/').
-"
-@export
-(defvar *static-directory* #p"public/")
-
-@export
-(defvar *init-file* #p"init.lisp")
-
-@export
-(defvar *server-type* :hunchentoot)
-
-@export
-(defvar *acceptor* nil)
-
-@export
-(defun start (&key (port 8080) debug lazy)
-  (when *init-file*
-    (let ((init-file (merge-pathnames *init-file* *application-root*)))
+(defmethod setup ((this <app>))
+  (when (init-file this)
+    (let ((init-file (merge-pathnames (init-file this)
+                                      (application-root this))))
       (when (file-exists-p init-file)
         (load init-file))))
-  (setf *clack-builder-lazy-p* lazy)
-  (database-setup)
-  (let ((app (if *static-directory*
-                 (builder
-                  (<clack-middleware-static>
-                   :path (merge-pathnames *static-directory* *application-root*))
-                  #'routing)
-                 #'routing)))
-    (setf *acceptor*
-          (clackup app :port port :debug debug :server *server-type*))))
+  (database-setup))
 
 @export
-(defun stop ()
-  (funcall
-   (intern "STOP"
-           (concatenate 'string
-                        "CLACK.HANDLER."
-                        (symbol-name *server-type*)))
-   *acceptor*))
+(defmethod start ((this <app>)
+                  &key port server debug lazy)
+  (setup this)
+  (setf *builder-lazy-p* lazy)
+  (clackup (builder
+            (<clack-middleware-static>
+             :path "/public/"
+             :root (merge-pathnames (static-path this)
+                                    (application-root this)))
+            this)
+           :port (or port (port this))
+           :debug debug
+           :server (or server (server this))))
+
+@export
+(defmethod call ((this <app>) req)
+  "Dispatch HTTP request to each actions.
+This returns a Clack Application."
+  (let ((method (getf req :request-method))
+        (path-info (getf req :path-info)))
+    (loop for rule in (routing-rules this)
+          for (meth (re vars) fn) = (cdr rule)
+          if (string= meth method)
+            do (multiple-value-bind (matchp res)
+                   (scan-to-strings re path-info)
+                 (when matchp
+                   (let ((req (make-request req))
+                         (params
+                          (loop for key in vars
+                                for val in (coerce res 'list)
+                                append (list
+                                         (intern (symbol-name key) :keyword)
+                                         val))))
+                     (setf (slot-value req 'clack.request:query-parameter)
+                           (append
+                            params
+                            (slot-value req 'clack.request:query-parameter)))
+                     (return (call fn req)))))
+          finally (return '(404 nil nil)))))
