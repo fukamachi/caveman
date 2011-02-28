@@ -9,7 +9,6 @@
 (clack.util:namespace caveman.route
   (:use :cl
         :clack)
-  (:shadowing-import-from :caveman.view :call)
   (:import-from :clack.app.route
                 :url-rule->regex)
   (:import-from :cl-annot.util

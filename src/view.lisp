@@ -29,8 +29,4 @@
   `(200 ,(headers this) ,(render this params)))
 
 @export
-(defmethod call ((this function) params)
-  `(200 (:content-type ,*default-content-type*) ,(funcall this params)))
-
-@export
 (defgeneric render (view params))
