@@ -26,8 +26,4 @@
                 ((:file "caveman" :depends-on ("model"))
                  (:file "route" :depends-on ("view"))
                  (:file "view")
-                 (:module "model"
-                  :components
-                  ((:file "model" :depends-on ("record" "table"))
-                   (:file "table" :depends-on ("record"))
-                   (:file "record")))))))
+                 (:file "database")))))

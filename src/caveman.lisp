@@ -38,6 +38,11 @@
             :accessor port)
       (server :initarg :server :initform :hunchentoot
               :accessor server)
+      (database-type :initarg :database-type
+                     :initform :sqlite3
+                     :accessor database-type)
+      (database-connection-spec :initarg :database-connection-type
+                                :initform '("db.sqlite3"))
       (routing-rules :initarg routing-rules :initform nil
                      :accessor routing-rules)))
 
@@ -48,7 +53,8 @@
                                       (application-root this))))
       (when (file-exists-p init-file)
         (load init-file))))
-  (database-setup))
+  (database-setup (database-type this)
+                  (database-connection-spec this)))
 
 @export
 (defmethod start ((this <app>)
