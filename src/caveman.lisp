@@ -42,7 +42,8 @@
                      :initform :sqlite3
                      :accessor database-type)
       (database-connection-spec :initarg :database-connection-type
-                                :initform '("db.sqlite3"))
+                                :initform '("db.sqlite3")
+                                :accessor database-connection-spec)
       (routing-rules :initarg routing-rules :initform nil
                      :accessor routing-rules)))
 
