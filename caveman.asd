@@ -20,7 +20,8 @@
                :cl-annot
                :cl-ppcre
                :clsql
-               :cl-markup)
+               :cl-markup
+               :cl-fad)
   :components ((:module "src"
                 :components
                 ((:file "caveman" :depends-on ("database"))

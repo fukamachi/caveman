@@ -105,3 +105,30 @@ This returns a Clack Application."
                 :key #'car))
   (push routing-rule
         (routing-rules this)))
+
+(defun copy-directory (source-dir target-dir)
+  (ensure-directories-exist target-dir)
+  #+allegro
+  (excl:copy-directory source-dir target-dir :quiet t)
+  #-allegro
+  (loop for file in (cl-fad:list-directory source-dir)
+        if (cl-fad:directory-pathname-p file)
+          do (copy-directory file (concatenate 'string target-dir (car (last (pathname-directory file))) "/"))
+        else
+          do (copy-file-to-dir file target-dir))
+  t)
+
+(defun copy-file-to-dir (source-path target-dir)
+  (let ((target-path (make-pathname
+                      :directory (directory-namestring target-dir)
+                      :name (pathname-name source-path)
+                      :type (pathname-type source-path))))
+    (cl-fad:copy-file source-path target-path)))
+
+@export
+(defun make-app (name &key (path #p"./"))
+  (copy-directory
+   #.(merge-pathnames
+      #p"skelton/"
+      (asdf:component-pathname (asdf:find-system :caveman)))
+   (directory-namestring (merge-pathnames (concatenate 'string name "/") path))))
