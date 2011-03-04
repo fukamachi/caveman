@@ -106,6 +106,8 @@ This returns a Clack Application."
   (push routing-rule
         (routing-rules this)))
 
+(defvar *copy-file-hook* nil)
+
 (defun copy-directory (source-dir target-dir)
   (ensure-directories-exist target-dir)
   #+allegro
@@ -123,12 +125,23 @@ This returns a Clack Application."
                       :directory (directory-namestring target-dir)
                       :name (pathname-name source-path)
                       :type (pathname-type source-path))))
-    (cl-fad:copy-file source-path target-path)))
+    (cl-fad:copy-file source-path target-path)
+    (when *copy-file-hook*
+      (funcall *copy-file-hook* target-path))))
 
 @export
+;; TODO: expects name to be a string.
+;;   it could be a symbol or a keyword.
 (defun make-app (name &key (path #p"./"))
-  (copy-directory
-   #.(merge-pathnames
-      #p"skelton/"
-      (asdf:component-pathname (asdf:find-system :caveman)))
-   (directory-namestring (merge-pathnames (concatenate 'string name "/") path))))
+  ;; set *copy-file-hook*
+  (let ((*copy-file-hook*
+         #'(lambda (path)
+             (when (string= (pathname-name path) "skelton")
+               (rename-file path
+                            (concatenate 'string
+                                         name "." (pathname-type path)))))))
+    (copy-directory
+     #.(merge-pathnames
+        #p"skelton/"
+        (asdf:component-pathname (asdf:find-system :caveman)))
+     (directory-namestring (merge-pathnames (concatenate 'string name "/") path)))))
