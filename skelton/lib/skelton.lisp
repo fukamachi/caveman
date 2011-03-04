@@ -24,6 +24,8 @@
 
 @export
 (defmacro url (method url-rule form)
-  `(add-route *app*
-              (url->routing-rule ,method ,url-rule ,form)))
+  `(progn
+     ,form
+     (add-route *app*
+                (url->routing-rule ,method ,url-rule ,form))))
 (setf (annotation-narg 'url) 3)

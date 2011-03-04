@@ -41,7 +41,8 @@ Example:
          (type (definition-type last-form))
          (symbol (definition-symbol last-form))
          (req (gensym "REQ")))
-    `(',symbol
+    `(list
+      ',symbol
       ',method
       (url-rule->regex ,url-rule)
       #'(lambda (,req)

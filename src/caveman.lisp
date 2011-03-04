@@ -91,10 +91,10 @@ This returns a Clack Application."
                                 append (list
                                          (intern (symbol-name key) :keyword)
                                          val))))
-                     (setf (slot-value req 'clack.request:query-parameter)
+                     (setf (slot-value req 'clack.request::query-parameters)
                            (append
                             params
-                            (slot-value req 'clack.request:query-parameter)))
+                            (slot-value req 'clack.request::query-parameters)))
                      (return (call fn req)))))
           finally (return '(404 nil nil)))))
 
