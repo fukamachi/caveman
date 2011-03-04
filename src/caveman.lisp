@@ -115,7 +115,11 @@ This returns a Clack Application."
   #-allegro
   (loop for file in (cl-fad:list-directory source-dir)
         if (cl-fad:directory-pathname-p file)
-          do (copy-directory file (concatenate 'string target-dir (car (last (pathname-directory file))) "/"))
+          do (copy-directory
+                  file
+                  (concatenate 'string
+                               (directory-namestring target-dir)
+                               (car (last (pathname-directory file))) "/"))
         else
           do (copy-file-to-dir file target-dir))
   t)
@@ -129,19 +133,40 @@ This returns a Clack Application."
     (when *copy-file-hook*
       (funcall *copy-file-hook* target-path))))
 
+(defun slurp-file (path)
+  (with-open-file (stream path :direction :input)
+    (let ((seq (make-array (file-length stream) :element-type 'character :fill-pointer t)))
+      (setf (fill-pointer seq) (read-sequence seq stream))
+      seq)))
+
 @export
-;; TODO: expects name to be a string.
-;;   it could be a symbol or a keyword.
-(defun make-app (name &key (path #p"./"))
-  ;; set *copy-file-hook*
-  (let ((*copy-file-hook*
-         #'(lambda (path)
-             (when (string= (pathname-name path) "skelton")
-               (rename-file path
-                            (concatenate 'string
-                                         name "." (pathname-type path)))))))
+(defun make-app (name &key (path (truename #p"./")))
+  (setf name (string-downcase name))
+  (let* ((root
+          (merge-pathnames (concatenate 'string name "/") path))
+         (*copy-file-hook*
+          #'(lambda (path)
+              (let ((content (slurp-file path)))
+                (with-open-file (stream path :direction :output :if-exists :supersede)
+                  (write-sequence
+                   (ppcre:regex-replace-all "\\${.+?}" content
+                    #'(lambda (string &rest args)
+                        @ignore args
+                        (cond
+                          ((string= string "${application-root}")
+                           (prin1-to-string root))
+                          ((string= string "${application-name}")
+                           name)
+                          (t string)))
+                    :simple-calls t)
+                   stream)))
+              (when (string= (pathname-name path) "skelton")
+                (rename-file path
+                             (concatenate 'string
+                                          name "." (pathname-type path))))
+              )))
     (copy-directory
      #.(merge-pathnames
         #p"skelton/"
         (asdf:component-pathname (asdf:find-system :caveman)))
-     (directory-namestring (merge-pathnames (concatenate 'string name "/") path)))))
+     root)))
