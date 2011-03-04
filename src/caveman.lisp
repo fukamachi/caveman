@@ -17,7 +17,7 @@
                 :file-exists-p)
   (:import-from :clack.request
                 :make-request)
-  (:import-from :caveman.model
+  (:import-from :caveman.database
                 :database-setup)
   (:import-from :cl-annot.doc
                 :doc))
