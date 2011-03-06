@@ -9,8 +9,6 @@
 (clack.util:namespace caveman.view
   (:use :cl
         :clack)
-  (:import-from :cl-markup
-                :markup)
   (:export :headers))
 
 (cl-annot:enable-annot-syntax)

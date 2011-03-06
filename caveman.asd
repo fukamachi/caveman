@@ -19,11 +19,11 @@
                :cl-annot
                :cl-ppcre
                :clsql
-               ;:cl-markup
                :cl-fad)
   :components ((:module "src"
                 :components
-                ((:file "caveman" :depends-on ("database"))
+                ((:file "caveman" :depends-on ("app"))
+                 (:file "app" :depends-on ("database"))
                  (:file "route" :depends-on ("view"))
                  (:file "view")
                  (:file "database"))))
