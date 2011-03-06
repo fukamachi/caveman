@@ -76,7 +76,7 @@
                                           name "." (pathname-type path))))
               )))
     (copy-directory
-     #.(merge-pathnames
-        #p"skelton/"
-        (asdf:component-pathname (asdf:find-system :caveman)))
+     #.(asdf:system-relative-pathname
+        :caveman
+        #p"skelton/")
      root)))

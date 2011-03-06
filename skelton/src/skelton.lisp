@@ -24,10 +24,9 @@
       :port 8080
       :database-type :sqlite3
       :database-connection-spec (,(namestring
-                                   (merge-pathnames
-                                    "sqlite3.db"
-                                    (asdf:component-pathname
-                                     (asdf:find-system :${application-name})))))
+                                   (asdf:system-relative-pathname
+                                    :${application-name}
+                                    "sqlite3.db")))
       :config-file #p"config.lisp"))
 
 @export
