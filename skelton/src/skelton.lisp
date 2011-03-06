@@ -22,7 +22,7 @@
       :port 8080
       :database-type :sqlite3
       :database-connection-spec '("db/sqlite3.db")
-      :init-file #p"init.lisp"))
+      :config-file #p"config.lisp"))
 
 @export
 (defclass ${application-name} (<app>) ())

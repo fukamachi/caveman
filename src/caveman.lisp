@@ -34,11 +34,11 @@
 @export
 (defmethod setup ((this <app>))
   (let ((config (config this)))
-    (when (getf config :init-file)
-      (let ((init-file (merge-pathnames (getf config :init-file)
+    (when (getf config :config-file)
+      (let ((config-file (merge-pathnames (getf config :config-file)
                                         (getf config :application-root))))
-        (when (file-exists-p init-file)
-          (load init-file))))
+        (when (file-exists-p config-file)
+          (load config-file))))
     (database-setup (getf config :database-type)
                     (getf config :database-connection-spec))))
 
