@@ -12,6 +12,7 @@
                 :*default-caching*
                 :*db-auto-sync*
                 :connect
+                :disconnect
                 :list-classes
                 :table-exists-p
                 :create-view-from-class))
@@ -22,11 +23,13 @@
 (defun database-setup (type spec)
   (setf *default-caching* nil)
   (setf *db-auto-sync* nil)
-  (prog1
-    (connect spec
-             :database-type type
-             :pool t
-             :encoding :utf-8)
-    (dolist (class (list-classes))
-      (unless (table-exist-p (class-name class))
-        (create-view-from-class class)))))
+  (let ((db (connect spec
+                     :database-type type
+                     :make-default nil
+                     :pool t
+                     :encoding :utf-8)))
+    (dolist (class (list-classes :database db))
+      (unless (table-exist-p (class-name class)
+                             :database db)
+        (create-view-from-class class :database db)))
+    (disconnect :database db)))

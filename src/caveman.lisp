@@ -26,51 +26,37 @@
 
 @export
 (defclass <app> (<component>)
-     ((name :initarg :name :initform ""
-            :accessor application-name)
-      (root :initarg :root :initform #p"./"
-            :accessor application-root)
-      (static-path :initarg :static-path :initform #p"public/"
-                   :accessor static-path)
-      (init-file :initarg :init-file :initform #p"init.lisp"
-                 :accessor init-file)
-      (port :initarg :port :initform 8080
-            :accessor port)
-      (server :initarg :server :initform :hunchentoot
-              :accessor server)
-      (database-type :initarg :database-type
-                     :initform :sqlite3
-                     :accessor database-type)
-      (database-connection-spec :initarg :database-connection-type
-                                :initform '("db.sqlite3")
-                                :accessor database-connection-spec)
+     ((config :initarg :config :initform nil
+              :accessor config)
       (routing-rules :initarg routing-rules :initform nil
                      :accessor routing-rules)))
 
 @export
 (defmethod setup ((this <app>))
-  (when (init-file this)
-    (let ((init-file (merge-pathnames (init-file this)
-                                      (application-root this))))
-      (when (file-exists-p init-file)
-        (load init-file))))
-  (database-setup (database-type this)
-                  (database-connection-spec this)))
+  (let ((config (config this)))
+    (when (getf config :init-file)
+      (let ((init-file (merge-pathnames (getf config :init-file)
+                                        (getf config :application-root))))
+        (when (file-exists-p init-file)
+          (load init-file))))
+    (database-setup (getf config :database-type)
+                    (getf config :database-connection-spec))))
 
 @export
 (defmethod start ((this <app>)
                   &key port server debug lazy)
   (setup this)
   (setf *builder-lazy-p* lazy)
+  ;; TODO: put a middleware to connect to database.
   (clackup (builder
             (<clack-middleware-static>
              :path "/public/"
-             :root (merge-pathnames (static-path this)
-                                    (application-root this)))
+             :root (merge-pathnames (getf (config this) :static-path)
+                                    (getf (config this) :application-root)))
             this)
-           :port (or port (port this))
+           :port (or port (getf (config this) :port))
            :debug debug
-           :server (or server (server this))))
+           :server (or server (getf (config this) :server))))
 
 @export
 (defmethod call ((this <app>) req)

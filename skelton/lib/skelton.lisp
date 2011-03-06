@@ -1,5 +1,4 @@
-(in-package :cl-user)
-(defpackage caveman.${application-name}
+(clack.util:namespace ${application-name}
   (:use :cl)
   (:import-from :caveman
                 :<app>
@@ -8,7 +7,6 @@
                 :url->routing-rule)
   (:import-from :cl-annot.core
                 :annotation-narg))
-(in-package :caveman.${application-name})
 
 (cl-annot:enable-annot-syntax)
 
@@ -16,11 +14,22 @@
 (defvar *acceptor* nil)
 
 @export
+(defvar *config*
+    '(:application-name "${application-name}"
+      :application-root ${application-root}
+      :static-path #p"public/"
+      :server :hunchentoot
+      :port 8080
+      :database-type :sqlite3
+      :database-connection-spec '("db/sqlite3.db")
+      :init-file #p"init.lisp"))
+
+@export
 (defclass ${application-name} (<app>) ())
 
 @export
 (defvar *app* (make-instance '${application-name}
-                 :name "${application-name}"))
+                 :config *config*))
 
 @export
 (defmacro url (method url-rule form)
