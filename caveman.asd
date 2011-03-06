@@ -26,6 +26,7 @@
                  (:file "app" :depends-on ("database"))
                  (:file "skelton")
                  (:file "route")
+                 (:file "view")
                  (:file "database"))))
   :description "Web Application Framework for Common Lisp"
   :long-description
