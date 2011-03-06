@@ -21,7 +21,7 @@
       :server :hunchentoot
       :port 8080
       :database-type :sqlite3
-      :database-connection-spec '("db/sqlite3.db")
+      :database-connection-spec ("memory")
       :config-file #p"config.lisp"))
 
 @export
