@@ -14,12 +14,12 @@
 (cl-annot:enable-annot-syntax)
 
 @export
-(defvar *default-content-type* "text/html; charset=utf-8")
+(defvar *default-header* '(:content-type "text/html; charset=utf-8"))
 
 @export
 (defclass <view> (<component>)
      ((headers :initarg :headers
-               :initform `(:content-type ,*default-content-type*)
+               :initform *default-header*
                :accessor headers)))
 
 @export
