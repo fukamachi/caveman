@@ -22,8 +22,9 @@
                :cl-fad)
   :components ((:module "src"
                 :components
-                ((:file "caveman" :depends-on ("app"))
+                ((:file "caveman" :depends-on ("app" "skelton"))
                  (:file "app" :depends-on ("database"))
+                 (:file "skelton")
                  (:file "route" :depends-on ("view"))
                  (:file "view")
                  (:file "database"))))
