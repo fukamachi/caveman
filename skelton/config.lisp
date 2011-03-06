@@ -1,6 +1,5 @@
 (clack.util:namespace ${application-name}.config
   (:use :cl
-        :${application-name}
-        :caveman.model))
+        :${application-name}))
 
 ;; *config*

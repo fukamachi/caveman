@@ -8,9 +8,5 @@
 
 (clack.util:namespace caveman
   (:use :cl
-        :caveman.app
         :caveman.skelton)
-  (:export :<app>
-           :start
-           :add-route
-           :make-app))
+  (:export :make-app))

@@ -1,7 +1,7 @@
 (clack.util:namespace ${application-name}
   (:use :cl
         :clack)
-  (:import-from :caveman
+  (:import-from :caveman.app
                 :<app>
                 :add-route)
   (:import-from :caveman.route
@@ -43,7 +43,7 @@
 @export
 (defun start (&key debug)
   (setf *acceptor*
-        (caveman:start *app* :debug debug)))
+        (caveman.app:start *app* :debug debug)))
 
 @export
 (defun stop ()
