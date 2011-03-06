@@ -1,12 +1,24 @@
-# Caveman - Web Application Framework
+# Caveman - Web Application Framework for Common Lisp
 
-## Usage
+Caveman is a Web Application Framework for Common Lisp, based on [Clack](https://github.com/fukamachi/clack).
 
-## Installation
+## How to use?
+
+    (caveman:make-app :blog-app)
+
+Then a project skelton is generated to current directory.
+
+    (ql:quickload :blog-app)
+    (blog-app:start)
+
+Now access http://localhost:8080/ and Caveman may show you "Hello, Caveman!".
 
 ## Dependency
 
-* Clack
+* [Clack](https://github.com/fukamachi/clack)
+* CL-PPCRE
+* CL-FAD
+* CLSQL
 
 ## Author
 

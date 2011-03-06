@@ -16,15 +16,25 @@
   :author "Eitarow Fukamachi"
   :license "LLGPL"
   :depends-on (:clack
-               :ponzu.db
                :cl-annot
                :cl-ppcre
                :clsql
-               :cl-markup
+               ;:cl-markup
                :cl-fad)
   :components ((:module "src"
                 :components
                 ((:file "caveman" :depends-on ("database"))
                  (:file "route" :depends-on ("view"))
                  (:file "view")
-                 (:file "database")))))
+                 (:file "database"))))
+  :description "Web Application Framework for Common Lisp"
+  :long-description
+  #.(with-open-file (stream (merge-pathnames
+                             #p"README.markdown"
+                             (or *load-pathname* *compile-file-pathname*))
+                            :direction :input)
+      (let ((seq (make-array (file-length stream)
+                             :element-type 'character
+                             :fill-pointer t)))
+        (setf (fill-pointer seq) (read-sequence seq stream))
+        seq)))
