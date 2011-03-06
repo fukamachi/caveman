@@ -38,3 +38,7 @@
      (add-route *app*
                 (url->routing-rule ,method ,url-rule ,form))))
 (setf (annotation-narg 'url) 3)
+
+@export
+(defun start (&key debug)
+  (caveman:start *app* :debug debug))
