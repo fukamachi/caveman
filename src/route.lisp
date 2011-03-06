@@ -73,8 +73,8 @@ Example:
 "
 
 @doc:DESCRIPTION "
-Routing rules. This is refered by a function `routing', under this.
-Usually, you don't have to change this directly.
+Routing rules. This is refered by caveman.app:<app>.
+Usually, you don't have to change it directly.
 
 Example:
   ((member-profile GET (\"^\\\\/member\\\\/(.+?)$\" (id)) #'member-profile)

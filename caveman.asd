@@ -25,8 +25,7 @@
                 ((:file "caveman" :depends-on ("skelton"))
                  (:file "app" :depends-on ("database"))
                  (:file "skelton")
-                 (:file "route" :depends-on ("view"))
-                 (:file "view")
+                 (:file "route")
                  (:file "database"))))
   :description "Web Application Framework for Common Lisp"
   :long-description
