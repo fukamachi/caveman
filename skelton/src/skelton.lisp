@@ -16,13 +16,18 @@
 
 @export
 (defvar *config*
-    '(:application-name "${application-name}"
-      :application-root ${application-root}
+    `(:application-name "${application-name}"
+      :application-root ,(asdf:component-pathname
+                          (asdf:find-system :${application-name}))
       :static-path #p"public/"
       :server :hunchentoot
       :port 8080
       :database-type :sqlite3
-      :database-connection-spec ("memory")
+      :database-connection-spec (,(namestring
+                                   (merge-pathnames
+                                    "sqlite3.db"
+                                    (asdf:component-pathname
+                                     (asdf:find-system :${application-name})))))
       :config-file #p"config.lisp"))
 
 @export
