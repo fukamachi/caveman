@@ -10,7 +10,8 @@
   (:use :cl
         :clack
         :clack.builder
-        :clack.middleware.static)
+        :clack.middleware.static
+        :clack.middleware.clsql)
   (:import-from :cl-ppcre
                 :scan-to-strings)
   (:import-from :cl-fad
@@ -47,12 +48,14 @@
                   &key port server debug lazy)
   (setup this)
   (setf *builder-lazy-p* lazy)
-  ;; TODO: put a middleware to connect to database.
   (clackup (builder
             (<clack-middleware-static>
              :path "/public/"
              :root (merge-pathnames (getf (config this) :static-path)
                                     (getf (config this) :application-root)))
+            (<clack-middleware-clsql>
+             :database-type (getf (config this) :database-type)
+             :connection-spec (getf (config this) :database-connection-spec))
             this)
            :port (or port (getf (config this) :port))
            :debug debug
