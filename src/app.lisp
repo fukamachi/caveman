@@ -19,7 +19,9 @@
   (:import-from :clack.request
                 :make-request)
   (:import-from :caveman.database
-                :database-setup))
+                :database-setup)
+  (:import-from :clsql
+                :connect))
 
 (cl-annot:enable-annot-syntax)
 
@@ -53,15 +55,15 @@
                                     (getf (config this) :application-root)))
             (<clack-middleware-clsql>
              :database-type (getf (config this) :database-type)
-             :connection-spec (getf (config this) :database-connection-spec))
+             :connection-spec (getf (config this) :database-connection-spec)
+             :connect-args '(:pool t))
             this)
            :port (or port (getf (config this) :port))
            :debug debug
            :server (or server (getf (config this) :server))))
 
 (defmethod call ((this <app>) req)
-  "Dispatch HTTP request to each actions.
-This returns a Clack Application."
+  "Dispatch HTTP request to each actions."
   (let ((method (getf req :request-method))
         (path-info (getf req :path-info)))
     (loop for rule in (reverse (routing-rules this))
@@ -81,6 +83,11 @@ This returns a Clack Application."
                            (append
                             params
                             (slot-value req 'clack.request::query-parameters)))
+                     (connect (getf (config this) :database-connection-spec)
+                              :database-type (getf (config this)
+                                                   :database-type)
+                              :pool t
+                              :encoding :utf-8)
                      (return (call fn req)))))
           finally (return '(404 nil nil)))))
 
