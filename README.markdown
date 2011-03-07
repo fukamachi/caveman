@@ -6,7 +6,7 @@ Caveman is a Web Application Framework for Common Lisp, based on [Clack](https:/
 
     (caveman:make-app :blog-app)
 
-Then a project skelton is generated to current directory.
+Then a project skeleton is generated to current directory.
 
     (ql:quickload :blog-app)
     (blog-app:start)

@@ -6,7 +6,7 @@
   Caveman is freely distributable under the LLGPL License.
 |#
 
-(clack.util:namespace caveman.skelton
+(clack.util:namespace caveman.skeleton
   (:use :cl)
   (:import-from :cl-fad
                 :list-directory
@@ -70,7 +70,7 @@
                           (t string)))
                     :simple-calls t)
                    stream)))
-              (when (string= (pathname-name path) "skelton")
+              (when (string= (pathname-name path) "skeleton")
                 (rename-file path
                              (concatenate 'string
                                           name "." (pathname-type path))))
@@ -78,5 +78,5 @@
     (copy-directory
      #.(asdf:system-relative-pathname
         :caveman
-        #p"skelton/")
+        #p"skeleton/")
      root)))
