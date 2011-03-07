@@ -1,9 +1,11 @@
 (clack.util:namespace ${application-name}
   (:use :cl
         :clack)
+  (:shadow :stop)
   (:import-from :caveman.app
                 :<app>
-                :add-route)
+                :add-route
+                :config)
   (:import-from :caveman.route
                 :url->routing-rule)
   (:import-from :caveman.context
@@ -63,7 +65,8 @@
 
 @export
 (defun stop ()
-  (clack:stop *acceptor* :server (getf (config *app*) :server)))
+  (clack:stop *acceptor* :server (getf (config *app*) :server))
+  (setf *acceptor* nil))
 
 @export
 (defun request ()
