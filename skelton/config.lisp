@@ -2,4 +2,4 @@
   (:use :cl
         :${application-name}))
 
-;; *config*
+;; (config *app*)

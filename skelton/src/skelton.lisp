@@ -15,26 +15,23 @@
 (defvar *acceptor* nil)
 
 @export
-(defvar *config*
-    `(:application-name "${application-name}"
-      :application-root ,(asdf:component-pathname
-                          (asdf:find-system :${application-name}))
-      :static-path #p"public/"
-      :server :hunchentoot
-      :port 8080
-      :database-type :sqlite3
-      :database-connection-spec (,(namestring
-                                   (asdf:system-relative-pathname
-                                    :${application-name}
-                                    "sqlite3.db")))
-      :config-file #p"config.lisp"))
-
-@export
 (defclass ${application-name} (<app>) ())
 
 @export
 (defvar *app* (make-instance '${application-name}
-                 :config *config*))
+                 :config
+                 `(:application-name "${application-name}"
+                   :application-root ,(asdf:component-pathname
+                                       (asdf:find-system :${application-name}))
+                   :static-path #p"public/"
+                   :server :hunchentoot
+                   :port 8080
+                   :database-type :sqlite3
+                   :database-connection-spec (,(namestring
+                                                (asdf:system-relative-pathname
+                                                 :${application-name}
+                                                 "sqlite3.db")))
+                   :config-file #p"config.lisp")))
 
 @export
 (defmacro url (method url-rule form)
