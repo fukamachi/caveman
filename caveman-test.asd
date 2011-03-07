@@ -17,5 +17,8 @@
                :cl-fad
                :drakma)
   :components ((:module "t"
+                :serial t
                 :components
-                ((:file "caveman")))))
+                ((:file "init")
+                 (:file "caveman")
+                 (:file "final")))))
