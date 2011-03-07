@@ -4,7 +4,7 @@
         :cl-test-more
         :drakma))
 
-(plan 4)
+(plan 5)
 
 (defvar *project-root*
     (asdf:system-relative-pathname :caveman "t/tmp/"))
@@ -31,6 +31,10 @@
 (is (http-request "http://localhost:8080/")
     "Hello, Caveman!"
     "index")
+
+(is (http-request "http://localhost:8080/not-found-hoge")
+    nil
+    "not found")
 
 (diag "myapp stop")
 (funcall (intern "STOP" :myapp))
