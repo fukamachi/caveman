@@ -57,7 +57,7 @@
             (<clack-middleware-clsql>
              :database-type (getf (config this) :database-type)
              :connection-spec (getf (config this) :database-connection-spec)
-             :connect-args '(:pool t))
+             :connect-args '(:pool t :encoding :utf-8))
             this)
            :port (or port (getf (config this) :port))
            :debug debug
@@ -84,11 +84,6 @@
                            (append
                             params
                             (slot-value req 'clack.request::query-parameters)))
-                     (connect (getf (config this) :database-connection-spec)
-                              :database-type (getf (config this)
-                                                   :database-type)
-                              :pool t
-                              :encoding :utf-8)
                      (return (call fn (parameter req))))))
           finally (return '(404 nil nil)))))
 
