@@ -1,7 +1,6 @@
 (clack.util:namespace ${application-name}
   (:use :cl
-        :clack
-        :clack.builder)
+        :clack)
   (:import-from :caveman.app
                 :<app>
                 :add-route)
@@ -25,6 +24,13 @@
 
 @export
 (defclass ${application-name} (<app>) ())
+
+(defmethod call :around ((this ${application-name}) req)
+  (let ((mw (make-instance '<caveman-middleware-context>)))
+    (call (wrap mw #'(lambda (req)
+                       @ignore req
+                       (call-next-method)))
+          req)))
 
 @export
 (defvar *app* (make-instance '${application-name}
@@ -53,9 +59,7 @@
 @export
 (defun start (&key debug)
   (setf *acceptor*
-        (caveman.app:start
-         (builder <caveman-middleware-context> *app*)
-         :debug debug)))
+        (caveman.app:start *app* :debug debug)))
 
 @export
 (defun stop ()

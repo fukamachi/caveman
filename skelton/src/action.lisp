@@ -7,4 +7,4 @@
 @url GET "/"
 (defun index (params)
   @ignore params
-  '(200 (:content-type "text/plain") ("Hello, Caveman!")))
+  "Hello, Caveman!")

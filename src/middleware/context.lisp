@@ -14,7 +14,9 @@
   (:import-from :caveman.request
                 :make-request)
   (:import-from :caveman.response
-                :make-response))
+                :make-response
+                :body
+                :finalize))
 
 (cl-annot:enable-annot-syntax)
 
@@ -26,5 +28,9 @@
   (let* ((request (make-request req))
          (response (make-response 200 ()))
          (ctx (make-instance '<context> :request request :response response)))
-    (eval `(let ((,(slot-value this 'context) ctx))
-             (call-next this request)))))
+    (eval `(let* ((,(slot-value this 'context) ,ctx)
+                  (result (call-next ,this ,request)))
+             (if (listp result)
+                 result
+                 (progn (setf (body ,response) result)
+                        (finalize ,response)))))))

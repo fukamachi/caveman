@@ -18,6 +18,8 @@
                 :file-exists-p)
   (:import-from :caveman.request
                 :make-request
+                :request-method
+                :path-info
                 :parameter)
   (:import-from :caveman.database
                 :database-setup)
