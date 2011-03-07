@@ -1,15 +1,24 @@
 (clack.util:namespace ${application-name}
   (:use :cl
-        :clack)
+        :clack
+        :clack.builder)
   (:import-from :caveman.app
                 :<app>
                 :add-route)
   (:import-from :caveman.route
                 :url->routing-rule)
+  (:import-from :caveman.context
+                :request*
+                :response*)
+  (:import-from :caveman.middleware.context
+                :<caveman-middleware-context>)
   (:import-from :cl-annot.core
                 :annotation-narg))
 
 (cl-annot:enable-annot-syntax)
+
+@export
+(defvar *context* nil)
 
 @export
 (defvar *acceptor* nil)
@@ -44,8 +53,18 @@
 @export
 (defun start (&key debug)
   (setf *acceptor*
-        (caveman.app:start *app* :debug debug)))
+        (caveman.app:start
+         (builder <caveman-middleware-context> *app*)
+         :debug debug)))
 
 @export
 (defun stop ()
   (clack:stop *acceptor* :server (getf (config *app*) :server)))
+
+@export
+(defun request ()
+  (request* *context*))
+
+@export
+(defun response ()
+  (response* *context*))

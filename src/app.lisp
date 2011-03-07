@@ -17,7 +17,8 @@
   (:import-from :cl-fad
                 :file-exists-p)
   (:import-from :caveman.request
-                :make-request)
+                :make-request
+                :parameter)
   (:import-from :caveman.database
                 :database-setup)
   (:import-from :clsql
@@ -64,16 +65,16 @@
 
 (defmethod call ((this <app>) req)
   "Dispatch HTTP request to each actions."
-  (let ((method (getf req :request-method))
-        (path-info (getf req :path-info)))
+  (let* ((req (if (listp req) (make-request req) req))
+         (method (request-method req))
+         (path-info (path-info req)))
     (loop for rule in (reverse (routing-rules this))
           for (meth (re vars) fn) = (cdr rule)
           if (string= meth method)
             do (multiple-value-bind (matchp res)
                    (scan-to-strings re path-info)
                  (when matchp
-                   (let ((req (make-request req))
-                         (params
+                   (let ((params
                           (loop for key in vars
                                 for val in (coerce res 'list)
                                 append (list
@@ -88,7 +89,7 @@
                                                    :database-type)
                               :pool t
                               :encoding :utf-8)
-                     (return (call fn req)))))
+                     (return (call fn (parameter req))))))
           finally (return '(404 nil nil)))))
 
 @export

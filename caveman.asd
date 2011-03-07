@@ -26,6 +26,8 @@
                  (:file "app" :depends-on ("database" "request"))
                  (:file "request")
                  (:file "response")
+                 (:file "context" :depends-on ("request" "response"))
+                 (:file "middleware/context" :depends-on ("context"))
                  (:file "skelton")
                  (:file "route")
                  (:file "view")
