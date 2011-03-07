@@ -5,7 +5,7 @@
         :drakma
         :myapp))
 
-(plan 2)
+(plan 4)
 
 (cl-annot:enable-annot-syntax)
 
