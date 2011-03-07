@@ -23,7 +23,9 @@
   :components ((:module "src"
                 :components
                 ((:file "caveman" :depends-on ("skelton"))
-                 (:file "app" :depends-on ("database"))
+                 (:file "app" :depends-on ("database" "request"))
+                 (:file "request")
+                 (:file "response")
                  (:file "skelton")
                  (:file "route")
                  (:file "view")

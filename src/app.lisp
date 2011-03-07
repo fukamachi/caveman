@@ -16,7 +16,7 @@
                 :scan-to-strings)
   (:import-from :cl-fad
                 :file-exists-p)
-  (:import-from :clack.request
+  (:import-from :caveman.request
                 :make-request)
   (:import-from :caveman.database
                 :database-setup)
