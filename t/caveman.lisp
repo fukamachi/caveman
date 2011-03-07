@@ -33,8 +33,8 @@
 
 (is (http-request "http://localhost:8080/login"
                   :method :post
-                  :parameters '(("name" . "fukamachi")
-                                ("pass" . "lispiscool")))
+                  :parameters '(("NAME" . "fukamachi")
+                                ("PASS" . "lispiscool")))
     "Name: fukamachi / Pass: lispiscool"
     "POST")
 

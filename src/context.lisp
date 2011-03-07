@@ -22,3 +22,8 @@
                :accessor request*)
       (response :initarg :response :initform (make-response 200 ())
                 :accessor response*)))
+
+@export
+(defun make-context (req)
+  (make-instance '<context>
+     :request (make-request req)))

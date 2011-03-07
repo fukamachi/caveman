@@ -10,9 +10,9 @@
   (:use :cl
         :clack)
   (:import-from :caveman.context
-                :<context>)
-  (:import-from :caveman.request
-                :make-request)
+                :make-context
+                :request*
+                :response*)
   (:import-from :caveman.response
                 :make-response
                 :body
@@ -25,12 +25,10 @@
      ((context :initform (intern "*CONTEXT*" *package*))))
 
 (defmethod call ((this <caveman-middleware-context>) req)
-  (let* ((request (make-request req))
-         (response (make-response 200 ()))
-         (ctx (make-instance '<context> :request request :response response)))
-    (eval `(let* ((,(slot-value this 'context) ,ctx)
-                  (result (call-next ,this ,request)))
+  (let ((context (make-context req)))
+    (eval `(let* ((,(slot-value this 'context) ,context)
+                  (result (call-next ,this ,(request* context))))
              (if (listp result)
                  result
-                 (progn (setf (body ,response) result)
-                        (finalize ,response)))))))
+                 (progn (setf (body ,(response* context)) result)
+                        (finalize ,(response* context))))))))

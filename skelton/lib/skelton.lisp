@@ -30,8 +30,7 @@
 (defmethod call :around ((this ${application-name}) req)
   (let ((mw (make-instance '<caveman-middleware-context>)))
     (call (wrap mw #'(lambda (req)
-                       @ignore req
-                       (call-next-method)))
+                       (call-next-method this req)))
           req)))
 
 @export
