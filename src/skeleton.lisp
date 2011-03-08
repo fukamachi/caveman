@@ -50,7 +50,7 @@
       seq)))
 
 @export
-(defun make-app (name &key (path (truename #p"./")))
+(defun generate (name &key (path (truename #p"./")))
   (setf name (string-downcase name))
   (let* ((root
           (merge-pathnames (concatenate 'string name "/") path))

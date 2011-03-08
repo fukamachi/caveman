@@ -16,7 +16,19 @@
                 :definition-symbol
                 :definition-type)
   (:import-from :cl-annot.doc
-                :doc))
+                :doc)
+  (:import-from :cl-annot.core
+                :annotation-narg)
+  (:import-from :caveman.app
+                :add-route))
+
+@export
+(defmacro url (method url-rule form)
+  `(progn
+     ,form
+     (add-route ,(intern "*APP*" *package*)
+                (url->routing-rule ,method ,url-rule ,form))))
+(setf (annotation-narg 'url) 3)
 
 @doc "
 Useful annotation to define actions.

@@ -12,12 +12,14 @@
         :clack.builder
         :clack.middleware.static
         :clack.middleware.clsql)
+  (:shadow :stop)
   (:import-from :cl-ppcre
                 :scan-to-strings)
   (:import-from :cl-fad
                 :file-exists-p)
+  (:import-from :caveman.middleware.context
+                :<caveman-middleware-context>)
   (:import-from :caveman.request
-                :make-request
                 :request-method
                 :path-info
                 :parameter)
@@ -33,7 +35,8 @@
      ((config :initarg :config :initform nil
               :accessor config)
       (routing-rules :initarg routing-rules :initform nil
-                     :accessor routing-rules)))
+                     :accessor routing-rules)
+      (acceptor :initform nil :accessor acceptor)))
 
 @export
 (defmethod setup ((this <app>))
@@ -51,24 +54,35 @@
                   &key port server debug lazy)
   (setup this)
   (setf *builder-lazy-p* lazy)
-  (clackup (builder
-            (<clack-middleware-static>
-             :path "/public/"
-             :root (merge-pathnames (getf (config this) :static-path)
-                                    (getf (config this) :application-root)))
-            (<clack-middleware-clsql>
-             :database-type (getf (config this) :database-type)
-             :connection-spec (getf (config this) :database-connection-spec)
-             :connect-args '(:pool t :encoding :utf-8))
-            this)
-           :port (or port (getf (config this) :port))
-           :debug debug
-           :server (or server (getf (config this) :server))))
+  (setf (acceptor this)
+        (clackup
+         (builder
+          (<clack-middleware-static>
+           :path "/public/"
+           :root (merge-pathnames (getf (config this) :static-path)
+                                  (getf (config this) :application-root)))
+          (<clack-middleware-clsql>
+           :database-type (getf (config this) :database-type)
+           :connection-spec (getf (config this) :database-connection-spec)
+           :connect-args '(:pool t :encoding :utf-8))
+          this)
+         :port (or port (getf (config this) :port))
+         :debug debug
+         :server (or server (getf (config this) :server)))))
+
+@export
+(defmethod stop ((this <app>))
+  (clack:stop (acceptor this) :server (getf (config this) :server)))
 
 (defmethod call ((this <app>) req)
+  (let ((mw (make-instance '<caveman-middleware-context>)))
+    (call (wrap mw #'(lambda (req)
+                       (dispatch this req)))
+          req)))
+
+(defmethod dispatch ((this <app>) req)
   "Dispatch HTTP request to each actions."
-  (let* ((req (if (listp req) (make-request req) req))
-         (method (request-method req))
+  (let* ((method (request-method req))
          (path-info (path-info req)))
     (loop for rule in (reverse (routing-rules this))
           for (meth (re vars) fn) = (cdr rule)

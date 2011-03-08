@@ -5,7 +5,7 @@
         :drakma
         :myapp))
 
-(plan 4)
+(plan 7)
 
 (cl-annot:enable-annot-syntax)
 
@@ -44,13 +44,13 @@
   (princ-to-string (type-of *context*)))
 
 (is (http-request "http://localhost:8080/context")
-    "<CONTEXT>"
+    "HASH-TABLE"
     "context")
 
 @url GET "/request"
 (defun req-test (params)
   @ignore params
-  (princ-to-string (type-of (request))))
+  (princ-to-string (type-of *request*)))
 
 (is (http-request "http://localhost:8080/request")
     "<REQUEST>"
@@ -59,7 +59,7 @@
 @url GET "/response"
 (defun res-test (params)
   @ignore params
-  (princ-to-string (type-of (response))))
+  (princ-to-string (type-of *response*)))
 
 (is (http-request "http://localhost:8080/response")
     "<RESPONSE>"

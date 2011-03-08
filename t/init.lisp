@@ -1,6 +1,5 @@
 (clack.util:namespace caveman-test.init
   (:use :cl
-        :caveman
         :cl-test-more))
 
 (plan 0)
@@ -15,7 +14,7 @@
   (cl-fad:delete-directory-and-files *myapp-root*))
 (ensure-directories-exist *project-root*)
 
-(caveman:make-app :myapp :path *project-root*)
+(caveman.skeleton:generate :myapp :path *project-root*)
 
 (diag "loading myapp...")
 (load (merge-pathnames "myapp.asd" *myapp-root*))

@@ -11,19 +11,30 @@
   (:import-from :caveman.request
                 :make-request)
   (:import-from :caveman.response
-                :make-response)
-  (:export :request* :response*))
+                :make-response))
 
 (cl-annot:enable-annot-syntax)
 
 @export
-(defclass <context> ()
-     ((request :initarg :request :initform (make-request nil)
-               :accessor request*)
-      (response :initarg :response :initform (make-response 200 ())
-                :accessor response*)))
+(defvar *context* nil)
+
+@export
+(defvar *request* nil)
+
+@export
+(defvar *response* nil)
 
 @export
 (defun make-context (req)
-  (make-instance '<context>
-     :request (make-request req)))
+  (let ((*context* (make-hash-table)))
+    (setf (context :request) (make-request req))
+    (setf (context :response) (make-response 200 ()))
+    *context*))
+
+@export
+(defun context (&optional key)
+  (if key (gethash key *context*) *context*))
+
+@export
+(defun (setf context) (val key)
+  (setf (gethash key *context*) val))

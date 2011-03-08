@@ -22,14 +22,14 @@
                :cl-fad)
   :components ((:module "src"
                 :components
-                ((:file "caveman" :depends-on ("skeleton"))
-                 (:file "app" :depends-on ("database" "request"))
+                ((:file "caveman" :depends-on ("route" "context"))
+                 (:file "app" :depends-on ("database" "request" "middleware/context"))
                  (:file "request")
                  (:file "response")
                  (:file "context" :depends-on ("request" "response"))
                  (:file "middleware/context" :depends-on ("context"))
                  (:file "skeleton")
-                 (:file "route")
+                 (:file "route":depends-on ("app"))
                  (:file "view")
                  (:file "database"))))
   :description "Web Application Framework for Common Lisp"

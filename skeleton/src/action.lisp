@@ -1,5 +1,6 @@
-(clack.util:namespace cavetest.action
+(clack.util:namespace ${application-name}.action
   (:use :cl
+        :caveman
         :${application-name}))
 
 (cl-annot:enable-annot-syntax)
