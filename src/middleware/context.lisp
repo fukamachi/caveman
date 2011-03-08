@@ -22,7 +22,7 @@
 
 @export
 (defclass <caveman-middleware-context> (<middleware>)
-     ((context :initform (intern "*CONTEXT*" *package*))))
+     ((context :initarg :context :initform (intern "*CONTEXT*" *package*))))
 
 (defmethod call ((this <caveman-middleware-context>) req)
   (let ((context (make-context req)))

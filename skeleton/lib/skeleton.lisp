@@ -21,14 +21,14 @@
 @export
 (defvar *context* nil)
 
-@export
 (defvar *acceptor* nil)
 
 @export
 (defclass ${application-name} (<app>) ())
 
 (defmethod call :around ((this ${application-name}) req)
-  (let ((mw (make-instance '<caveman-middleware-context>)))
+  (let ((mw (make-instance '<caveman-middleware-context>
+               :context '*context*)))
     (call (wrap mw #'(lambda (req)
                        (call-next-method this req)))
           req)))

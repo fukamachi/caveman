@@ -38,4 +38,31 @@
     "Name: fukamachi / Pass: lispiscool"
     "POST")
 
+@url GET "/context"
+(defun ctx-test (params)
+  @ignore params
+  (princ-to-string (type-of *context*)))
+
+(is (http-request "http://localhost:8080/context")
+    "<CONTEXT>"
+    "context")
+
+@url GET "/request"
+(defun req-test (params)
+  @ignore params
+  (princ-to-string (type-of (request))))
+
+(is (http-request "http://localhost:8080/request")
+    "<REQUEST>"
+    "request")
+
+@url GET "/response"
+(defun res-test (params)
+  @ignore params
+  (princ-to-string (type-of (response))))
+
+(is (http-request "http://localhost:8080/response")
+    "<RESPONSE>"
+    "response")
+
 (finalize)
