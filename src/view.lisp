@@ -27,3 +27,7 @@
 
 @export
 (defgeneric render (view params))
+
+@export
+(defmethod render ((view function) params)
+  (apply view params))

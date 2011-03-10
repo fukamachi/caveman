@@ -15,8 +15,11 @@
                 :*request*
                 :*response*
                 :context)
+  (:import-from :caveman.view
+                :render)
   (:export :url
            :*context*
            :*request*
            :*response*
-           :context))
+           :context
+           :render))
