@@ -2,20 +2,39 @@
 
 Caveman is a Web Application Framework for Common Lisp, based on [Clack](https://github.com/fukamachi/clack).
 
-## How to use?
+Most of Common Lisp WAF adopt Continuations-based development, but Caveman adopts MVC-style architecture.
 
-    (caveman.skeleton:generate :blog-app)
+## Getting started
+
+    (caveman.skeleton:generate :myapp)
 
 Then a project skeleton is generated to current directory.
 
-    (ql:quickload :blog-app)
-    (blog-app:start)
+    (ql:quickload :myapp)
+    (myapp:start)
 
-Now access http://localhost:8080/ and Caveman may show you "Hello, Caveman!".
+Now you can access to http://localhost:8080/ and then Caveman may show you "Hello, Caveman!".
+
+## Action
+
+    ;; Don't forget calling this.
+    (cl-annot:enable-annot-syntax)
+    
+    @url GET "/"
+    (defun index (params)
+      @ignore params
+      (render #'myapp.view:index))
+    
+    @url GET "/member/:id/"
+    (defun member-profile (params)
+      (render #'myapp.view:member-profile (getf params :id)))
+
+## View
 
 ## Dependency
 
 * [Clack](https://github.com/fukamachi/clack)
+* [cl-annot](https://github.com/arielnetworks/cl-annot)
 * CL-PPCRE
 * CL-FAD
 * CLSQL
