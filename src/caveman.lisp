@@ -23,3 +23,19 @@
            :*response*
            :context
            :render))
+
+(cl-annot:enable-annot-syntax)
+
+(doc:start)
+
+@doc:NAME "
+Caveman - main package.
+"
+
+@doc:DESCRIPTION "
+This package is main package just for convenient. Your Caveman Application may use this package.
+"
+
+@doc:AUTHOR "
+* Eitarow Fukamachi (e.arrows@gmail.com)
+"

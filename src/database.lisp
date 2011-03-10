@@ -33,3 +33,23 @@
                              :database db)
         (create-view-from-class class :database db)))
     (disconnect :database db)))
+
+(doc:start)
+
+@doc:NAME "
+Caveman.Database - Setup database.
+"
+
+@doc:DESCRIPTION "
+Caveman.Database is to setup database before an Application starts.
+
+Currently supports only CLSQL.
+"
+
+@doc:AUTHOR "
+* Eitarow Fukamachi (e.arrows@gmail.com)
+"
+
+@doc:SEE "
+* CLSQL
+"

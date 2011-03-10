@@ -39,8 +39,28 @@
 (cl-annot:enable-annot-syntax)
 
 @export
-(defclass <request> (clack.request:<request>) ())
+(defclass <request> (clack.request:<request>) ()
+  (:documentation "Class for Caveman Request."))
 
 @export
 (defun make-request (req)
+  "Construct a request instance."
   (apply #'make-instance '<request> :allow-other-keys t req))
+
+(doc:start)
+
+@doc:NAME "
+Caveman.Request - Request class for Caveman.
+"
+
+@doc:DESCRIPTION "
+Caveman.Request is a request class for Caveman. Caveman creates a `<request>' instance for each request and bind it to `*request*'.
+"
+
+@doc:AUTHOR "
+* Eitarow Fukamachi (e.arrows@gmail.com)
+"
+
+@doc:SEE "
+* Clack.Request
+"

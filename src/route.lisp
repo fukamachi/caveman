@@ -22,13 +22,7 @@
   (:import-from :caveman.app
                 :add-route))
 
-@export
-(defmacro url (method url-rule form)
-  `(progn
-     ,form
-     (add-route ,(intern "*APP*" *package*)
-                (url->routing-rule ,method ,url-rule ,form))))
-(setf (annotation-narg 'url) 3)
+(cl-annot:enable-annot-syntax)
 
 @doc "
 Useful annotation to define actions.
@@ -46,6 +40,21 @@ Example:
   (defmethod call ((this <member-profile>) req)
     ;; response
     )
+"
+@export
+(defmacro url (method url-rule form)
+  `(progn
+     ,form
+     (add-route ,(intern "*APP*" *package*)
+                (url->routing-rule ,method ,url-rule ,form))))
+(setf (annotation-narg 'url) 3)
+
+@doc "
+Convert action form into a routing rule, a list.
+
+Example:
+  ((member-profile GET (\"^\\\\/member\\\\/(.+?)$\" (id)) #'member-profile)
+   (login-form POST (\"^\\\\/login$\" nil) #'login-form))
 "
 @export
 (defmacro url->routing-rule (method url-rule form)
@@ -80,17 +89,10 @@ Example:
     (defmethod call ((this <member-profile>) req)
       ;; response
       )
-    
-    (clackup #'routing)
 "
 
 @doc:DESCRIPTION "
-Routing rules. This is refered by caveman.app:<app>.
-Usually, you don't have to change it directly.
-
-Example:
-  ((member-profile GET (\"^\\\\/member\\\\/(.+?)$\" (id)) #'member-profile)
-   (login-form POST (\"^\\\\/login$\" nil) #'login-form))
+Caveman.Route provides an useful annotation `url' to define a Caveman Action.
 "
 
 @doc:AUTHOR "

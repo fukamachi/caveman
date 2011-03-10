@@ -23,7 +23,8 @@
 (cl-annot:enable-annot-syntax)
 
 @export
-(defclass <caveman-middleware-context> (<middleware>) ())
+(defclass <caveman-middleware-context> (<middleware>) ()
+  (:documentation "Clack Middleware to set context for each request."))
 
 (defmethod call ((this <caveman-middleware-context>) req)
   (let* ((*context* (make-context req))
@@ -34,3 +35,19 @@
         result
         (progn (setf (body *response*) result)
                (finalize *response*)))))
+
+@doc:NAME "
+Caveman.Middleware.Context - Clack Middleware to set context for each request.
+"
+
+@doc:DESCRIPTION "
+This is a Clack Middleware to ensure context is set for each request.
+"
+
+@doc:AUTHOR "
+* Eitarow Fukamachi (e.arrows@gmail.com)
+"
+
+@doc:SEE "
+* Caveman.Context
+"
