@@ -26,7 +26,8 @@
   (:import-from :caveman.database
                 :database-setup)
   (:import-from :clsql
-                :connect))
+                :connect)
+  (:export :config))
 
 (cl-annot:enable-annot-syntax)
 
@@ -49,14 +50,13 @@
 @export
 (defmethod setup ((this <app>))
   "Initialize application. This method will be called before `start', load configuration and setup database."
-  (let ((config (config this)))
-    (when (getf config :config-file)
-      (let ((config-file (merge-pathnames (getf config :config-file)
-                                        (getf config :application-root))))
-        (when (file-exists-p config-file)
-          (load config-file))))
-    (database-setup (getf config :database-type)
-                    (getf config :database-connection-spec))))
+  (let ((config-file (merge-pathnames #p"config.lisp"
+                                      (asdf:component-pathname
+                                       (asdf:find-system (type-of this))))))
+    (when (file-exists-p config-file)
+      (load config-file)))
+  (database-setup (getf (config this) :database-type)
+                  (getf (config this) :database-connection-spec)))
 
 @export
 (defmethod start ((this <app>)
