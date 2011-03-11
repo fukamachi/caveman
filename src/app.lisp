@@ -42,10 +42,26 @@
 
 (defmethod call ((this <app>) req)
   "Overriding method. This method will be called for each request."
-  (let ((mw (make-instance '<caveman-middleware-context>)))
-    (call (wrap mw #'(lambda (req)
-                       (dispatch this req)))
-          req)))
+  (let* ((method (request-method req))
+         (path-info (path-info req)))
+    (loop for rule in (reverse (routing-rules this))
+          for (meth (re vars) fn) = (cdr rule)
+          if (string= meth method)
+            do (multiple-value-bind (matchp res)
+                   (scan-to-strings re path-info)
+                 (when matchp
+                   (let ((params
+                          (loop for key in vars
+                                for val in (coerce res 'list)
+                                append (list
+                                         (intern (symbol-name key) :keyword)
+                                         val))))
+                     (setf (slot-value req 'clack.request::query-parameters)
+                           (append
+                            params
+                            (slot-value req 'clack.request::query-parameters)))
+                     (return (call fn (parameter req))))))
+          finally (return '(404 nil nil)))))
 
 @export
 (defmethod setup ((this <app>))
@@ -74,6 +90,7 @@
            :database-type (getf (config this) :database-type)
            :connection-spec (getf (config this) :database-connection-spec)
            :connect-args '(:pool t :encoding :utf-8))
+          <caveman-middleware-context>
           this)
          :port (or port (getf (config this) :port))
          :debug debug
@@ -83,29 +100,6 @@
 (defmethod stop ((this <app>))
   "Stop a server."
   (clack:stop (acceptor this) :server (getf (config this) :server)))
-
-(defmethod dispatch ((this <app>) req)
-  "Dispatch HTTP request to each actions."
-  (let* ((method (request-method req))
-         (path-info (path-info req)))
-    (loop for rule in (reverse (routing-rules this))
-          for (meth (re vars) fn) = (cdr rule)
-          if (string= meth method)
-            do (multiple-value-bind (matchp res)
-                   (scan-to-strings re path-info)
-                 (when matchp
-                   (let ((params
-                          (loop for key in vars
-                                for val in (coerce res 'list)
-                                append (list
-                                         (intern (symbol-name key) :keyword)
-                                         val))))
-                     (setf (slot-value req 'clack.request::query-parameters)
-                           (append
-                            params
-                            (slot-value req 'clack.request::query-parameters)))
-                     (return (call fn (parameter req))))))
-          finally (return '(404 nil nil)))))
 
 @export
 (defgeneric database-setup (app)
