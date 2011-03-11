@@ -24,7 +24,7 @@
                 :path-info
                 :parameter)
   (:import-from :caveman.database
-                :database-setup)
+                :clsql-database-setup)
   (:import-from :clsql
                 :connect)
   (:export :config))
@@ -55,8 +55,7 @@
                                        (asdf:find-system (type-of this))))))
     (when (file-exists-p config-file)
       (load config-file)))
-  (database-setup (getf (config this) :database-type)
-                  (getf (config this) :database-connection-spec)))
+  (database-setup this))
 
 @export
 (defmethod start ((this <app>)
@@ -107,6 +106,17 @@
                             (slot-value req 'clack.request::query-parameters)))
                      (return (call fn (parameter req))))))
           finally (return '(404 nil nil)))))
+
+@export
+(defgeneric database-setup (app)
+  (:documentation "Generic function to setup database."))
+
+@export
+(defmethod database-setup ((this <app>))
+  "Default method to setup database using CLSQL."
+  (clsql-database-setup
+   (getf (config this) :database-type)
+   (getf (config this) :database-connection-spec)))
 
 @export
 (defmethod add-route ((this <app>) routing-rule)

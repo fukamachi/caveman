@@ -20,7 +20,7 @@
 (cl-annot:enable-annot-syntax)
 
 @export
-(defun database-setup (type spec)
+(defun clsql-database-setup (type spec)
   (setf *default-caching* nil)
   (setf *db-auto-sync* nil)
   (let ((db (connect spec
