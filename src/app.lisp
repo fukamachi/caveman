@@ -64,53 +64,42 @@
           finally (return '(404 nil nil)))))
 
 @export
-(defmethod setup ((this <app>))
-  "Initialize application. This method will be called before `start', load configuration and setup database."
-  (let ((config-file (merge-pathnames #p"config.lisp"
-                                      (asdf:component-pathname
-                                       (asdf:find-system (type-of this))))))
-    (when (file-exists-p config-file)
-      (load config-file)))
-  (database-setup this))
+(defun start (app-name
+              &key port server debug lazy)
+  (load-config app-name)
+
+  (let ((app (symbol-value (intern "*APP*" app-name)))
+        (config (symbol-value (intern "*CONFIG*" app-name))))
+    (database-setup config)
+    (setf *builder-lazy-p* lazy)
+    (clackup
+     (builder
+      (<clack-middleware-static>
+       :path "/public/"
+       :root (merge-pathnames (getf config :static-path)
+                              (getf config :application-root)))
+      (<clack-middleware-clsql>
+       :database-type (getf config :database-type)
+       :connection-spec (getf config :database-connection-spec)
+       :connect-args '(:pool t :encoding :utf-8))
+      <caveman-middleware-context>
+      app)
+     :port (or port (getf config :port))
+     :debug debug
+     :server (or server (getf config :server)))))
 
 @export
-(defmethod start ((this <app>)
-                  &key port server debug lazy)
-  "Start a server for the Application."
-  (setup this)
-  (setf *builder-lazy-p* lazy)
-  (setf (acceptor this)
-        (clackup
-         (builder
-          (<clack-middleware-static>
-           :path "/public/"
-           :root (merge-pathnames (getf (config this) :static-path)
-                                  (getf (config this) :application-root)))
-          (<clack-middleware-clsql>
-           :database-type (getf (config this) :database-type)
-           :connection-spec (getf (config this) :database-connection-spec)
-           :connect-args '(:pool t :encoding :utf-8))
-          <caveman-middleware-context>
-          this)
-         :port (or port (getf (config this) :port))
-         :debug debug
-         :server (or server (getf (config this) :server)))))
-
-@export
-(defmethod stop ((this <app>))
+(defun stop (acceptor config)
   "Stop a server."
-  (clack:stop (acceptor this) :server (getf (config this) :server)))
+  (clack:stop acceptor :server (getf config :server)))
 
-@export
-(defgeneric database-setup (app)
-  (:documentation "Generic function to setup database."))
-
-@export
-(defmethod database-setup ((this <app>))
-  "Default method to setup database using CLSQL."
+;; TODO: This function should be extended by users
+;;   to use other database than RDBMS.
+(defun database-setup (config)
+  "Setup database using CLSQL."
   (clsql-database-setup
-   (getf (config this) :database-type)
-   (getf (config this) :database-connection-spec)))
+   (getf config :database-type)
+   (getf config :database-connection-spec)))
 
 @export
 (defmethod add-route ((this <app>) routing-rule)
@@ -121,6 +110,13 @@
                 :key #'car))
   (push routing-rule
         (routing-rules this)))
+
+(defun load-config (app-name)
+  (let ((config-file (merge-pathnames #p"config.lisp"
+                                      (asdf:component-pathname
+                                       (asdf:find-system app-name)))))
+    (when (file-exists-p config-file)
+      (load config-file))))
 
 (doc:start)
 

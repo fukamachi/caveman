@@ -2,11 +2,8 @@
   (:use :cl
         :${application-name}))
 
-(setf (config *app*)
-      `(:application-name "${application-name}"
-        :application-root ,(asdf:component-pathname
-                            (asdf:find-system :${application-name}))
-        :static-path #p"public/"
+(setf *config*
+      `(:static-path #p"public/"
         :server :hunchentoot
         :port 8080
         :database-type :sqlite3
