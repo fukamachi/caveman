@@ -23,15 +23,14 @@
   :components ((:module "src"
                 :components
                 ((:file "caveman" :depends-on ("route" "context" "view"))
-                 (:file "app" :depends-on ("database" "request" "middleware/context"))
+                 (:file "app" :depends-on ("request" "middleware/context"))
                  (:file "request")
                  (:file "response")
                  (:file "context" :depends-on ("request" "response"))
                  (:file "middleware/context" :depends-on ("context"))
                  (:file "skeleton")
                  (:file "route":depends-on ("app"))
-                 (:file "view")
-                 (:file "database"))))
+                 (:file "view"))))
   :description "Web Application Framework for Common Lisp"
   :long-description
   #.(with-open-file (stream (merge-pathnames

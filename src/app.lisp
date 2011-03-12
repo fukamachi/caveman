@@ -23,10 +23,6 @@
                 :request-method
                 :path-info
                 :parameter)
-  (:import-from :caveman.database
-                :clsql-database-setup)
-  (:import-from :clsql
-                :connect)
   (:export :config))
 
 (cl-annot:enable-annot-syntax)
@@ -70,7 +66,6 @@
 
   (let ((app (symbol-value (intern "*APP*" app-name)))
         (config (symbol-value (intern "*CONFIG*" app-name))))
-    (database-setup config)
     (setf *builder-lazy-p* lazy)
     (clackup
      (builder
@@ -92,14 +87,6 @@
 (defun stop (acceptor config)
   "Stop a server."
   (clack:stop acceptor :server (getf config :server)))
-
-;; TODO: This function should be extended by users
-;;   to use other database than RDBMS.
-(defun database-setup (config)
-  "Setup database using CLSQL."
-  (clsql-database-setup
-   (getf config :database-type)
-   (getf config :database-connection-spec)))
 
 @export
 (defmethod add-route ((this <app>) routing-rule)
