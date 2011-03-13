@@ -23,7 +23,8 @@
   :components ((:module "src"
                 :components
                 ((:file "caveman" :depends-on ("route" "context" "view"))
-                 (:file "app" :depends-on ("request" "middleware/context"))
+                 ;; FIXME: removed dependence on skeleton, slurp-file.
+                 (:file "app" :depends-on ("request" "middleware/context" "skeleton"))
                  (:file "request")
                  (:file "response")
                  (:file "context" :depends-on ("request" "response"))

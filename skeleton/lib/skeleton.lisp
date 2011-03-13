@@ -16,16 +16,9 @@
 (defvar *app* (make-instance '${application-name}))
 
 @export
-(defvar *config* nil)
-
-@export
-(defvar *acceptor* nil)
-
-@export
-(defun start (&key debug lazy)
-  (setf *acceptor*
-        (caveman.app:start :${application-name} :debug debug :lazy lazy)))
+(defun start (&key (mode :dev) debug lazy)
+  (caveman.app:start *app* :mode mode :debug debug :lazy lazy))
 
 @export
 (defun stop ()
-  (caveman.app:stop *acceptor* *config*))
+  (caveman.app:stop *app*))

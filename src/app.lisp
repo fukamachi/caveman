@@ -60,33 +60,18 @@
           finally (return '(404 nil nil)))))
 
 @export
-(defun start (app-name
-              &key port server debug lazy)
-  (load-config app-name)
-
-  (let ((app (symbol-value (intern "*APP*" app-name)))
-        (config (symbol-value (intern "*CONFIG*" app-name))))
-    (setf *builder-lazy-p* lazy)
-    (clackup
-     (builder
-      (<clack-middleware-static>
-       :path "/public/"
-       :root (merge-pathnames (getf config :static-path)
-                              (getf config :application-root)))
-      (<clack-middleware-clsql>
-       :database-type (getf config :database-type)
-       :connection-spec (getf config :database-connection-spec)
-       :connect-args '(:pool t :encoding :utf-8))
-      <caveman-middleware-context>
-      app)
-     :port (or port (getf config :port))
-     :debug debug
-     :server (or server (getf config :server)))))
-
-@export
-(defun stop (acceptor config)
-  "Stop a server."
-  (clack:stop acceptor :server (getf config :server)))
+(defmethod build ((this <app>))
+  (builder
+   (<clack-middleware-static>
+    :path "/public/"
+    :root (merge-pathnames (getf (config this) :static-path)
+                           (getf (config this) :application-root)))
+   (<clack-middleware-clsql>
+    :database-type (getf (config this) :database-type)
+    :connection-spec (getf (config this) :database-connection-spec)
+    :connect-args '(:pool t :encoding :utf-8))
+   <caveman-middleware-context>
+   this))
 
 @export
 (defmethod add-route ((this <app>) routing-rule)
@@ -98,12 +83,35 @@
   (push routing-rule
         (routing-rules this)))
 
-(defun load-config (app-name)
-  (let ((config-file (merge-pathnames #p"config.lisp"
-                                      (asdf:component-pathname
-                                       (asdf:find-system app-name)))))
+@export
+(defmethod start ((this <app>)
+                  &key (mode :dev) port server debug lazy)
+  (let ((config (load-config this mode)))
+    (setf *builder-lazy-p* lazy)
+    (setf (config this) config)
+    (setf (acceptor this)
+          (clackup
+           (build this)
+           :port (or port (getf config :port))
+           :debug debug
+           :server (or server (getf config :server))))))
+
+@export
+(defmethod stop ((this <app>))
+  "Stop a server."
+  (clack:stop (acceptor this) :server (getf (config this) :server))
+  (setf (acceptor this) nil))
+
+@export
+(defmethod load-config ((this <app>) mode)
+  (let ((config-file (asdf:system-relative-pathname
+                      (type-of this)
+                      (format nil "config/~(~A~).lisp" mode))))
     (when (file-exists-p config-file)
-      (load config-file))))
+      (eval
+       (read-from-string
+        ;; FIXME: removed dependence on skeleton, slurp-file.
+        (caveman.skeleton::slurp-file config-file))))))
 
 (doc:start)
 
