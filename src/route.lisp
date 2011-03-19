@@ -8,24 +8,24 @@
 
 (clack.util:namespace caveman.route
   (:use :cl
-        :clack)
+        :clack
+        :cl-annot
+        :cl-annot.doc)
   (:import-from :clack.app.route
                 :url-rule->regex)
-  (:import-from :cl-annot.util
-                :progn-last
-                :definition-symbol
-                :definition-type)
-  (:import-from :cl-annot.doc
-                :doc)
-  (:import-from :cl-annot.core
-                :annotation-narg)
+  (:import-from :macro-utils
+                :progn-form-last
+                :definition-form-symbol
+                :definition-form-type)
   (:import-from :caveman.app
                 :add-route))
 
 (cl-annot:enable-annot-syntax)
 
-@doc "
-Useful annotation to define actions.
+@export
+(defannotation url (method url-rule form)
+    (:arity 3)
+  "Useful annotation to define actions.
 
 Example:
   ;; for Function
@@ -39,15 +39,11 @@ Example:
   (defclass <member-profile> (<component>) ())
   (defmethod call ((this <member-profile>) req)
     ;; response
-    )
-"
-@export
-(defmacro url (method url-rule form)
+    )"
   `(progn
      ,form
      (add-route ,(intern "*APP*" *package*)
                 (url->routing-rule ,method ,url-rule ,form))))
-(setf (annotation-narg 'url) 3)
 
 @doc "
 Convert action form into a routing rule, a list.
@@ -58,9 +54,9 @@ Example:
 "
 @export
 (defmacro url->routing-rule (method url-rule form)
-  (let* ((last-form (progn-last form))
-         (type (definition-type last-form))
-         (symbol (definition-symbol last-form))
+  (let* ((last-form (progn-form-last form))
+         (type (definition-form-type last-form))
+         (symbol (definition-form-symbol last-form))
          (req (gensym "REQ")))
     `(list
       ',symbol
