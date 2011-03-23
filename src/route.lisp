@@ -13,7 +13,7 @@
         :cl-annot.doc)
   (:import-from :clack.app.route
                 :url-rule->regex)
-  (:import-from :macro-utils
+  (:import-from :cl-annot.util
                 :progn-form-last
                 :definition-form-symbol
                 :definition-form-type)
