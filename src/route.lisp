@@ -41,9 +41,9 @@ Example:
     ;; response
     )"
   `(progn
-     ,form
      (add-route ,(intern "*APP*" *package*)
-                (url->routing-rule ,method ,url-rule ,form))))
+                (url->routing-rule ,method ,url-rule ,form))
+     ,form))
 
 @doc "
 Convert action form into a routing rule, a list.
