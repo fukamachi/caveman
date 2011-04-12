@@ -8,8 +8,13 @@
 
 (clack.util:namespace caveman
   (:use :cl)
+  (:import-from :cl-syntax
+                :use-syntax)
+  (:import-from :cl-syntax-annot
+                :annot-syntax)
   (:import-from :caveman.route
-                :url)
+                :url
+                :link-to)
   (:import-from :caveman.context
                 :*context*
                 :*request*
@@ -18,13 +23,14 @@
   (:import-from :caveman.view
                 :render)
   (:export :url
+           :link-to
            :*context*
            :*request*
            :*response*
            :context
            :render))
 
-(cl-annot:enable-annot-syntax)
+(use-syntax annot-syntax)
 
 (doc:start)
 

@@ -9,6 +9,10 @@
 (clack.util:namespace caveman.middleware.context
   (:use :cl
         :clack)
+  (:import-from :cl-syntax
+                :use-syntax)
+  (:import-from :cl-syntax-annot
+                :annot-syntax)
   (:import-from :caveman.context
                 :*context*
                 :*request*
@@ -20,7 +24,7 @@
                 :body
                 :finalize))
 
-(cl-annot:enable-annot-syntax)
+(use-syntax annot-syntax)
 
 @export
 (defclass <caveman-middleware-context> (<middleware>) ()

@@ -10,6 +10,10 @@
   (:use :cl
         :clack.response)
   (:shadow :<response>)
+  (:import-from :cl-syntax
+                :use-syntax)
+  (:import-from :cl-syntax-annot
+                :annot-syntax)
   (:export :status
            :headers
            :push-header
@@ -18,7 +22,7 @@
            :redirect
            :finalize))
 
-(cl-annot:enable-annot-syntax)
+(use-syntax annot-syntax)
 
 @export
 (defclass <response> (clack.response:<response>) ()

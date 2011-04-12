@@ -18,6 +18,8 @@
   :depends-on (:clack
                :cl-annot
                :cl-ppcre
+               :cl-syntax
+               :cl-syntax-annot
                :clsql
                :cl-fad)
   :components ((:module "src"
