@@ -9,7 +9,8 @@
 (clack.util:namespace caveman.request
   (:use :cl
         :clack.request)
-  (:shadow :<request>)
+  (:shadow :<request>
+           :make-request)
   (:import-from :cl-syntax
                 :use-syntax)
   (:import-from :cl-syntax-annot
@@ -49,7 +50,10 @@
 @export
 (defun make-request (req)
   "Construct a request instance."
-  (apply #'make-instance '<request> :allow-other-keys t req))
+  (apply #'make-instance '<request>
+         :allow-other-keys t
+         :raw-body (shared-raw-body req)
+         req))
 
 (doc:start)
 
