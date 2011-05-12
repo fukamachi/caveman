@@ -27,6 +27,8 @@
                 :request-method
                 :path-info
                 :parameter)
+  (:import-from :caveman.context
+                :*request*)
   (:export :config))
 
 (use-syntax annot-syntax)
@@ -42,7 +44,9 @@
 
 (defmethod call ((this <app>) req)
   "Overriding method. This method will be called for each request."
-  (let* ((method (request-method req))
+  @ignore req
+  (let* ((req *request*)
+         (method (request-method req))
          (path-info (path-info req)))
     (loop for rule in (reverse (routing-rules this))
           for (meth triple fn) = (cdr rule)

@@ -35,12 +35,18 @@ Don't set to this variable directly. This is designed to be bound in lexical let
   "Special variable to store Caveman Response, a instance of `<response>' in Caveman.Response package.
 Don't set to this variable directly. This is designed to be bound in lexical let.")
 
+@export
+(defvar *session* nil
+  "Special variable to store session.
+Don't set to this variable directly. This is designed to be bound in lexical let.")
+
 @doc "Create a new Context."
 @export
 (defun make-context (req)
   (let ((*context* (make-hash-table)))
-    (setf (context :request) (make-request req))
-    (setf (context :response) (make-response 200 ()))
+    (setf (context :request) (make-request req)
+          (context :response) (make-response 200 ())
+          (context :session) (getf req :clack.session))
     *context*))
 
 @doc "

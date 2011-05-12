@@ -19,6 +19,7 @@
                 :*context*
                 :*request*
                 :*response*
+                :*session*
                 :context)
   (:import-from :caveman.view
                 :render)
@@ -27,6 +28,7 @@
            :*context*
            :*request*
            :*response*
+           :*session*
            :context
            :render))
 

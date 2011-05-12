@@ -17,6 +17,7 @@
                 :*context*
                 :*request*
                 :*response*
+                :*session*
                 :context
                 :make-context)
   (:import-from :caveman.response
@@ -34,7 +35,8 @@
   (let* ((*context* (make-context req))
          (*request* (context :request))
          (*response* (context :response))
-         (result (call-next this *request*)))
+         (*session* (context :session))
+         (result (call-next this req)))
     (if (listp result)
         result
         (progn (setf (body *response*) result)
