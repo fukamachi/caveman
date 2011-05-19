@@ -20,7 +20,8 @@
                 :*request*
                 :*response*
                 :*session*
-                :context)
+                :context
+                :with-context-variables)
   (:import-from :caveman.view
                 :render)
   (:export :url
@@ -30,6 +31,7 @@
            :*response*
            :*session*
            :context
+           :with-context-variables
            :render))
 
 (use-syntax annot-syntax)

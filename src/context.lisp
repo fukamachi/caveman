@@ -67,6 +67,14 @@ Example:
 (defun (setf context) (val key)
   (setf (gethash key *context*) val))
 
+@export
+(defmacro with-context-variables ((&rest vars) &body body)
+  `(symbol-macrolet
+       ,(loop for var in vars
+              for form = `(context ,(intern (string var) :keyword))
+              collect `(,var ,form))
+     ,@body))
+
 (doc:start)
 
 @doc:NAME "
