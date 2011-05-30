@@ -12,9 +12,13 @@
                 :list-directory
                 :copy-file)
   (:import-from :cl-ppcre
-                :regex-replace-all))
+                :regex-replace-all)
+  (:import-from :cl-syntax
+                :use-syntax)
+  (:import-from :cl-syntax-annot
+                :annot-syntax))
 
-(cl-annot:enable-annot-syntax)
+(use-syntax annot-syntax)
 
 (defvar *copy-file-hook* nil
   "Hook function called after for each copying files.")

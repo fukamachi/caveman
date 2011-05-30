@@ -13,6 +13,10 @@
         :clack.middleware.static
         :clack.middleware.clsql)
   (:shadow :stop)
+  (:import-from :cl-syntax
+                :use-syntax)
+  (:import-from :cl-syntax-annot
+                :annot-syntax)
   (:import-from :cl-ppcre
                 :scan-to-strings)
   (:import-from :cl-fad
@@ -23,9 +27,11 @@
                 :request-method
                 :path-info
                 :parameter)
+  (:import-from :caveman.context
+                :*request*)
   (:export :config))
 
-(cl-annot:enable-annot-syntax)
+(use-syntax annot-syntax)
 
 @export
 (defclass <app> (<component>)
@@ -38,10 +44,14 @@
 
 (defmethod call ((this <app>) req)
   "Overriding method. This method will be called for each request."
-  (let* ((method (request-method req))
+  @ignore req
+  (let* ((req *request*)
+         (method (request-method req))
          (path-info (path-info req)))
     (loop for rule in (reverse (routing-rules this))
-          for (meth (re vars) fn) = (cdr rule)
+          for (meth triple fn) = (cdr rule)
+          for re = (first triple)
+          for vars = (third triple)
           if (string= meth method)
             do (multiple-value-bind (matchp res)
                    (scan-to-strings re path-info)
@@ -82,6 +92,13 @@
                 :key #'car))
   (push routing-rule
         (routing-rules this)))
+
+@export
+(defmethod lookup-route ((this <app>) symbol)
+  "Lookup a routing rule with SYMBOL from the application."
+  (loop for rule in (reverse (routing-rules this))
+        if (eq (first rule) symbol) do
+          (return rule)))
 
 @export
 (defmethod start ((this <app>)

@@ -11,16 +11,26 @@
         :clack
         :cl-annot
         :cl-annot.doc)
+  (:import-from :cl-syntax
+                :use-syntax)
+  (:import-from :cl-syntax-annot
+                :annot-syntax)
+  (:import-from :clack.util
+                :getf*
+                :remf*)
+  (:import-from :clack.util.hunchentoot
+                :url-encode)
   (:import-from :clack.app.route
-                :url-rule->regex)
+                :parse-url-rule)
   (:import-from :cl-annot.util
                 :progn-form-last
                 :definition-form-symbol
                 :definition-form-type)
   (:import-from :caveman.app
-                :add-route))
+                :add-route
+                :lookup-route))
 
-(cl-annot:enable-annot-syntax)
+(use-syntax annot-syntax)
 
 @export
 (defannotation url (method url-rule form)
@@ -41,9 +51,9 @@ Example:
     ;; response
     )"
   `(progn
-     ,form
      (add-route ,(intern "*APP*" *package*)
-                (url->routing-rule ,method ,url-rule ,form))))
+                (url->routing-rule ,method ,url-rule ,form))
+     ,form))
 
 @doc "
 Convert action form into a routing rule, a list.
@@ -61,12 +71,62 @@ Example:
     `(list
       ',symbol
       ',method
-      (url-rule->regex ,url-rule)
+      (parse-url-rule ,url-rule)
       #'(lambda (,req)
           (call ,(if (eq type 'defclass)
                      `(make-instance ',symbol)
                      `(symbol-function ',symbol))
                 ,req)))))
+
+(defun add-query-parameters (base-url params)
+  "Add a query parameters string of PARAMS to BASE-URL."
+  (unless params
+    (return-from add-query-parameters base-url))
+  (loop for (name value) on params by #'cddr
+        collect (format nil "~A=~A" 
+                        (url-encode (string name))
+                        (url-encode (string value)))
+        into parts
+        finally
+     (return
+       (let ((params-string (format nil "~{~A~^&~}" parts)))
+         (format nil "~A~A~A"
+                 base-url
+                 (if (find #\? base-url) "&" "?")
+                 params-string)))))
+
+@doc "
+Make an URL for the action with PARAMS.
+
+Example:
+  @url GET \"/animals/:type\"
+  (defun animals (params))
+
+  (link-to 'animals :type \"cat\")
+  ;; => \"/animals/cat\"
+"
+@export
+(defun link-to (symbol &rest params)
+  (let* ((package (symbol-package symbol))
+         (app (symbol-value (find-symbol "*APP*" package)))
+         (route (lookup-route app symbol)))
+    (unless route
+      (error "Route not found for ~A" symbol))
+    (destructuring-bind (control-string vars)
+        (cdr (third route))
+      (let* ((values
+              (loop for var in vars
+                    for value = (getf* params var)
+                    if value
+                      do (remf* params var)
+                      and collect value))
+             (base-url
+              (apply #'format
+                     nil
+                     control-string
+                     values)))
+        ;; Add the extra parameters to the URL as a query parameters
+        (add-query-parameters base-url params)))))
 
 (doc:start)
 

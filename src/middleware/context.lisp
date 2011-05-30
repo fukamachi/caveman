@@ -9,10 +9,15 @@
 (clack.util:namespace caveman.middleware.context
   (:use :cl
         :clack)
+  (:import-from :cl-syntax
+                :use-syntax)
+  (:import-from :cl-syntax-annot
+                :annot-syntax)
   (:import-from :caveman.context
                 :*context*
                 :*request*
                 :*response*
+                :*session*
                 :context
                 :make-context)
   (:import-from :caveman.response
@@ -20,7 +25,7 @@
                 :body
                 :finalize))
 
-(cl-annot:enable-annot-syntax)
+(use-syntax annot-syntax)
 
 @export
 (defclass <caveman-middleware-context> (<middleware>) ()
@@ -30,7 +35,8 @@
   (let* ((*context* (make-context req))
          (*request* (context :request))
          (*response* (context :response))
-         (result (call-next this *request*)))
+         (*session* (context :session))
+         (result (call-next this req)))
     (if (listp result)
         result
         (progn (setf (body *response*) result)

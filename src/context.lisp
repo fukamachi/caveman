@@ -9,12 +9,16 @@
 (clack.util:namespace caveman.context
   (:use :cl
         :cl-annot.doc)
+  (:import-from :cl-syntax
+                :use-syntax)
+  (:import-from :cl-syntax-annot
+                :annot-syntax)
   (:import-from :caveman.request
                 :make-request)
   (:import-from :caveman.response
                 :make-response))
 
-(cl-annot:enable-annot-syntax)
+(use-syntax annot-syntax)
 
 @export
 (defvar *context* nil
@@ -31,12 +35,18 @@ Don't set to this variable directly. This is designed to be bound in lexical let
   "Special variable to store Caveman Response, a instance of `<response>' in Caveman.Response package.
 Don't set to this variable directly. This is designed to be bound in lexical let.")
 
+@export
+(defvar *session* nil
+  "Special variable to store session.
+Don't set to this variable directly. This is designed to be bound in lexical let.")
+
 @doc "Create a new Context."
 @export
 (defun make-context (req)
   (let ((*context* (make-hash-table)))
-    (setf (context :request) (make-request req))
-    (setf (context :response) (make-response 200 ()))
+    (setf (context :request) (make-request req)
+          (context :response) (make-response 200 ())
+          (context :session) (getf req :clack.session))
     *context*))
 
 @doc "
@@ -56,6 +66,14 @@ Example:
 @export
 (defun (setf context) (val key)
   (setf (gethash key *context*) val))
+
+@export
+(defmacro with-context-variables ((&rest vars) &body body)
+  `(symbol-macrolet
+       ,(loop for var in vars
+              for form = `(context ,(intern (string var) :keyword))
+              collect `(,var ,form))
+     ,@body))
 
 (doc:start)
 
