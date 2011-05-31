@@ -123,7 +123,7 @@
 (defmethod load-config ((this <app>) mode)
   (let ((config-file (asdf:system-relative-pathname
                       (type-of this)
-                      (format nil "config/~(~A~).lisp" mode))))
+                      (format nil "src/config/~(~A~).lisp" mode))))
     (when (file-exists-p config-file)
       (eval
        (read-from-string

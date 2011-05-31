@@ -1,4 +1,4 @@
-(clack.util:namespace ${application-name}.action
+(clack.util:namespace ${application-name}.controller
   (:use :cl
         :caveman
         :${application-name}))
