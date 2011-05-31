@@ -9,7 +9,10 @@
                :cl-annot)
   :components ((:module "lib"
                 :components
-                ((:file "${application-name}")))
+                ((:file "${application-name}")
+                 (:module "view"
+                  :components
+                  ((:file "emb")))))
                (:module "src"
                 :depends-on ("lib")
                 :components

@@ -1,4 +1,5 @@
 `(:static-path #p"public/"
+  :template-path #p"tmpl/"
   :server :hunchentoot
   :port 8080
   :database-type :sqlite3

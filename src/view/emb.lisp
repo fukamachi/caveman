@@ -6,7 +6,7 @@
   Caveman is freely distributable under the LLGPL License.
 |#
 
-(clack.util:namespace caveman.emb
+(clack.util:namespace caveman.view.emb
   (:use :cl)
   (:import-from :cl-emb
                 :execute-emb)
