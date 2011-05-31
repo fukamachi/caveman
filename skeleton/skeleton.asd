@@ -7,7 +7,10 @@
   :version "0.1-SNAPSHOT"
   :depends-on (:caveman
                :cl-annot)
-  :components ((:module "src"
+  :components ((:module "lib"
                 :components
-                ((:file "${application-name}")
-                 (:file "controller")))))
+                ((:file "${application-name}")))
+               (:module "src"
+                :depends-on ("lib")
+                :components
+                ((:file "controller")))))
