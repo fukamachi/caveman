@@ -29,8 +29,6 @@
                 :parameter)
   (:import-from :caveman.context
                 :*request*)
-  (:import-from :caveman.config
-                :load-config)
   (:export :config))
 
 (use-syntax annot-syntax)
@@ -105,7 +103,7 @@
 @export
 (defmethod start ((this <app>)
                   &key (mode :dev) port server debug lazy)
-  (let ((config (load-config (type-of this) mode)))
+  (let ((config (load-config this mode)))
     (setf *builder-lazy-p* lazy)
     (setf (config this) config)
     (setf (acceptor this)
@@ -120,6 +118,16 @@
   "Stop a server."
   (clack:stop (acceptor this) :server (getf (config this) :server))
   (setf (acceptor this) nil))
+
+(defmethod load-config ((this <app>) mode)
+  (let ((config-file (asdf:system-relative-pathname
+                      (type-of <app>)
+                      (format nil "src/config/~(~A~).lisp" mode))))
+    (when (file-exists-p config-file)
+      (eval
+       (read-from-string
+        ;; FIXME: remove dependence on skeleton, slurp-file.
+        (caveman.skeleton::slurp-file config-file))))))
 
 (doc:start)
 

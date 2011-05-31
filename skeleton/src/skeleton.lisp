@@ -3,9 +3,7 @@
         :clack)
   (:shadow :stop)
   (:import-from :caveman.app
-                :<app>
-                :config)
-  (:export :config))
+                :<app>))
 
 (cl-annot:enable-annot-syntax)
 
@@ -22,3 +20,7 @@
 @export
 (defun stop ()
   (caveman.app:stop *app*))
+
+@export
+(defun config ()
+  (caveman.app:config *app*))

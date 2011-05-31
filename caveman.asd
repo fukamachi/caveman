@@ -26,10 +26,9 @@
                 :components
                 ((:file "caveman" :depends-on ("route" "context" "view"))
                  ;; FIXME: removed dependence on skeleton, slurp-file.
-                 (:file "app" :depends-on ("request" "context" "middleware/context" "config"))
+                 (:file "app" :depends-on ("request" "context" "middleware/context" "skeleton"))
                  (:file "request")
                  (:file "response")
-                 (:file "config" :depends-on ("skeleton"))
                  (:file "context" :depends-on ("request" "response"))
                  (:file "middleware/context" :depends-on ("context"))
                  (:file "skeleton")
