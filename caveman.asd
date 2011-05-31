@@ -21,10 +21,11 @@
                :cl-syntax
                :cl-syntax-annot
                :clsql
-               :cl-fad)
+               :cl-fad
+               :cl-emb)
   :components ((:module "src"
                 :components
-                ((:file "caveman" :depends-on ("route" "context" "v"))
+                ((:file "caveman" :depends-on ("route" "context" "view"))
                  ;; FIXME: removed dependence on skeleton, slurp-file.
                  (:file "app" :depends-on ("request" "context" "middleware/context" "skeleton"))
                  (:file "request")
@@ -33,12 +34,10 @@
                  (:file "middleware/context" :depends-on ("context"))
                  (:file "skeleton")
                  (:file "route" :depends-on ("app"))
-                 (:module "v"
-                  :pathname "view"
+                 (:module "view"
                   :serial t
                   :components
-                  ((:file "view")
-                   (:file "function")
+                  ((:file "function")
                    (:file "emb"))))))
   :description "Web Application Framework for Common Lisp"
   :long-description

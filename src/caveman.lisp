@@ -22,7 +22,7 @@
                 :*session*
                 :context
                 :with-context-variables)
-  (:import-from :caveman.view
+  (:import-from :caveman.view.function
                 :render)
   (:export :url
            :link-to

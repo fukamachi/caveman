@@ -8,8 +8,6 @@
 
 (clack.util:namespace caveman.emb
   (:use :cl)
-  (:import-from :caveman.view
-                :render)
   (:import-from :cl-emb
                 :execute-emb)
   (:import-from :cl-syntax
@@ -19,6 +17,7 @@
 
 (use-syntax annot-syntax)
 
-(defmethod render ((this pathname) params)
-  "Render method for CL-EMB templates."
-  (emb:execute-emb this :env params))
+@export
+(defun render (file params)
+  "Render function for CL-EMB templates."
+  (emb:execute-emb file :env params))

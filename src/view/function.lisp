@@ -8,8 +8,6 @@
 
 (clack.util:namespace caveman.view.function
   (:use :cl)
-  (:import-from :caveman.view
-                :render)
   (:import-from :cl-syntax
                 :use-syntax)
   (:import-from :cl-syntax-annot
@@ -17,6 +15,7 @@
 
 (use-syntax annot-syntax)
 
-(defmethod render ((this function) params)
-  "Render method for Functions."
-  (apply this params))
+@export
+(defun render (fn params)
+  "Render function for Functions."
+  (apply fn params))
