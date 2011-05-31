@@ -24,7 +24,7 @@
                :cl-fad)
   :components ((:module "src"
                 :components
-                ((:file "caveman" :depends-on ("route" "context"))
+                ((:file "caveman" :depends-on ("route" "context" "v"))
                  ;; FIXME: removed dependence on skeleton, slurp-file.
                  (:file "app" :depends-on ("request" "context" "middleware/context" "skeleton"))
                  (:file "request")
@@ -32,7 +32,13 @@
                  (:file "context" :depends-on ("request" "response"))
                  (:file "middleware/context" :depends-on ("context"))
                  (:file "skeleton")
-                 (:file "route" :depends-on ("app")))))
+                 (:file "route" :depends-on ("app"))
+                 (:module "v"
+                  :pathname "view"
+                  :serial t
+                  :components
+                  ((:file "view")
+                   (:file "function"))))))
   :description "Web Application Framework for Common Lisp"
   :long-description
   #.(with-open-file (stream (merge-pathnames
