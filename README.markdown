@@ -15,7 +15,11 @@ Then a project skeleton is generated to current directory.
 
 Now you can access to http://localhost:8080/ and then Caveman may show you "Hello, Caveman!".
 
-## Action
+## Components
+
+### The Controller
+
+`src/controller.lisp`
 
     ;; Don't forget calling this.
     (cl-annot:enable-annot-syntax)
@@ -29,12 +33,19 @@ Now you can access to http://localhost:8080/ and then Caveman may show you "Hell
     (defun member-profile (params)
       (render #'myapp.view:member-profile (getf params :id)))
 
-## View
+### The Configuration
+
+See `Caveman.Config`.
+
+### The Context
+
+See `Caveman.Context`.
 
 ## Dependency
 
 * [Clack](https://github.com/fukamachi/clack)
 * [cl-annot](https://github.com/arielnetworks/cl-annot)
+* [cl-syntax](https://github.com/m2ym/cl-syntax)
 * CL-PPCRE
 * CL-FAD
 * CLSQL
@@ -42,6 +53,10 @@ Now you can access to http://localhost:8080/ and then Caveman may show you "Hell
 ## Author
 
 * Eitarow Fukamachi (e.arrows@gmail.com)
+
+## Contributors
+
+* Tomohiro Matsuyama (tomo@cx4a.org)
 
 ## Copyright
 
