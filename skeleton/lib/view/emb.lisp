@@ -11,4 +11,5 @@
    (merge-pathnames file
     (merge-pathnames
      (config :template-path)
-     (config :application-root)))))
+     (config :application-root)))
+   params))

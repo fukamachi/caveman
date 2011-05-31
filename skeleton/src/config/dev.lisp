@@ -1,5 +1,7 @@
-`(:static-path #p"public/"
-  :template-path #p"tmpl/"
+`(:static-path #p"src/public/"
+  :template-path #p"src/tmpl/"
+  :application-root ,(asdf:component-pathname
+                      (asdf:find-system :${application-name}))
   :server :hunchentoot
   :port 8080
   :database-type :sqlite3

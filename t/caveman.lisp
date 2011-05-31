@@ -5,13 +5,28 @@
         :drakma
         :myapp))
 
-(plan 7)
+(plan 8)
 
 (cl-annot:enable-annot-syntax)
 
 (is (http-request "http://localhost:8080/")
+    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
+<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
+<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"ja\" xml:lang=\"ja\">
+<head>
+  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />
+  <title>Welcome to Caveman!</title>
+  <link rel=\"stylesheet\" href=\"./public/main.css\" type=\"text/css\" media=\"screen, tv, print\" charset=\"UTF-8\" />
+</head>
+<body>
+<h1>Hello, Caveman!</h1>
+</body>
+</html>
+"
+    "index (GET)")
+(is (http-request "http://localhost:8080/" :method :POST)
     "Hello, Caveman!"
-    "index")
+    "index (POST)")
 
 (is (http-request "http://localhost:8080/not-found-hoge")
     nil
