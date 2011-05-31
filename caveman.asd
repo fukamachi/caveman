@@ -38,7 +38,8 @@
                   :serial t
                   :components
                   ((:file "view")
-                   (:file "function"))))))
+                   (:file "function")
+                   (:file "emb"))))))
   :description "Web Application Framework for Common Lisp"
   :long-description
   #.(with-open-file (stream (merge-pathnames
