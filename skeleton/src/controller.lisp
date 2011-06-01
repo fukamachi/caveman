@@ -1,14 +1,16 @@
 (clack.util:namespace ${application-name}.controller
   (:use :cl
         :caveman
-        :${application-name}))
+        :${application-name})
+  (:import-from :${application-name}.view.emb
+                :render))
 
 (cl-annot:enable-annot-syntax)
 
 @url GET "/"
 (defun index (params)
-  (${application-name}.view.emb:render
-   "index.emb"
+  (render
+   "index.tmpl"
    params))
 
 @url POST "/"
