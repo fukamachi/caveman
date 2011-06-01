@@ -26,12 +26,20 @@ Now you can access to http://localhost:8080/ and then Caveman may show you "Hell
     
     @url GET "/"
     (defun index (params)
-      @ignore params
-      (render #'myapp.view:index))
+      (render
+       "index.tmpl"
+       params))
     
-    @url GET "/member/:id/"
-    (defun member-profile (params)
-      (render #'myapp.view:member-profile (getf params :id)))
+    @url POST "/"
+    (defun index-post (params)
+      @ignore params
+      "Hello, Caveman!")
+
+### The View
+
+Caveman adopt CL-EMB as the default template engine. A package, named `myapp.view.emb`, will be generated in your project which has one function `render`. It is simply execute `emb:execute-emb` and return the result as HTML.
+
+Of course, you can use other template engines, such as "cl-markup".
 
 ### The Configuration
 
