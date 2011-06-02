@@ -69,17 +69,12 @@
           finally (return '(404 nil nil)))))
 
 @export
-(defmethod build ((this <app>) app)
+(defmethod build ((this <app>) &optional (app this))
   (builder
    (<clack-middleware-static>
     :path "/public/"
     :root (merge-pathnames (getf (config this) :static-path)
                            (getf (config this) :application-root)))
-   (<clack-middleware-clsql>
-    :database-type (getf (config this) :database-type)
-    :connection-spec (getf (config this) :database-connection-spec)
-    :connect-args '(:pool t :encoding :utf-8))
-   <clack-middleware-session>
    <caveman-middleware-context>
    app))
 
@@ -101,11 +96,11 @@
           (return rule)))
 
 @export
-(defmethod start ((this <app>) app &key mode port server debug lazy)
+(defmethod start ((this <app>) &key (mode :dev) port server debug lazy)
   (setf *builder-lazy-p* lazy)
   (setf (acceptor this)
         (clackup
-         (build this app)
+         (build this)
          :port (or port (getf (config this) :port))
          :debug debug
          :server (or server (getf (config this) :server)))))
