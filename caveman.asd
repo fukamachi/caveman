@@ -39,7 +39,8 @@
                  (:module "lib"
                   :depends-on ("core")
                   :components
-                  ((:module "view"
+                  ((:file "configloader")
+                   (:module "view"
                     :serial t
                     :components
                     ((:file "function")
