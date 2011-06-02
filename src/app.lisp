@@ -11,7 +11,8 @@
         :clack
         :clack.builder
         :clack.middleware.static
-        :clack.middleware.clsql)
+        :clack.middleware.clsql
+        :clack.middleware.session)
   (:shadow :stop)
   (:import-from :cl-syntax
                 :use-syntax)
@@ -70,7 +71,7 @@
           finally (return '(404 nil nil)))))
 
 @export
-(defmethod build ((this <app>))
+(defmethod build ((this <app>) app)
   (builder
    (<clack-middleware-static>
     :path "/public/"
@@ -80,8 +81,9 @@
     :database-type (getf (config this) :database-type)
     :connection-spec (getf (config this) :database-connection-spec)
     :connect-args '(:pool t :encoding :utf-8))
+   <clack-middleware-session>
    <caveman-middleware-context>
-   this))
+   app))
 
 @export
 (defmethod add-route ((this <app>) routing-rule)
@@ -101,14 +103,13 @@
           (return rule)))
 
 @export
-(defmethod start ((this <app>)
-                  &key (mode :dev) port server debug lazy)
+(defmethod start ((this <app>) app &key mode port server debug lazy)
   (let ((config (load-config this mode)))
     (setf *builder-lazy-p* lazy)
     (setf (config this) config)
     (setf (acceptor this)
           (clackup
-           (build this)
+           (build this app)
            :port (or port (getf config :port))
            :debug debug
            :server (or server (getf config :server))))))

@@ -51,7 +51,7 @@ Example:
     ;; response
     )"
   `(progn
-     (add-route ,(intern "*APP*" *package*)
+     (add-route ,(intern "*CAVEMAN*" *package*)
                 (url->routing-rule ,method ,url-rule ,form))
      ,form))
 
@@ -108,7 +108,7 @@ Example:
 @export
 (defun link-to (symbol &rest params)
   (let* ((package (symbol-package symbol))
-         (app (symbol-value (find-symbol "*APP*" package)))
+         (app (symbol-value (find-symbol "*CAVEMAN*" package)))
          (route (lookup-route app symbol)))
     (unless route
       (error "Route not found for ~A" symbol))

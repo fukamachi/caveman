@@ -11,17 +11,20 @@
 (defclass ${application-name} (<app>) ())
 
 @export
-(defvar *app* (make-instance '${application-name}))
+(defvar *caveman* (make-instance '${application-name}))
+
+@export
+(defvar *app* *caveman*)
 
 @export
 (defun start (&key (mode :dev) debug lazy)
-  (caveman.app:start *app* :mode mode :debug debug :lazy lazy))
+  (caveman.app:start *caveman* *app* :mode mode :debug debug :lazy lazy))
 
 @export
 (defun stop ()
-  (caveman.app:stop *app*))
+  (caveman.app:stop *caveman*))
 
 @export
 (defun config (&optional key)
-  (let ((conf (caveman.app:config *app*)))
+  (let ((conf (caveman.app:config *caveman*)))
     (if key (getf conf key) conf)))
