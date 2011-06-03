@@ -35,7 +35,8 @@
                    (:file "context" :depends-on ("request" "response"))
                    (:file "middleware/context" :depends-on ("context"))
                    (:file "skeleton")
-                   (:file "route" :depends-on ("app"))))
+                   (:file "route" :depends-on ("app"))
+                   (:file "widget")))
                  (:module "lib"
                   :depends-on ("core")
                   :components
