@@ -41,6 +41,9 @@
                   :depends-on ("core")
                   :components
                   ((:file "configloader")
+                   (:module "widget"
+                    :components
+                    ((:file "form")))
                    (:module "view"
                     :serial t
                     :components
