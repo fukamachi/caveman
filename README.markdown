@@ -1,6 +1,6 @@
-# Caveman - Web Application Framework for Common Lisp
+# Caveman - A micro web framework for Common Lisp
 
-Caveman is a Web Application Framework for Common Lisp, based on [Clack](https://github.com/fukamachi/clack).
+Caveman is a micro web framework for Common Lisp, based on [Clack](https://github.com/fukamachi/clack).
 
 Most of Common Lisp WAF adopt Continuations-based development, but Caveman adopts MVC-style architecture.
 
@@ -19,21 +19,30 @@ Now you can access to http://localhost:8080/ and then Caveman may show you "Hell
 
 ### The Controller
 
-`src/controller.lisp`
+Caveman provides an useful annotation "@url" to define a controller (You don't already know the meaning of "annotation"? Check [cl-annot](https://github.com/m2ym/cl-annot) out). It has same rules to [Clack.App.Route](http://clacklisp.org/doc/clack.app.route.html), it is an HTTP method paired with URL-matching pattern.
 
-    ;; Don't forget calling this.
-    (cl-annot:enable-annot-syntax)
-    
     @url GET "/"
-    (defun index (params)
-      (render
-       "index.tmpl"
-       params))
+    (defun index (params) ...)
     
     @url POST "/"
-    (defun index-post (params)
-      @ignore params
-      "Hello, Caveman!")
+    (defun index (params) ...)
+    
+    @url PUT "/"
+    (defun index (params) ...)
+    
+    @url DELETE "/"
+    (defun index (params) ...)
+    
+    @url OPTIONS "/"
+    (defun index (params) ...)
+
+Route pattern may contain "keyword" to put the value into the argument.
+
+    @url GET "/hello/:name"
+    (defun hello (params)
+      (format nil "Hello, ~A" (getf params :name)))
+
+The above controller will be invoked when you access to "/hello/Eitarow" and "/hello/Tomohiro", and then `(getf params :name)` will be "Eitarow" and "Tomohiro".
 
 ### The View
 
@@ -43,11 +52,58 @@ Of course, you can use other template engines, such as "cl-markup".
 
 ### The Configuration
 
-See `Caveman.Config`.
+Caveman uses ".lisp" file as configuration file in `#p"config/"` directory. When a project is just generated, you might be able to find `dev.lisp` in it. It will be used when "start" the project application with "dev" mode.
+
+    ;; config/dev.lisp
+    `(:static-path #p"public/"
+      :template-path #p"src/tmpl/"
+      :application-root ,(asdf:component-pathname
+                          (asdf:find-system :myapp))
+      :server :hunchentoot
+      :port 8080
+      :database-type :sqlite3
+      :database-connection-spec (,(namestring
+                                   (asdf:system-relative-pathname
+                                    :myapp
+                                    "sqlite3.db"))))
+
+Obviously, this is just a plist. You can use following keys in there.
+
+* `:application-root` (Pathname): Pathname of the application root.
+* `:static-path` (Pathname): Relative pathname of a static files directory from the root.
+* `:template-path` (Pathname): Relative pathname of a template directory from the root.
+* `:port` (Integer): Server port.
+* `:server` (Keyword): Clack.Handler's server type. (ex. `:hunchentoot`)
+
+And following stuffs will be used by Clack.Middleware.Clsql  for integrating CLSQL.
+
+* `:database-type` (Keyword)
+* `:database-connection-spec` (List)
+
+You can access to the configuration plist anywhere, by using `myapp:config`.
+
+    (myapp:config)
+    ;;=> (:static-path #p"public/" :template-path ...)
+    (myapp:config :server)
+    ;;=> :hunchentoot
 
 ### The Context
 
 See `Caveman.Context`.
+
+## More practical
+
+This content isn't even implemented yet. Sorry, these are just notes for me in the future.
+
+### Config Loader
+
+### Extend the Context
+
+### Triggers
+
+### Plugins
+
+### Database
 
 ## Dependency
 
@@ -57,6 +113,7 @@ See `Caveman.Context`.
 * CL-PPCRE
 * CL-FAD
 * CLSQL
+* CL-EMB
 
 ## Author
 
