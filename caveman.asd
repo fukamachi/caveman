@@ -22,14 +22,14 @@
                :cl-syntax-annot
                :clsql
                :cl-fad
-               :cl-emb)
+               :cl-emb
+               :cl-project)
   :components ((:module "src"
                 :components
                 ((:module "core"
                   :components
                   ((:file "caveman" :depends-on ("route" "context"))
-                   ;; FIXME: removed dependence on skeleton, slurp-file.
-                   (:file "app" :depends-on ("request" "context" "middleware/context" "skeleton"))
+                   (:file "app" :depends-on ("request" "context" "middleware/context"))
                    (:file "request")
                    (:file "response")
                    (:file "context" :depends-on ("request" "response"))

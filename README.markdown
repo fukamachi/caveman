@@ -6,7 +6,7 @@ Most of Common Lisp WAF adopt Continuations-based development, but Caveman adopt
 
 ## Getting started
 
-    (caveman.skeleton:generate :myapp)
+    (caveman.skeleton:generate #p"lib/myapp")
 
 Then a project skeleton is generated to current directory.
 
