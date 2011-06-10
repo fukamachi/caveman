@@ -20,6 +20,8 @@
                 :annot-syntax)
   (:import-from :cl-ppcre
                 :scan-to-strings)
+  (:import-from :clack.util.route
+                :match)
   (:import-from :caveman.middleware.context
                 :<caveman-middleware-context>)
   (:import-from :caveman.request
@@ -45,27 +47,18 @@
   "Overriding method. This method will be called for each request."
   @ignore req
   (let* ((req *request*)
-         (method (request-method req))
-         (path-info (path-info req)))
-    (loop for rule in (reverse (routing-rules this))
-          for (meth triple fn) = (cdr rule)
-          for re = (first triple)
-          for vars = (third triple)
-          if (string= meth method)
-            do (multiple-value-bind (matchp res)
-                   (scan-to-strings re path-info)
+         (path-info (path-info req))
+         (method (request-method req)))
+    (loop for (nil meth rule fn) in (reverse (routing-rules this))
+          if (string= method meth)
+            do (multiple-value-bind (matchp params)
+                   (match rule path-info)
                  (when matchp
-                   (let ((params
-                          (loop for key in vars
-                                for val in (coerce res 'list)
-                                append (list
-                                         (intern (symbol-name key) :keyword)
-                                         val))))
-                     (setf (slot-value req 'clack.request::query-parameters)
-                           (append
-                            params
-                            (slot-value req 'clack.request::query-parameters)))
-                     (return (call fn (parameter req))))))
+                   (setf (slot-value req 'clack.request::query-parameters)
+                         (append
+                          params
+                          (slot-value req 'clack.request::query-parameters)))
+                   (return (call fn (parameter req)))))
           finally (return '(404 nil nil)))))
 
 @export

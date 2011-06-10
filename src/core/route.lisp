@@ -20,8 +20,9 @@
                 :remf*)
   (:import-from :clack.util.hunchentoot
                 :url-encode)
-  (:import-from :clack.app.route
-                :parse-url-rule)
+  (:import-from :clack.util.route
+                :make-url-rule
+                :link-to)
   (:import-from :cl-annot.util
                 :progn-form-last
                 :definition-form-symbol
@@ -71,7 +72,7 @@ Example:
     `(list
       ',symbol
       ',method
-      (parse-url-rule ,url-rule)
+      (make-url-rule ,url-rule)
       #'(lambda (,req)
           (call ,(if (eq type 'defclass)
                      `(make-instance ',symbol)
@@ -83,7 +84,7 @@ Example:
   (unless params
     (return-from add-query-parameters base-url))
   (loop for (name value) on params by #'cddr
-        collect (format nil "~A=~A" 
+        collect (format nil "~A=~A"
                         (url-encode (string name))
                         (url-encode (string value)))
         into parts
@@ -112,21 +113,9 @@ Example:
          (route (lookup-route app symbol)))
     (unless route
       (error "Route not found for ~A" symbol))
-    (destructuring-bind (control-string vars)
-        (cdr (third route))
-      (let* ((values
-              (loop for var in vars
-                    for value = (getf* params var)
-                    if value
-                      do (remf* params var)
-                      and collect value))
-             (base-url
-              (apply #'format
-                     nil
-                     control-string
-                     values)))
-        ;; Add the extra parameters to the URL as a query parameters
-        (add-query-parameters base-url params)))))
+    (multiple-value-bind (base-url rest-params)
+        (clack.util.route:link-to (third route) params)
+      (add-query-parameters base-url rest-params))))
 
 (doc:start)
 
