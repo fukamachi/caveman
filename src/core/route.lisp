@@ -21,8 +21,7 @@
   (:import-from :clack.util.hunchentoot
                 :url-encode)
   (:import-from :clack.util.route
-                :make-url-rule
-                :link-to)
+                :make-url-rule)
   (:import-from :cl-annot.util
                 :progn-form-last
                 :definition-form-symbol
