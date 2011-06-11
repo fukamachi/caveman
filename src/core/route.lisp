@@ -84,8 +84,8 @@ Example:
     (return-from add-query-parameters base-url))
   (loop for (name value) on params by #'cddr
         collect (format nil "~A=~A"
-                        (url-encode (string name))
-                        (url-encode (string value)))
+                        (url-encode (princ-to-string name))
+                        (url-encode (princ-to-string value)))
         into parts
         finally
      (return
