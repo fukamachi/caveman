@@ -65,7 +65,7 @@
 
 @export
 (defun forward-to (symbol &rest params)
-  (funcall (nth 3 (lookup-route *app* symbol)) params))
+  (funcall (nth 2 (lookup-route *app* symbol)) params))
 
 (doc:start)
 

@@ -59,8 +59,8 @@ Example:
 Convert action form into a routing rule, a list.
 
 Example:
-  ((member-profile GET (\"^\\\\/member\\\\/(.+?)$\" (id)) #'member-profile)
-   (login-form POST (\"^\\\\/login$\" nil) #'login-form))
+  ((member-profile #<url-rule> #'member-profile)
+   (login-form #<url-rule> #'login-form))
 "
 @export
 (defmacro url->routing-rule (method url-rule form)
@@ -70,8 +70,7 @@ Example:
          (req (gensym "REQ")))
     `(list
       ',symbol
-      ',method
-      (make-url-rule ,url-rule)
+      (make-url-rule ,url-rule :method ',method)
       #'(lambda (,req)
           (call ,(if (eq type 'defclass)
                      `(make-instance ',symbol)

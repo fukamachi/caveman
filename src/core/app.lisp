@@ -61,18 +61,17 @@
   (let* ((req *request*)
          (path-info (path-info req))
          (method (request-method req)))
-    (loop for (nil meth rule fn) in (reverse (routing-rules this))
-          if (string= method meth)
-            do (multiple-value-bind (matchp params)
-                   (match rule path-info)
-                 (when matchp
-                   (setf (slot-value req 'clack.request::query-parameters)
-                         (append
-                          params
-                          (slot-value req 'clack.request::query-parameters)))
-                   (let ((res (call fn (parameter req))))
-                     (unless (eq res (next-route))
-                       (return res)))))
+    (loop for (nil rule fn) in (reverse (routing-rules this))
+          do (multiple-value-bind (matchp params)
+                 (match rule method path-info)
+               (when matchp
+                 (setf (slot-value req 'clack.request::query-parameters)
+                       (append
+                        params
+                        (slot-value req 'clack.request::query-parameters)))
+                 (let ((res (call fn (parameter req))))
+                   (unless (eq res (next-route))
+                     (return res)))))
           finally
           (progn (setf (clack.response:status *response*) 404)
                  nil))))
