@@ -1,6 +1,6 @@
 (clack.util:namespace ${application-name}.view.emb
   (:use :cl)
-  (:import-from :${application-name}
+  (:import-from :caveman
                 :config))
 
 (cl-annot:enable-annot-syntax)

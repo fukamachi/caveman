@@ -16,6 +16,7 @@
                 :url
                 :link-to)
   (:import-from :caveman.context
+                :*app*
                 :*context*
                 :*request*
                 :*response*
@@ -32,6 +33,11 @@
            :with-context-variables))
 
 (use-syntax annot-syntax)
+
+@export
+(defun config (&optional key)
+  (let ((conf (caveman.app:config *app*)))
+    (if key (getf conf key) conf)))
 
 (doc:start)
 

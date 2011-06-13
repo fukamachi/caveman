@@ -21,6 +21,11 @@
 (use-syntax annot-syntax)
 
 @export
+(defvar *app* nil
+  "Special variable to store current Caveman application.
+Don't set to this variable directly. This is designed to be bound in lexical let.")
+
+@export
 (defvar *context* nil
   "Special variable to store Caveman Context, a hash table.
 Don't set to this variable directly. This is designed to be bound in lexical let.")

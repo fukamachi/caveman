@@ -33,8 +33,3 @@
 @export
 (defun stop ()
   (caveman.app:stop *app*))
-
-@export
-(defun config (&optional key)
-  (let ((conf (caveman.app:config *app*)))
-    (if key (getf conf key) conf)))

@@ -34,6 +34,7 @@
                 :path-info
                 :parameter)
   (:import-from :caveman.context
+                :*app*
                 :*request*
                 :*response*)
   (:export :debug-mode-p
@@ -122,12 +123,13 @@
                       (getf config :application-root)))
     (setf (debug-mode-p this) debug)
     (setf *builder-lazy-p* lazy)
-    (setf (acceptor this)
-          (clackup
-           (build this)
-           :port (or port (getf config :port))
-           :debug debug
-           :server (or server (getf config :server))))))
+    (let ((app (build this)))
+      (setf (acceptor this)
+            (clackup
+             (lambda (env) (let ((*app* this)) (call app env)))
+             :port (or port (getf config :port))
+             :debug debug
+             :server (or server (getf config :server)))))))
 
 @export
 (defmethod stop ((this <app>))
