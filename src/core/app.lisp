@@ -32,7 +32,8 @@
                 :parameter)
   (:import-from :caveman.context
                 :*request*)
-  (:export :config))
+  (:export :debug-mode-p
+           :config))
 
 (use-syntax annot-syntax)
 
@@ -42,7 +43,11 @@
               :accessor config)
       (routing-rules :initarg routing-rules :initform nil
                      :accessor routing-rules)
-      (acceptor :initform nil :accessor acceptor))
+      (acceptor :initform nil :accessor acceptor)
+      (debug-mode-p :type boolean
+                    :initarg :debug-mode-p
+                    :initform t
+                    :accessor debug-mode-p))
   (:documentation "Base class for Caveman Application. All Caveman Application must inherit this class."))
 
 (defmethod call ((this <app>) req)
@@ -94,6 +99,7 @@
 (defmethod start ((this <app>) &key (mode :dev) port server debug lazy)
   (let ((config (load-config this mode)))
     (setf (config this) config)
+    (setf (debug-mode-p this) debug)
     (setf *builder-lazy-p* lazy)
     (setf (acceptor this)
           (clackup
