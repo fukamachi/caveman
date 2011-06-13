@@ -18,13 +18,14 @@
   (call-next-method
    this
    (builder
+    <clack-middleware-session>
+    <caveman-middleware-context>
     (<clack-middleware-clsql>
      :database-type (getf (caveman.app:config this)
                           :database-type)
      :connection-spec (getf (caveman.app:config this)
                             :database-connection-spec)
      :connect-args '(:pool t :encoding :utf-8))
-    <clack-middleware-session>
     app)))
 
 @export
