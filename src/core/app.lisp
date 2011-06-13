@@ -141,7 +141,7 @@
 @export
 (defmethod stop ((this <app>))
   "Stop a server."
-  (clack:stop (acceptor this) :server (getf (config this) :server))
+  (clack:stop (acceptor this))
   (setf (acceptor this) nil))
 
 @export
