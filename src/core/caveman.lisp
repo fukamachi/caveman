@@ -41,6 +41,20 @@
   (let ((conf (caveman.app:config *app*)))
     (if key (getf conf key) conf)))
 
+@export
+(defun app-path (&rest paths)
+  (labels ((normalize-path (path)
+             (etypecase path
+               (keyword (config path))
+               (pathname path))))
+    (reduce
+     (lambda (path1 path2)
+       (merge-pathnames
+        (normalize-path path2)
+        (normalize-path path1)))
+     paths
+     :initial-value (config :application-root))))
+
 (doc:start)
 
 @doc:NAME "
