@@ -70,7 +70,9 @@
                          (append
                           params
                           (slot-value req 'clack.request::query-parameters)))
-                   (return (call fn (parameter req)))))
+                   (let ((res (call fn (parameter req))))
+                     (unless (eq res (next-route))
+                       (return res)))))
           finally
           (progn (setf (clack.response:status *response*) 404)
                  nil))))
@@ -106,6 +108,12 @@
                 :key #'car))
   (push routing-rule
         (routing-rules this)))
+
+(defconstant +next-route+ '#:next-route)
+
+@export
+(defun next-route ()
+  +next-route+)
 
 @export
 (defmethod lookup-route ((this <app>) symbol)

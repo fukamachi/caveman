@@ -15,6 +15,8 @@
   (:import-from :caveman.route
                 :url
                 :link-to)
+  (:import-from :caveman.app
+                :next-route)
   (:import-from :caveman.context
                 :*app*
                 :*context*
