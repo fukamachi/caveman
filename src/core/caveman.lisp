@@ -12,11 +12,14 @@
                 :use-syntax)
   (:import-from :cl-syntax-annot
                 :annot-syntax)
+  (:import-from :clack.response
+                :redirect)
   (:import-from :caveman.route
                 :url
                 :link-to)
   (:import-from :caveman.app
-                :next-route)
+                :next-route
+                :lookup-route)
   (:import-from :caveman.context
                 :*app*
                 :*context*
@@ -54,6 +57,15 @@
         (normalize-path path1)))
      paths
      :initial-value (config :application-root))))
+
+@export
+(defun redirect-to (url &optional (status 302))
+  (let ((response (context :response)))
+    (redirect response url status)))
+
+@export
+(defun forward-to (symbol &rest params)
+  (funcall (nth 3 (lookup-route *app* symbol)) params))
 
 (doc:start)
 
