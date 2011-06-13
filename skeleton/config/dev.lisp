@@ -1,4 +1,5 @@
 `(:static-path #p"public/"
+  :log-path #p"log/"
   :template-path #p"src/tmpl/"
   :application-root ,(asdf:component-pathname
                       (asdf:find-system :${application-name}))

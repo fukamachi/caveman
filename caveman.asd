@@ -22,7 +22,8 @@
                :cl-syntax-annot
                :clsql
                :cl-fad
-               :cl-emb)
+               :cl-emb
+               :local-time)
   :components ((:module "src"
                 :components
                 ((:module "core"

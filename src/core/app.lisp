@@ -14,6 +14,9 @@
         :clack.middleware.clsql
         :clack.middleware.session)
   (:shadow :stop)
+  (:import-from :local-time
+                :format-timestring
+                :now)
   (:import-from :cl-syntax
                 :use-syntax)
   (:import-from :cl-syntax-annot
@@ -71,11 +74,21 @@
 @export
 (defmethod build ((this <app>) &optional (app this))
   (builder
+   (clack.middleware.logger:<clack-middleware-logger>
+    :logger (make-instance 'clack.logger.file:<clack-logger-file>
+               :output-file
+               (merge-pathnames
+                (local-time:format-timestring nil
+                 (local-time:now)
+                 :format
+                 '("log-" (:year 4) (:month 2) (:day 2)))
+                (merge-pathnames
+                 (getf (config this) :log-path)
+                 (getf (config this) :application-root)))))
    (<clack-middleware-static>
     :path "/public/"
     :root (merge-pathnames (getf (config this) :static-path)
                            (getf (config this) :application-root)))
-   <caveman-middleware-context>
    app))
 
 @export
@@ -99,6 +112,9 @@
 (defmethod start ((this <app>) &key (mode :dev) port server debug lazy)
   (let ((config (load-config this mode)))
     (setf (config this) config)
+    (ensure-directories-exist
+     (merge-pathnames (getf config :log-path)
+                      (getf config :application-root)))
     (setf (debug-mode-p this) debug)
     (setf *builder-lazy-p* lazy)
     (setf (acceptor this)
