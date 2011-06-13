@@ -4,9 +4,7 @@
         :clack.builder)
   (:shadow :stop)
   (:import-from :caveman.app
-                :<app>)
-  (:import-from :caveman.configloader
-                :load-config))
+                :<app>))
 
 (cl-annot:enable-annot-syntax)
 
@@ -31,8 +29,6 @@
 
 @export
 (defun start (&key (mode :dev) debug lazy)
-  (setf (caveman.app:config *app*)
-        (load-config *app* mode))
   (caveman.app:start *app* :mode mode :debug debug :lazy lazy))
 
 @export

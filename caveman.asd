@@ -40,8 +40,7 @@
                  (:module "lib"
                   :depends-on ("core")
                   :components
-                  ((:file "configloader")
-                   (:module "widget"
+                  ((:module "widget"
                     :components
                     ((:file "form")))
                    (:module "view"

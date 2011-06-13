@@ -20,6 +20,8 @@
                 :annot-syntax)
   (:import-from :cl-ppcre
                 :scan-to-strings)
+  (:import-from :cl-fad
+                :file-exists-p)
   (:import-from :clack.util.route
                 :match)
   (:import-from :caveman.middleware.context
@@ -90,19 +92,32 @@
 
 @export
 (defmethod start ((this <app>) &key (mode :dev) port server debug lazy)
-  (setf *builder-lazy-p* lazy)
-  (setf (acceptor this)
-        (clackup
-         (build this)
-         :port (or port (getf (config this) :port))
-         :debug debug
-         :server (or server (getf (config this) :server)))))
+  (let ((config (load-config this mode)))
+    (setf (config this) config)
+    (setf *builder-lazy-p* lazy)
+    (setf (acceptor this)
+          (clackup
+           (build this)
+           :port (or port (getf config :port))
+           :debug debug
+           :server (or server (getf config :server))))))
 
 @export
 (defmethod stop ((this <app>))
   "Stop a server."
   (clack:stop (acceptor this) :server (getf (config this) :server))
   (setf (acceptor this) nil))
+
+@export
+(defmethod load-config ((this <app>) mode)
+  (let ((config-file (asdf:system-relative-pathname
+                      (type-of this)
+                      (format nil "config/~(~A~).lisp" mode))))
+    (when (file-exists-p config-file)
+      (eval
+       (read-from-string
+        ;; FIXME: remove dependence on skeleton, slurp-file.
+        (caveman.skeleton::slurp-file config-file))))))
 
 (doc:start)
 
