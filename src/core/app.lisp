@@ -89,6 +89,8 @@
     :path "/public/"
     :root (merge-pathnames (getf (config this) :static-path)
                            (getf (config this) :application-root)))
+   <clack-middleware-session>
+   <caveman-middleware-context>
    app))
 
 @export

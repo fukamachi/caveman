@@ -18,8 +18,6 @@
   (call-next-method
    this
    (builder
-    <clack-middleware-session>
-    <caveman-middleware-context>
     (<clack-middleware-clsql>
      :database-type (getf (caveman.app:config this)
                           :database-type)
