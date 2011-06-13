@@ -67,6 +67,10 @@
 (defun forward-to (symbol &rest params)
   (funcall (nth 2 (lookup-route *app* symbol)) params))
 
+@export
+(defun current-uri ()
+  (caveman.request:request-uri *request*))
+
 (doc:start)
 
 @doc:NAME "
