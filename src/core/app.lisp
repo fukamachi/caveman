@@ -34,7 +34,8 @@
                 :path-info
                 :parameter)
   (:import-from :caveman.context
-                :*request*)
+                :*request*
+                :*response*)
   (:export :debug-mode-p
            :config))
 
@@ -69,7 +70,9 @@
                           params
                           (slot-value req 'clack.request::query-parameters)))
                    (return (call fn (parameter req)))))
-          finally (return '(404 nil nil)))))
+          finally
+          (progn (setf (clack.response:status *response*) 404)
+                 nil))))
 
 @export
 (defmethod build ((this <app>) &optional (app this))
