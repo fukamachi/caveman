@@ -37,8 +37,10 @@
          (*response* (context :response))
          (*session* (context :session))
          (result (call-next this req)))
-    (setf (body *response*) result)
-    (finalize *response*)))
+    (if (listp result)
+        result
+        (progn (setf (body *response*) result)
+               (finalize *response*)))))
 
 @doc:NAME "
 Caveman.Middleware.Context - Clack Middleware to set context for each request.
