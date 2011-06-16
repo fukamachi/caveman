@@ -59,9 +59,13 @@
      :initial-value (config :application-root))))
 
 @export
-(defun redirect-to (url &optional (status 302))
-  (let ((response (context :response)))
-    (redirect response url status)))
+(defun redirect-to (url-or-action &rest params)
+  (redirect (context :response)
+            (etypecase url-or-action
+              (string url-or-action)
+              (symbol (apply #'link-to
+                             url-or-action
+                             params)))))
 
 @export
 (defun forward-to (symbol &rest params)
