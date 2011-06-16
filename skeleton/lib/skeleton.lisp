@@ -1,7 +1,8 @@
 (clack.util:namespace ${application-name}
   (:use :cl
         :clack
-        :clack.builder)
+        :clack.builder
+        :clack.middleware.clsql)
   (:shadow :stop)
   (:import-from :caveman.app
                 :<app>))

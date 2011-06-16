@@ -11,8 +11,8 @@
         :clack
         :clack.builder
         :clack.middleware.static
-        :clack.middleware.clsql
-        :clack.middleware.session)
+        :clack.middleware.session
+        :caveman.middleware.context)
   (:shadow :stop)
   (:import-from :local-time
                 :format-timestring
@@ -27,8 +27,6 @@
                 :file-exists-p)
   (:import-from :clack.util.route
                 :match)
-  (:import-from :caveman.middleware.context
-                :<caveman-middleware-context>)
   (:import-from :caveman.request
                 :request-method
                 :path-info
