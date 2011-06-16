@@ -16,7 +16,7 @@
                 :redirect)
   (:import-from :caveman.route
                 :url
-                :link-to)
+                :url-for)
   (:import-from :caveman.app
                 :next-route
                 :lookup-route)
@@ -29,7 +29,7 @@
                 :context
                 :with-context-variables)
   (:export :url
-           :link-to
+           :url-for
            :*context*
            :*request*
            :*response*
@@ -63,7 +63,7 @@
   (redirect (context :response)
             (etypecase url-or-action
               (string url-or-action)
-              (symbol (apply #'link-to
+              (symbol (apply #'url-for
                              url-or-action
                              params)))))
 

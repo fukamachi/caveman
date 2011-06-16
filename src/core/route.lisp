@@ -101,18 +101,18 @@ Example:
   @url GET \"/animals/:type\"
   (defun animals (params))
 
-  (link-to 'animals :type \"cat\")
+  (url-for 'animals :type \"cat\")
   ;; => \"/animals/cat\"
 "
 @export
-(defun link-to (symbol &rest params)
+(defun url-for (symbol &rest params)
   (let* ((package (symbol-package symbol))
          (app (symbol-value (find-symbol "*APP*" package)))
          (route (lookup-route app symbol)))
     (unless route
       (error "Route not found for ~A" symbol))
     (multiple-value-bind (base-url rest-params)
-        (clack.util.route:link-to (second route) params)
+        (clack.util.route:url-for (second route) params)
       (add-query-parameters base-url rest-params))))
 
 (doc:start)
