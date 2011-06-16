@@ -108,7 +108,7 @@
   (push routing-rule
         (routing-rules this)))
 
-(defconstant +next-route+ '#:next-route)
+(defparameter +next-route+ '#:next-route)
 
 @export
 (defun next-route ()
