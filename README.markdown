@@ -112,11 +112,11 @@ And following stuffs will be used by Clack.Middleware.Clsql  for integrating CLS
 * `:database-type` (Keyword)
 * `:database-connection-spec` (List)
 
-You can access to the configuration plist anywhere, by using `myapp:config`.
+You can access to the configuration plist anywhere, by using `caveman:config`.
 
-    (myapp:config)
+    (caveman:config)
     ;;=> (:static-path #p"public/" :template-path ...)
-    (myapp:config :server)
+    (caveman:config :server)
     ;;=> :hunchentoot
 
 ### Helper
