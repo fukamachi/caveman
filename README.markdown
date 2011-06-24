@@ -66,6 +66,21 @@ Route patterns may also contain "wildcard" parameters. They are accessible to ru
       (getf params :splat) ;=> ("path/to/file" "xml")
       )
 
+
+### Passing
+
+Normally, routes are matched in the order they are defined. Only the first route matched is invoked and rest of them just will be ignored. But, a route can punt processing to the next matching route using `next-route`.
+
+    @url GET "/guess/:who"
+    (defun guess-me (params)
+      (unless (string= (getf params :who) "Eitarow")
+        (next-route))
+      "You got me!")
+    
+    @url GET "/guess/*"
+    (defun guess-anyone (params)
+      "You missed!")
+
 ### Return Value
 
 You can return following format as the result in actions.
