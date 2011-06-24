@@ -14,7 +14,7 @@
   (cl-fad:delete-directory-and-files *myapp-root*))
 (ensure-directories-exist *project-root*)
 
-(caveman.skeleton:generate :myapp :path *project-root*)
+(caveman.skeleton:generate *myapp-root*)
 
 (diag "loading myapp...")
 (load (merge-pathnames "myapp.asd" *myapp-root*))

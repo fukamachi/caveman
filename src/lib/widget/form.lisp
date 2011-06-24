@@ -53,6 +53,9 @@
   (setf (form-components this)
         (append (list widget) (form-components this))))
 
+@export
+(defmethod validate ((this <caveman-widget-form>) values))
+
 (doc:start)
 
 @doc:NAME "

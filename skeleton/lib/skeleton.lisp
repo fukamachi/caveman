@@ -1,4 +1,4 @@
-(clack.util:namespace ${application-name}
+(clack.util:namespace <% @var name %>
   (:use :cl
         :clack
         :clack.builder
@@ -10,12 +10,12 @@
 (cl-annot:enable-annot-syntax)
 
 @export
-(defclass ${application-name} (<app>) ())
+(defclass <% @var name %> (<app>) ())
 
 @export
-(defvar *app* (make-instance '${application-name}))
+(defvar *app* (make-instance '<% @var name %>))
 
-(defmethod build ((this ${application-name}) app)
+(defmethod build ((this <% @var name %>) app)
   (call-next-method
    this
    (builder

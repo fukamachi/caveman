@@ -1,4 +1,4 @@
-(clack.util:namespace ${application-name}.view.emb
+(clack.util:namespace <% @var name %>.view.emb
   (:use :cl)
   (:import-from :caveman
                 :config))

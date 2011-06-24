@@ -16,7 +16,7 @@ Caveman is available on [Quicklisp](https://www.quicklisp.org/beta/).
 
 ## Getting started
 
-    (caveman.skeleton:generate :myapp)
+    (caveman.skeleton:generate #p"lib/myapp")
 
 Then a project skeleton is generated to current directory.
 

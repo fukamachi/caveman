@@ -1,8 +1,8 @@
-(clack.util:namespace ${application-name}.controller
+(clack.util:namespace <% @var name %>.controller
   (:use :cl
         :caveman
-        :${application-name})
-  (:import-from :${application-name}.view.emb
+        :<% @var name %>)
+  (:import-from :<% @var name %>.view.emb
                 :render))
 
 (cl-annot:enable-annot-syntax)
