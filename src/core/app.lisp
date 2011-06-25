@@ -8,6 +8,7 @@
 
 (clack.util:namespace caveman.app
   (:use :cl
+        :anaphora
         :clack
         :clack.builder
         :clack.middleware.static
@@ -139,8 +140,9 @@
 @export
 (defmethod stop ((this <app>))
   "Stop a server."
-  (clack:stop (acceptor this))
-  (setf (acceptor this) nil))
+  (swhen (acceptor this)
+    (clack:stop it)
+    (setf it nil)))
 
 (defun slurp-file (path)
   "Read a specified file and return the content as a sequence."
