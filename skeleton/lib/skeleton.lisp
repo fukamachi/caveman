@@ -28,7 +28,7 @@
     app)))
 
 @export
-(defun start (&key (mode :dev) debug lazy)
+(defun start (&key (mode :dev) (debug t) lazy)
   (caveman.app:start *app* :mode mode :debug debug :lazy lazy))
 
 @export
