@@ -30,6 +30,7 @@
                 :with-context-variables)
   (:export :url
            :url-for
+           :next-route
            :*context*
            :*request*
            :*response*
