@@ -37,7 +37,7 @@
          (*response* (context :response))
          (*session* (context :session))
          (result (call-next this req)))
-    (if (listp result)
+    (if (and result (listp result))
         result
         (progn (setf (body *response*) result)
                (finalize *response*)))))
