@@ -37,6 +37,7 @@
                 :*request*
                 :*response*)
   (:export :debug-mode-p
+           :app-mode
            :config))
 
 (use-syntax annot-syntax)
@@ -51,7 +52,10 @@
       (debug-mode-p :type boolean
                     :initarg :debug-mode-p
                     :initform t
-                    :accessor debug-mode-p))
+                    :accessor debug-mode-p)
+      (mode :type keyword
+            :initarg :mode
+            :accessor app-mode))
   (:documentation "Base class for Caveman Application. All Caveman Application must inherit this class."))
 
 (defmethod call ((this <app>) req)
@@ -127,6 +131,7 @@
     (ensure-directories-exist
      (merge-pathnames (getf config :log-path)
                       (getf config :application-root)))
+    (setf (app-mode this) mode)
     (setf (debug-mode-p this) debug)
     (setf *builder-lazy-p* lazy)
     (let ((app (build this)))

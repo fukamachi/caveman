@@ -144,6 +144,7 @@ You can access to the configuration plist anywhere, by using `caveman:config`.
 * `redirect-to`
 * `forward-to`
 * `current-uri`
+* `current-mode`
 
 ## More practical
 

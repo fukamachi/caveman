@@ -46,6 +46,10 @@
     (if key (getf conf key) conf)))
 
 @export
+(defun current-mode ()
+  (caveman.app:app-mode *app*))
+
+@export
 (defun app-path (&rest paths)
   (labels ((normalize-path (path)
              (etypecase path
