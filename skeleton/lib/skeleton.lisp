@@ -5,7 +5,8 @@
         :clack.middleware.clsql)
   (:shadow :stop)
   (:import-from :caveman.app
-                :<app>))
+                :<app>
+                :build))
 
 (cl-annot:enable-annot-syntax)
 
@@ -15,7 +16,7 @@
 @export
 (defvar *app* (make-instance '<% @var name %>))
 
-(defmethod build ((this <% @var name %>) app)
+(defmethod build ((this <% @var name %>) &optional (app this))
   (call-next-method
    this
    (builder
