@@ -23,7 +23,7 @@ Then a project skeleton is generated to current directory.
     (ql:quickload :myapp)
     (myapp:start)
 
-Now you can access to http://localhost:8080/ and then Caveman may show you "Hello, Caveman!".
+Now you can access to http://localhost:5000/ and then Caveman may show you "Hello, Caveman!".
 
 ### Route
 
@@ -100,13 +100,13 @@ Of course, you can use other template engines, such as "cl-markup".
 Caveman uses ".lisp" file as configuration file in `#p"config/"` directory. When a project is just generated, you might be able to find `dev.lisp` in it. It will be used when "start" the project application with "dev" mode.
 
     ;; config/dev.lisp
-    `(:static-path #p"public/"
+    `(:static-path #p"static/"
       :log-path #p"log/"
-      :template-path #p"src/tmpl/"
+      :template-path #p"tmpl/"
       :application-root ,(asdf:component-pathname
                           (asdf:find-system :myapp))
       :server :hunchentoot
-      :port 8080
+      :port 5000
       :database-type :sqlite3
       :database-connection-spec (,(namestring
                                    (asdf:system-relative-pathname
