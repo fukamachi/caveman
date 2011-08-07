@@ -12,7 +12,7 @@
 (in-package :caveman-asd)
 
 (defsystem caveman
-  :version "11.07.0"
+  :version "11.08-SNAPSHOT"
   :author "Eitarow Fukamachi"
   :license "LLGPL"
   :depends-on (:clack
