@@ -12,6 +12,8 @@
                 :use-syntax)
   (:import-from :cl-syntax-annot
                 :annot-syntax)
+  (:import-from :clack.request
+                :script-name)
   (:import-from :clack.response
                 :redirect)
   (:import-from :caveman.route
@@ -48,6 +50,13 @@
 @export
 (defun current-mode ()
   (caveman.app:app-mode *app*))
+
+@export
+(defun uri-for (path)
+  (let* ((root (or (script-name *request*) ""))
+         (root (ppcre:regex-replace-all "([^/])$" root "$1/"))
+         (path (ppcre:regex-replace-all "^/" path "")))
+    (concatenate 'string root path)))
 
 @export
 (defun app-path (&rest paths)
