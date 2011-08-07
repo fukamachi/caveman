@@ -1,6 +1,6 @@
 `(:static-path #p"public/"
   :log-path #p"log/"
-  :template-path #p"src/tmpl/"
+  :template-path #p"tmpl/"
   :application-root ,(asdf:component-pathname
                       (asdf:find-system :<% @var name %>))
   :server :hunchentoot
