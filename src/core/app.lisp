@@ -23,6 +23,7 @@
   (:import-from :cl-syntax-annot
                 :annot-syntax)
   (:import-from :cl-ppcre
+                :scan
                 :scan-to-strings)
   (:import-from :cl-fad
                 :file-exists-p)
@@ -94,7 +95,9 @@
                  (getf (config this) :log-path)
                  (getf (config this) :application-root)))))
    (<clack-middleware-static>
-    :path "/public/"
+    :path (lambda (path)
+            (when (ppcre:scan "^(?:/static/|/robot\\.txt$|/favicon.ico$)" path)
+              path))
     :root (merge-pathnames (getf (config this) :static-path)
                            (getf (config this) :application-root)))
    <clack-middleware-session>
