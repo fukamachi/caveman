@@ -1,4 +1,4 @@
-`(:static-path #p"public/"
+`(:static-path #p"static/"
   :log-path #p"log/"
   :template-path #p"tmpl/"
   :application-root ,(asdf:component-pathname
