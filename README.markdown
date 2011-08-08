@@ -1,6 +1,22 @@
 # Caveman - A micro web framework for Common Lisp
 
-Caveman is a micro web framework for Common Lisp, based on [Clack](https://github.com/fukamachi/clack).
+Caveman is a micro web framework for Common Lisp, based on [Clack](http://clacklisp.org).
+
+* [https://github.com/fukamachi/caveman](https://github.com/fukamachi/caveman)
+
+## What's Caveman
+
+Caveman is a micro web framework on [Clack](http://clacklisp.org).
+
+Why we should use "Framework" or something even if we already have Clack. You know Clack provides a very extensible environment for web application. We can build applications from isolated parts of Clack like kneading dough clay.
+
+But Clack isn't a real framework. If you say that Clack is a collection of cells, Caveman is a newborn baby. Caveman provides a minimum set for building web applications. You can decorate the baby as you like, of course, and also you can replace any parts in it.
+
+Caveman heads to provide following points:
+
+* Thin
+* Extensible
+* Easy to understand
 
 ## Usage
 
@@ -154,9 +170,10 @@ You can access to the configuration plist anywhere, by using `caveman:config`.
 
 ## Dependency
 
-* [Clack](https://github.com/fukamachi/clack)
+* [Clack](http://clacklisp.org)
 * [cl-annot](https://github.com/arielnetworks/cl-annot)
-* [cl-syntax](https://github.com/m2ym/cl-syntax)
+* [CL-Syntax](https://github.com/m2ym/cl-syntax)
+* [CL-Project](https://github.com/fukamachi/cl-project)
 * CL-PPCRE
 * CL-FAD
 * CLSQL
