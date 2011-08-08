@@ -19,7 +19,8 @@
 
 (defsystem <% @var name %>
   :version "0.1-SNAPSHOT"
-  :depends-on (:caveman
+  :depends-on (:clack
+               :caveman
                :cl-annot)
   :components ((:module "lib"
                 :components
