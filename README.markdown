@@ -4,6 +4,12 @@ Caveman is a micro web framework for Common Lisp, based on [Clack](http://clackl
 
 * [https://github.com/fukamachi/caveman](https://github.com/fukamachi/caveman)
 
+## Usage
+
+    @url GET "/hi"
+    (defun say-hi (params)
+      "Hello, World!")
+
 ## What's Caveman
 
 Caveman is a micro web framework on [Clack](http://clacklisp.org).
@@ -12,17 +18,11 @@ Why we should use "Framework" or something even if we already have Clack. You kn
 
 But Clack isn't a real framework. If you say that Clack is a collection of cells, Caveman is a newborn baby. Caveman provides a minimum set for building web applications. You can decorate the baby as you like, of course, and also you can replace any parts in it.
 
-Caveman heads to provide following points:
+Caveman has following features:
 
 * Thin
 * Extensible
 * Easy to understand
-
-## Usage
-
-    @url GET "/hi"
-    (defun say-hi (params)
-      "Hello, World!")
 
 ## Installation
 
@@ -32,9 +32,11 @@ Caveman is available on [Quicklisp](https://www.quicklisp.org/beta/).
 
 ## Getting started
 
+First, you have to generate a skeleton project.
+
     (caveman.skeleton:generate #p"lib/myapp/")
 
-Then a project skeleton is generated to current directory.
+Then a project skeleton is generated at `lib/myapp/`. The new project can be loaded and runs on this state.
 
     (ql:quickload :myapp)
     (myapp:start)
