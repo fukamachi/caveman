@@ -47,7 +47,7 @@
 
 @export
 (defun current-mode ()
-  (caveman.project:app-mode *project*))
+  (caveman.project:project-mode *project*))
 
 @export
 (defun app-path (&rest paths)

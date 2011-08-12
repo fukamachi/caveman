@@ -30,7 +30,7 @@
   (:import-from :caveman.context
                 :*project*)
   (:export :debug-mode-p
-           :app-mode
+           :project-mode
            :config))
 
 (use-syntax annot-syntax)
@@ -46,7 +46,7 @@
                     :accessor debug-mode-p)
       (mode :type keyword
             :initarg :mode
-            :accessor app-mode)))
+            :accessor project-mode)))
 
 @export
 (defmethod build ((this <project>) &optional app)
@@ -102,7 +102,7 @@
     (ensure-directories-exist
      (merge-pathnames (getf config :log-path)
                       (getf config :application-root)))
-    (setf (app-mode this) mode)
+    (setf (project-mode this) mode)
     (setf (debug-mode-p this) debug)
     (setf *builder-lazy-p* lazy)
     (initialize this)
