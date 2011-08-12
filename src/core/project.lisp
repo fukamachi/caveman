@@ -80,9 +80,6 @@
       seq)))
 
 @export
-(defmethod initialize ((this <project>)))
-
-@export
 (defmethod load-config ((this <project>) mode)
   (let ((config-file (asdf:system-relative-pathname
                       (intern
@@ -95,7 +92,7 @@
         (slurp-file config-file))))))
 
 @export
-(defmethod start ((this <project>) &key (mode :dev) port server debug lazy)
+(defmethod start :around ((this <project>) &key (mode :dev) debug lazy)
   (let ((*project* this)
         (config (load-config this mode)))
     (setf (config this) config)
@@ -105,14 +102,18 @@
     (setf (project-mode this) mode)
     (setf (debug-mode-p this) debug)
     (setf *builder-lazy-p* lazy)
-    (initialize this)
-    (let ((app (build this)))
-      (setf (acceptor this)
-            (clackup
-             (lambda (env) (let ((*project* this)) (call app env)))
-             :port (or port (getf config :port))
-             :debug debug
-             :server (or server (getf config :server)))))))
+    (call-next-method)))
+
+@export
+(defmethod start ((this <project>) &key port server)
+  (let ((app (build this))
+        (config (config this)))
+    (setf (acceptor this)
+          (clackup
+           (lambda (env) (let ((*project* this)) (call app env)))
+           :port (or port (getf config :port))
+           :debug (debug-mode-p this)
+           :server (or server (getf config :server))))))
 
 @export
 (defmethod stop ((this <project>))

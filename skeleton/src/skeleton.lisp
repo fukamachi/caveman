@@ -8,8 +8,7 @@
                 :config)
   (:import-from :caveman.project
                 :<project>
-                :build
-                :initialize)
+                :build)
   (:import-from :<% @var name %>.app
                 :*app*))
 
@@ -31,8 +30,6 @@
      :connection-spec (config :database-connection-spec)
      :connect-args '(:pool t :encoding :utf-8))
     <% @var name %>.app:*app*)))
-
-(defmethod initialize ((this <<% @var name %>>)))
 
 @export
 (defun start (&key (mode :dev) (debug t) lazy)
