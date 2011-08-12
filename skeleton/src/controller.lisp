@@ -1,7 +1,7 @@
 (clack.util:namespace <% @var name %>.controller
   (:use :cl
         :caveman
-        :<% @var name %>)
+        :<% @var name %>.app)
   (:import-from :<% @var name %>.view.emb
                 :render))
 

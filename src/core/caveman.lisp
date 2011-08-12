@@ -21,7 +21,7 @@
                 :next-route
                 :lookup-route)
   (:import-from :caveman.context
-                :*app*
+                :*project*
                 :*context*
                 :*request*
                 :*response*
@@ -42,12 +42,12 @@
 
 @export
 (defun config (&optional key)
-  (let ((conf (caveman.app:config *app*)))
+  (let ((conf (caveman.project:config *project*)))
     (if key (getf conf key) conf)))
 
 @export
 (defun current-mode ()
-  (caveman.app:app-mode *app*))
+  (caveman.project:app-mode *project*))
 
 @export
 (defun app-path (&rest paths)
@@ -74,7 +74,7 @@
 
 @export
 (defun forward-to (symbol &rest params)
-  (funcall (nth 2 (lookup-route *app* symbol)) params))
+  (funcall (nth 2 (lookup-route *project* symbol)) params))
 
 @export
 (defun current-uri ()

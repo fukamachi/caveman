@@ -30,8 +30,9 @@
                 :components
                 ((:module "core"
                   :components
-                  ((:file "caveman" :depends-on ("route" "context" "app"))
-                   (:file "app" :depends-on ("request" "context" "middleware/context"))
+                  ((:file "caveman" :depends-on ("route" "context" "app" "project"))
+                   (:file "app" :depends-on ("request" "context"))
+                   (:file "project" :depends-on ("context" "middleware/context"))
                    (:file "request")
                    (:file "response")
                    (:file "context" :depends-on ("request" "response"))

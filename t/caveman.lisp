@@ -3,20 +3,20 @@
         :caveman
         :cl-test-more
         :drakma
-        :myapp))
+        :myapp.app))
 
 (plan 8)
 
 (cl-annot:enable-annot-syntax)
 
-(is (http-request "http://localhost:8080/")
+(is (http-request "http://localhost:5000/")
     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
 <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"ja\" xml:lang=\"ja\">
 <head>
   <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />
   <title>Welcome to Caveman!</title>
-  <link rel=\"stylesheet\" href=\"/public/static/css/main.css\" type=\"text/css\" media=\"screen, tv, print\" charset=\"UTF-8\" />
+  <link rel=\"stylesheet\" href=\"/static/css/main.css\" type=\"text/css\" media=\"screen, tv, print\" charset=\"UTF-8\" />
 </head>
 <body>
 <h1>Hello, Caveman!</h1>
@@ -24,11 +24,11 @@
 </html>
 "
     "index (GET)")
-(is (http-request "http://localhost:8080/" :method :POST)
+(is (http-request "http://localhost:5000/" :method :POST)
     "Hello, Caveman!"
     "index (POST)")
 
-(is (http-request "http://localhost:8080/not-found-hoge")
+(is (http-request "http://localhost:5000/not-found-hoge")
     nil
     "not found")
 
@@ -36,7 +36,7 @@
 (defun member-profile (params)
   (format nil "Member Profile: ~d" (getf params :id)))
 
-(is (http-request "http://localhost:8080/member/11/profile")
+(is (http-request "http://localhost:5000/member/11/profile")
     "Member Profile: 11"
     "GET")
 
@@ -46,7 +46,7 @@
           (getf params :name)
           (getf params :pass)))
 
-(is (http-request "http://localhost:8080/login"
+(is (http-request "http://localhost:5000/login"
                   :method :post
                   :parameters '(("NAME" . "fukamachi")
                                 ("PASS" . "lispiscool")))
@@ -58,7 +58,7 @@
   @ignore params
   (princ-to-string (type-of *context*)))
 
-(is (http-request "http://localhost:8080/context")
+(is (http-request "http://localhost:5000/context")
     "HASH-TABLE"
     "context")
 
@@ -67,7 +67,7 @@
   @ignore params
   (princ-to-string (type-of *request*)))
 
-(is (http-request "http://localhost:8080/request")
+(is (http-request "http://localhost:5000/request")
     "<REQUEST>"
     "request")
 
@@ -76,7 +76,7 @@
   @ignore params
   (princ-to-string (type-of *response*)))
 
-(is (http-request "http://localhost:8080/response")
+(is (http-request "http://localhost:5000/response")
     "<RESPONSE>"
     "response")
 

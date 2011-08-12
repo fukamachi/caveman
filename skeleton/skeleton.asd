@@ -24,12 +24,12 @@
                :cl-annot)
   :components ((:module "lib"
                 :components
-                ((:file "<% @var name %>")
-                 (:module "view"
-                  :depends-on ("<% @var name %>")
+                ((:module "view"
                   :components
                   ((:file "emb")))))
                (:module "src"
                 :depends-on ("lib")
                 :components
-                ((:file "controller")))))
+                ((:file "app")
+                 (:file "<% @var name %>" :depends-on ("app"))
+                 (:file "controller" :depends-on ("app"))))))

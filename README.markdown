@@ -28,7 +28,7 @@ Caveman has following features:
 
 Caveman is available on [Quicklisp](https://www.quicklisp.org/beta/).
 
-    (ql:quickload :clack)
+    (ql:quickload :caveman)
 
 ## Getting started
 

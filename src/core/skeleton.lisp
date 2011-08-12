@@ -29,12 +29,7 @@
   (apply #'cl-project:make-project pathname params)
   (let ((cl-project:*skeleton-directory*
          *skeleton-directory*))
-    (apply #'cl-project:make-project pathname params))
-  (delete-file
-   (merge-pathnames
-    (format nil "src/~A.lisp"
-            (car (last (pathname-directory pathname))))
-    pathname)))
+    (apply #'cl-project:make-project pathname params)))
 
 (doc:start)
 
