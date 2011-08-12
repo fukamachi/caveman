@@ -4,9 +4,12 @@
         :clack.builder
         :clack.middleware.clsql)
   (:shadow :stop)
+  (:import-from :caveman
+                :config)
   (:import-from :caveman.project
                 :<project>
-                :build)
+                :build
+                :initialize)
   (:import-from :<% @var name %>.app
                 :*app*))
 
@@ -24,12 +27,12 @@
    this
    (builder
     (<clack-middleware-clsql>
-     :database-type (getf (caveman.project:config this)
-                          :database-type)
-     :connection-spec (getf (caveman.project:config this)
-                            :database-connection-spec)
+     :database-type (config :database-type)
+     :connection-spec (config :database-connection-spec)
      :connect-args '(:pool t :encoding :utf-8))
     <% @var name %>.app:*app*)))
+
+(defmethod initialize ((this <<% @var name %>>)))
 
 @export
 (defun start (&key (mode :dev) (debug t) lazy)

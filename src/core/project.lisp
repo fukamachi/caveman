@@ -80,6 +80,9 @@
       seq)))
 
 @export
+(defmethod initialize ((this <project>)))
+
+@export
 (defmethod load-config ((this <project>) mode)
   (let ((config-file (asdf:system-relative-pathname
                       (intern
@@ -93,7 +96,8 @@
 
 @export
 (defmethod start ((this <project>) &key (mode :dev) port server debug lazy)
-  (let ((config (load-config this mode)))
+  (let ((*project* this)
+        (config (load-config this mode)))
     (setf (config this) config)
     (ensure-directories-exist
      (merge-pathnames (getf config :log-path)
@@ -101,6 +105,7 @@
     (setf (app-mode this) mode)
     (setf (debug-mode-p this) debug)
     (setf *builder-lazy-p* lazy)
+    (initialize this)
     (let ((app (build this)))
       (setf (acceptor this)
             (clackup
