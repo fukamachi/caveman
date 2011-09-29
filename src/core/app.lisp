@@ -11,8 +11,6 @@
         :clack)
   (:import-from :cl-syntax
                 :use-syntax)
-  (:import-from :cl-syntax-annot
-                :annot-syntax)
   (:import-from :clack.util.route
                 :match)
   (:import-from :caveman.context
@@ -23,7 +21,7 @@
                 :path-info
                 :parameter))
 
-(use-syntax annot-syntax)
+(use-syntax :annot)
 
 @export
 (defclass <app> (<component>)

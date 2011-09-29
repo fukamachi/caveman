@@ -13,8 +13,6 @@
         :cl-annot.doc)
   (:import-from :cl-syntax
                 :use-syntax)
-  (:import-from :cl-syntax-annot
-                :annot-syntax)
   (:import-from :clack.util
                 :getf*
                 :remf*)
@@ -30,7 +28,7 @@
                 :add-route
                 :lookup-route))
 
-(use-syntax annot-syntax)
+(use-syntax :annot)
 
 @export
 (defannotation url (method url-rule form)

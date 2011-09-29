@@ -9,9 +9,11 @@
 (clack.util:namespace caveman.widget
   (:use :cl
         :clack)
+  (:import-from :cl-syntax
+                :use-syntax)
   (:export :view))
 
-(cl-annot:enable-annot-syntax)
+(use-syntax :annot)
 
 @export
 (defclass <caveman-widget> ()

@@ -11,11 +11,9 @@
   (:import-from :cl-project
                 :make-project)
   (:import-from :cl-syntax
-                :use-syntax)
-  (:import-from :cl-syntax-annot
-                :annot-syntax))
+                :use-syntax))
 
-(use-syntax annot-syntax)
+(use-syntax :annot)
 
 (defvar *skeleton-directory*
     #.(asdf:system-relative-pathname

@@ -11,11 +11,9 @@
   (:import-from :cl-emb
                 :execute-emb)
   (:import-from :cl-syntax
-                :use-syntax)
-  (:import-from :cl-syntax-annot
-                :annot-syntax))
+                :use-syntax))
 
-(use-syntax annot-syntax)
+(use-syntax :annot)
 
 @export
 (defun render (file params)

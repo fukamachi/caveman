@@ -9,11 +9,9 @@
 (clack.util:namespace caveman.view.function
   (:use :cl)
   (:import-from :cl-syntax
-                :use-syntax)
-  (:import-from :cl-syntax-annot
-                :annot-syntax))
+                :use-syntax))
 
-(use-syntax annot-syntax)
+(use-syntax :annot)
 
 @export
 (defun render (fn params)

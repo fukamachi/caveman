@@ -13,8 +13,6 @@
            :make-request)
   (:import-from :cl-syntax
                 :use-syntax)
-  (:import-from :cl-syntax-annot
-                :annot-syntax)
   (:export :request-method
            :script-name
            :path-info
@@ -41,7 +39,7 @@
            :query-parameter
            :parameter))
 
-(use-syntax annot-syntax)
+(use-syntax :annot)
 
 @export
 (defclass <request> (clack.request:<request>) ()

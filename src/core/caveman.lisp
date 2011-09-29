@@ -10,8 +10,6 @@
   (:use :cl)
   (:import-from :cl-syntax
                 :use-syntax)
-  (:import-from :cl-syntax-annot
-                :annot-syntax)
   (:import-from :clack.response
                 :redirect)
   (:import-from :caveman.route
@@ -38,7 +36,7 @@
            :context
            :with-context-variables))
 
-(use-syntax annot-syntax)
+(use-syntax :annot)
 
 @export
 (defun config (&optional key)

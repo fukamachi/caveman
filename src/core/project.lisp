@@ -20,8 +20,6 @@
                 :now)
   (:import-from :cl-syntax
                 :use-syntax)
-  (:import-from :cl-syntax-annot
-                :annot-syntax)
   (:import-from :cl-ppcre
                 :scan
                 :scan-to-strings)
@@ -33,7 +31,7 @@
            :project-mode
            :config))
 
-(use-syntax annot-syntax)
+(use-syntax :annot)
 
 @export
 (defclass <project> (<component>)

@@ -11,14 +11,12 @@
         :cl-annot.doc)
   (:import-from :cl-syntax
                 :use-syntax)
-  (:import-from :cl-syntax-annot
-                :annot-syntax)
   (:import-from :caveman.request
                 :make-request)
   (:import-from :caveman.response
                 :make-response))
 
-(use-syntax annot-syntax)
+(use-syntax :annot)
 
 @export
 (defvar *project* nil
