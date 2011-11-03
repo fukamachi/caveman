@@ -20,6 +20,7 @@
 (defsystem <% @var name %>
   :version "0.1-SNAPSHOT"
   :depends-on (:clack
+               :clack-middleware-clsql
                :caveman
                :cl-annot)
   :components ((:module "lib"

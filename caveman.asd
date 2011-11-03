@@ -16,7 +16,6 @@
   :author "Eitarow Fukamachi"
   :license "LLGPL"
   :depends-on (:clack
-               :clack-middleware-clsql
                :anaphora
                :cl-annot
                :cl-ppcre
