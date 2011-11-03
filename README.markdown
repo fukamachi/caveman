@@ -164,6 +164,10 @@ You can access to the configuration plist anywhere, by using `caveman:config`.
 * `current-uri`
 * `current-mode`
 
+### Session
+
+`caveman:*session*` is a hash table which represents a session for the current user.
+
 ## More practical
 
 ### Extend the Context
