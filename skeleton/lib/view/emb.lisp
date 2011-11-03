@@ -8,7 +8,7 @@
   (:import-from :caveman
                 :config))
 
-(cl-annot:enable-annot-syntax)
+(cl-syntax:use-syntax :annot)
 
 @export
 (defun render (file params)

@@ -8,7 +8,7 @@
   (:import-from :caveman.app
                 :<app>))
 
-(cl-annot:enable-annot-syntax)
+(cl-syntax:use-syntax :annot)
 
 @export
 (defclass <<% @var name %>-app> (<app>) ())

@@ -9,11 +9,9 @@
 (clack.util:namespace caveman.skeleton
   (:use :cl)
   (:import-from :cl-project
-                :make-project)
-  (:import-from :cl-syntax
-                :use-syntax))
+                :make-project))
 
-(use-syntax :annot)
+(cl-syntax:use-syntax :annot)
 
 (defvar *skeleton-directory*
     #.(asdf:system-relative-pathname

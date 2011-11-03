@@ -8,8 +8,6 @@
 
 (clack.util:namespace caveman
   (:use :cl)
-  (:import-from :cl-syntax
-                :use-syntax)
   (:import-from :clack.response
                 :redirect)
   (:import-from :caveman.route
@@ -36,7 +34,7 @@
            :context
            :with-context-variables))
 
-(use-syntax :annot)
+(cl-syntax:use-syntax :annot)
 
 @export
 (defun config (&optional key)

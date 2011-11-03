@@ -24,7 +24,8 @@
   :depends-on (:clack
                :clack-middleware-clsql
                :caveman
-               :cl-annot)
+               :cl-syntax
+               :cl-syntax-annot)
   :components ((:module "lib"
                 :components
                 ((:module "view"

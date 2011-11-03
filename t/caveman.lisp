@@ -7,7 +7,7 @@
 
 (plan 8)
 
-(cl-annot:enable-annot-syntax)
+(cl-syntax:use-syntax :annot)
 
 (is (http-request "http://localhost:5000/")
     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>

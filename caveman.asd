@@ -17,7 +17,6 @@
   :license "LLGPL"
   :depends-on (:clack
                :anaphora
-               :cl-annot
                :cl-ppcre
                :cl-syntax
                :cl-syntax-annot

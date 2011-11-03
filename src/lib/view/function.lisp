@@ -7,11 +7,9 @@
 |#
 
 (clack.util:namespace caveman.view.function
-  (:use :cl)
-  (:import-from :cl-syntax
-                :use-syntax))
+  (:use :cl))
 
-(use-syntax :annot)
+(cl-syntax:use-syntax :annot)
 
 @export
 (defun render (fn params)

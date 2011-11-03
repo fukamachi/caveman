@@ -18,8 +18,6 @@
   (:import-from :local-time
                 :format-timestring
                 :now)
-  (:import-from :cl-syntax
-                :use-syntax)
   (:import-from :cl-ppcre
                 :scan
                 :scan-to-strings)
@@ -31,7 +29,7 @@
            :project-mode
            :config))
 
-(use-syntax :annot)
+(cl-syntax:use-syntax :annot)
 
 @export
 (defclass <project> (<component>)

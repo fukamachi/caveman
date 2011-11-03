@@ -17,7 +17,7 @@
   (:import-from :<% @var name %>.app
                 :*app*))
 
-(cl-annot:enable-annot-syntax)
+(cl-syntax:use-syntax :annot)
 
 @export
 (defclass <<% @var name %>> (<project>) ())

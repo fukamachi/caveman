@@ -9,11 +9,9 @@
 (clack.util:namespace caveman.view.emb
   (:use :cl)
   (:import-from :cl-emb
-                :execute-emb)
-  (:import-from :cl-syntax
-                :use-syntax))
+                :execute-emb))
 
-(use-syntax :annot)
+(cl-syntax:use-syntax :annot)
 
 @export
 (defun render (file params)

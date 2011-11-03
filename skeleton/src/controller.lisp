@@ -10,7 +10,7 @@
   (:import-from :<% @var name %>.view.emb
                 :render))
 
-(cl-annot:enable-annot-syntax)
+(cl-syntax:use-syntax :annot)
 
 @url GET "/"
 (defun index (params)

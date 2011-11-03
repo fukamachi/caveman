@@ -9,8 +9,6 @@
 (clack.util:namespace caveman.app
   (:use :cl
         :clack)
-  (:import-from :cl-syntax
-                :use-syntax)
   (:import-from :clack.util.route
                 :match)
   (:import-from :caveman.context
@@ -21,7 +19,7 @@
                 :path-info
                 :parameter))
 
-(use-syntax :annot)
+(cl-syntax:use-syntax :annot)
 
 @export
 (defclass <app> (<component>)

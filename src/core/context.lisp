@@ -9,14 +9,12 @@
 (clack.util:namespace caveman.context
   (:use :cl
         :cl-annot.doc)
-  (:import-from :cl-syntax
-                :use-syntax)
   (:import-from :caveman.request
                 :make-request)
   (:import-from :caveman.response
                 :make-response))
 
-(use-syntax :annot)
+(cl-syntax:use-syntax :annot)
 
 @export
 (defvar *project* nil

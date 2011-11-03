@@ -9,11 +9,9 @@
 (clack.util:namespace caveman.widget.form
   (:use :cl
         :anaphora
-        :caveman.widget)
-  (:import-from :cl-syntax
-                :use-syntax))
+        :caveman.widget))
 
-(use-syntax :annot)
+(cl-syntax:use-syntax :annot)
 
 @export
 (defclass <caveman-widget-form> (<caveman-widget>)
