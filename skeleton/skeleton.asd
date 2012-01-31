@@ -22,7 +22,6 @@
   :author "<% @var author %>"
   :license "<% @var license %>"
   :depends-on (:clack
-               :clack-middleware-clsql
                :caveman
                :cl-syntax
                :cl-syntax-annot)

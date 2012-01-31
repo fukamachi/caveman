@@ -5,9 +5,7 @@
 
 (clack.util:namespace <% @var name %>
   (:use :cl
-        :clack
-        :clack.builder
-        :clack.middleware.clsql)
+        :clack)
   (:shadow :stop)
   (:import-from :caveman
                 :config)
@@ -29,12 +27,7 @@
   @ignore app
   (call-next-method
    this
-   (builder
-    (<clack-middleware-clsql>
-     :database-type (config :database-type)
-     :connection-spec (config :database-connection-spec)
-     :connect-args '(:pool t :encoding :utf-8))
-    <% @var name %>.app:*app*)))
+   <% @var name %>.app:*app*))
 
 @export
 (defun start (&key (mode :dev) (debug t) lazy)
