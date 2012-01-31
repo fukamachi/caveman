@@ -20,7 +20,6 @@
                :cl-ppcre
                :cl-syntax
                :cl-syntax-annot
-               :clsql
                :cl-fad
                :cl-emb
                :local-time
