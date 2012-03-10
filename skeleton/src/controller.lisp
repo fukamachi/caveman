@@ -14,9 +14,8 @@
 
 @url GET "/"
 (defun index (params)
-  (render
-   "index.html"
-   params))
+  @ignore params
+  (render "index.html"))
 
 @url POST "/"
 (defun index-post (params)

@@ -11,7 +11,7 @@
 (cl-syntax:use-syntax :annot)
 
 @export
-(defun render (file params)
+(defun render (file &optional params)
   (caveman.view.emb:render
    (merge-pathnames file
     (merge-pathnames
