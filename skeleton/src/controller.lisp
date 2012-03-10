@@ -15,7 +15,7 @@
 @url GET "/"
 (defun index (params)
   (render
-   "index.tmpl"
+   "index.html"
    params))
 
 @url POST "/"
