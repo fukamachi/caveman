@@ -19,13 +19,13 @@
        #p"skeleton/"))
 
 @export
-(defun generate (pathname &rest params)
+(defun generate (path &rest params &key name description author email license depends-on &allow-other-keys)
   "Generate a skeleton of Caveman Application.
 `name' must be a symbol or a keyword. `path' must be a pathname. If `path' isn't specified, generate a skeleton to current directory."
-  (apply #'cl-project:make-project pathname params)
+  (apply #'cl-project:make-project path params)
   (let ((cl-project:*skeleton-directory*
          *skeleton-directory*))
-    (apply #'cl-project:make-project pathname params)))
+    (apply #'cl-project:make-project path params)))
 
 (doc:start)
 
