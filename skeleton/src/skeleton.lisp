@@ -11,7 +11,11 @@
                 :config)
   (:import-from :caveman.project
                 :<project>
-                :build)
+                :build
+                :project-mode
+                :debug-mode-p)
+  (:import-from :clack.builder
+                :*builder-lazy-p*)
   (:import-from :<% @var name %>.app
                 :*app*))
 
@@ -39,3 +43,12 @@
   (when *project*
     (caveman.project:stop *project*)
     (setf *project* nil)))
+
+@export
+(defun restart (&key (mode :dev) (debug t) lazy)
+  (when *project*
+    (setf mode (project-mode *project*))
+    (setf debug (debug-mode-p *project*))
+    (setf lazy *builder-lazy-p*))
+  (stop)
+  (start :mode mode :debug debug :lazy lazy))
