@@ -60,7 +60,7 @@
                  (getf (config this) :application-root)))))
    (<clack-middleware-static>
     :path (lambda (path)
-            (when (ppcre:scan "^(?:/static/|/robot\\.txt$|/favicon.ico$)" path)
+            (when (ppcre:scan "^(?:/static/|/images/|/css/|/js/|/robot\\.txt$|/favicon.ico$)" path)
               (ppcre:regex-replace "^/static" path "")))
     :root (merge-pathnames (getf (config this) :static-path)
                            (getf (config this) :application-root)))
