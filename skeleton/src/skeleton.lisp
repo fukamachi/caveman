@@ -34,9 +34,9 @@
    <% @var name %>.app:*app*))
 
 @export
-(defun start (&key (mode :dev) (debug t) lazy)
+(defun start (&key (mode :dev) (debug t) lazy port)
   (setf *project* (make-instance '<<% @var name %>>))
-  (caveman.project:start *project* :mode mode :debug debug :lazy lazy))
+  (caveman.project:start *project* :mode mode :debug debug :lazy lazy :port port))
 
 @export
 (defun stop ()
