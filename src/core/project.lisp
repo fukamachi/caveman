@@ -88,7 +88,7 @@
         (slurp-file config-file))))))
 
 @export
-(defmethod start :around ((this <project>) &key (mode :dev) debug lazy)
+(defmethod start :around ((this <project>) &key (mode :dev) debug lazy &allow-other-keys)
   (let ((*project* this)
         (config (load-config this mode)))
     (setf (config this) config)
@@ -101,7 +101,7 @@
     (call-next-method)))
 
 @export
-(defmethod start ((this <project>) &key port server)
+(defmethod start ((this <project>) &key port server &allow-other-keys)
   (let ((app (build this))
         (config (config this)))
     (setf (acceptor this)
