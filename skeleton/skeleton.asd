@@ -24,7 +24,8 @@
   :depends-on (:clack
                :caveman
                :cl-syntax
-               :cl-syntax-annot)
+               :cl-syntax-annot
+               :cl-ppcre)
   :components ((:module "lib"
                 :components
                 ((:module "view"

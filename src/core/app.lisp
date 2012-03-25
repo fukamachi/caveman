@@ -8,7 +8,8 @@
 
 (clack.util:namespace caveman.app
   (:use :cl
-        :clack)
+        :clack
+        :caveman.middleware.context)
   (:import-from :clack.util.route
                 :match)
   (:import-from :caveman.context
@@ -27,9 +28,16 @@
                      :accessor routing-rules))
   (:documentation "Base class for Caveman Application. All Caveman Application must inherit this class."))
 
-(defmethod call ((this <app>) req)
+(defmethod call :around ((this <app>) env)
+  (call (wrap
+         (make-instance '<caveman-middleware-context>)
+         (lambda (env)
+           (call-next-method this env)))
+        env))
+
+(defmethod call ((this <app>) env)
   "Overriding method. This method will be called for each request."
-  @ignore req
+  @ignore env
   (let* ((req *request*)
          (path-info (path-info req))
          (method (request-method req)))

@@ -10,17 +10,8 @@
   (:use :cl
         :anaphora
         :clack
-        :clack.builder
-        :clack.middleware.static
-        :clack.middleware.session
-        :caveman.middleware.context)
+        :clack.builder)
   (:shadow :stop)
-  (:import-from :local-time
-                :format-timestring
-                :now)
-  (:import-from :cl-ppcre
-                :scan
-                :scan-to-strings)
   (:import-from :cl-fad
                 :file-exists-p)
   (:import-from :caveman.context
@@ -45,28 +36,8 @@
             :accessor project-mode)))
 
 @export
-(defmethod build ((this <project>) &optional app)
-  (builder
-   (clack.middleware.logger:<clack-middleware-logger>
-    :logger (make-instance 'clack.logger.file:<clack-logger-file>
-               :output-file
-               (merge-pathnames
-                (local-time:format-timestring nil
-                 (local-time:now)
-                 :format
-                 '("log-" (:year 4) (:month 2) (:day 2)))
-                (merge-pathnames
-                 (getf (config this) :log-path)
-                 (getf (config this) :application-root)))))
-   (<clack-middleware-static>
-    :path (lambda (path)
-            (when (ppcre:scan "^(?:/static/|/images/|/css/|/js/|/robot\\.txt$|/favicon.ico$)" path)
-              (ppcre:regex-replace "^/static" path "")))
-    :root (merge-pathnames (getf (config this) :static-path)
-                           (getf (config this) :application-root)))
-   <clack-middleware-session>
-   <caveman-middleware-context>
-   app))
+(defgeneric build (project)
+  (:documentation "Build up an application for this project and return it. This method must be implemented in subclasses."))
 
 (defun slurp-file (path)
   "Read a specified file and return the content as a sequence."

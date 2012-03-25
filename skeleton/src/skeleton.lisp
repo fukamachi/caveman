@@ -5,7 +5,10 @@
 
 (clack.util:namespace <% @var name %>
   (:use :cl
-        :clack)
+        :clack
+        :clack.builder
+        :clack.middleware.static
+        :clack.middleware.session)
   (:shadow :stop)
   (:import-from :caveman
                 :config)
@@ -17,7 +20,10 @@
   (:import-from :clack.builder
                 :*builder-lazy-p*)
   (:import-from :<% @var name %>.app
-                :*app*))
+                :*app*)
+  (:import-from :cl-ppcre
+                :scan
+                :regex-replace))
 
 (cl-syntax:use-syntax :annot)
 
@@ -27,10 +33,15 @@
 @export
 (defvar *project* nil)
 
-(defmethod build ((this <<% @var name %>>) &optional app)
-  @ignore app
-  (call-next-method
-   this
+(defmethod build ((this <<% @var name %>>))
+  (builder
+   (<clack-middleware-static>
+    :path (lambda (path)
+            (when (ppcre:scan "^(?:/static/|/images/|/css/|/js/|/robot\\.txt$|/favicon.ico$)" path)
+              (ppcre:regex-replace "^/static" path "")))
+    :root (merge-pathnames (config :static-path)
+                           (config :application-root)))
+   <clack-middleware-session>
    <% @var name %>.app:*app*))
 
 @export
