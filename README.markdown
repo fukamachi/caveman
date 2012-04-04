@@ -6,9 +6,11 @@ Caveman is a micro web framework for Common Lisp, based on [Clack](http://clackl
 
 ## Usage
 
-    @url GET "/hi"
-    (defun say-hi (params)
-      "Hello, World!")
+```common-lisp
+@url GET "/hi"
+(defun say-hi (params)
+  "Hello, World!")
+```
 
 ## What's Caveman
 
@@ -28,18 +30,24 @@ Caveman has following features:
 
 Caveman is available on [Quicklisp](https://www.quicklisp.org/beta/).
 
-    (ql:quickload :caveman)
+```common-lisp
+(ql:quickload :caveman)
+```
 
 ## Getting started
 
 First, you have to generate a skeleton project.
 
-    (caveman.skeleton:generate #p"lib/myapp/")
+```common-lisp
+(caveman.skeleton:generate #p"lib/myapp/")
+```
 
 Then a project skeleton is generated at `lib/myapp/`. The new project can be loaded and runs on this state.
 
-    (ql:quickload :myapp)
-    (myapp:start)
+```common-lisp
+(ql:quickload :myapp)
+(myapp:start)
+```
 
 Now you can access to http://localhost:5000/ and then Caveman may show you "Hello, Caveman!".
 
@@ -47,57 +55,64 @@ Now you can access to http://localhost:5000/ and then Caveman may show you "Hell
 
 Caveman provides an useful annotation "@url" to define a controller (You don't already know the meaning of "annotation"? Check [cl-annot](https://github.com/m2ym/cl-annot) out). It has same rules to [Clack.App.Route](http://clacklisp.org/doc/clack.app.route.html), it is an HTTP method paired with URL-matching pattern.
 
-    @url GET "/"
-    (defun index (params) ...)
-    
-    @url POST "/"
-    (defun index (params) ...)
-    
-    @url PUT "/"
-    (defun index (params) ...)
-    
-    @url DELETE "/"
-    (defun index (params) ...)
-    
-    @url OPTIONS "/"
-    (defun index (params) ...)
+```common-lisp
+@url GET "/"
+(defun index (params) ...)
+
+@url POST "/"
+(defun index (params) ...)
+
+@url PUT "/"
+(defun index (params) ...)
+
+@url DELETE "/"
+(defun index (params) ...)
+
+@url OPTIONS "/"
+(defun index (params) ...)
+```
 
 Route pattern may contain "keyword" to put the value into the argument.
 
-    @url GET "/hello/:name"
-    (defun hello (params)
-      (format nil "Hello, ~A" (getf params :name)))
+```common-lisp
+@url GET "/hello/:name"
+(defun hello (params)
+  (format nil "Hello, ~A" (getf params :name)))
+```
 
 The above controller will be invoked when you access to "/hello/Eitarow" and "/hello/Tomohiro", and then `(getf params :name)` will be "Eitarow" and "Tomohiro".
 
 Route patterns may also contain "wildcard" parameters. They are accessible to run `(getf params :splat)`.
 
-    @url GET "/say/*/to/*"
-    (defun say (params)
-      ; matches /say/hello/to/world
-      (getf params :splat) ;=> ("hello" "world")
-      )
-    
-    @url GET "/download/*.*"
-    (defun download ()
-      ; matches /download/path/to/file.xml
-      (getf params :splat) ;=> ("path/to/file" "xml")
-      )
+```common-lisp
+@url GET "/say/*/to/*"
+(defun say (params)
+  ; matches /say/hello/to/world
+  (getf params :splat) ;=> ("hello" "world")
+  )
 
+@url GET "/download/*.*"
+(defun download ()
+  ; matches /download/path/to/file.xml
+  (getf params :splat) ;=> ("path/to/file" "xml")
+  )
+```
 
 ### Passing
 
 Normally, routes are matched in the order they are defined. Only the first route matched is invoked and rest of them just will be ignored. But, a route can punt processing to the next matching route using `next-route`.
 
-    @url GET "/guess/:who"
-    (defun guess-me (params)
-      (unless (string= (getf params :who) "Eitarow")
-        (next-route))
-      "You got me!")
-    
-    @url GET "/guess/*"
-    (defun guess-anyone (params)
-      "You missed!")
+```common-lisp
+@url GET "/guess/:who"
+(defun guess-me (params)
+  (unless (string= (getf params :who) "Eitarow")
+    (next-route))
+  "You got me!")
+
+@url GET "/guess/*"
+(defun guess-anyone (params)
+  "You missed!")
+```
 
 ### Return Value
 
@@ -117,19 +132,21 @@ Of course, you can use other template engines, such as "cl-markup".
 
 Caveman uses ".lisp" file as configuration file in `#p"config/"` directory. When a project is just generated, you might be able to find `dev.lisp` in it. It will be used when "start" the project application with "dev" mode.
 
-    ;; config/dev.lisp
-    `(:static-path #p"static/"
-      :log-path #p"log/"
-      :template-path #p"templates/"
-      :application-root ,(asdf:component-pathname
-                          (asdf:find-system :myapp))
-      :server :hunchentoot
-      :port 5000
-      :database-type :sqlite3
-      :database-connection-spec (,(namestring
-                                   (asdf:system-relative-pathname
-                                    :myapp
-                                    "sqlite3.db"))))
+```common-lisp
+;; config/dev.lisp
+`(:static-path #p"static/"
+  :log-path #p"log/"
+  :template-path #p"templates/"
+  :application-root ,(asdf:component-pathname
+                      (asdf:find-system :myapp))
+  :server :hunchentoot
+  :port 5000
+  :database-type :sqlite3
+  :database-connection-spec (,(namestring
+                               (asdf:system-relative-pathname
+                                :myapp
+                                "sqlite3.db"))))
+```
 
 Obviously, this is just a plist. You can use following keys in there.
 
@@ -147,10 +164,12 @@ And following stuffs will be used by Clack.Middleware.Clsql  for integrating CLS
 
 You can access to the configuration plist anywhere, by using `caveman:config`.
 
-    (caveman:config)
-    ;;=> (:static-path #p"public/" :template-path ...)
-    (caveman:config :server)
-    ;;=> :hunchentoot
+```common-lisp
+(caveman:config)
+;;=> (:static-path #p"public/" :template-path ...)
+(caveman:config :server)
+;;=> :hunchentoot
+```
 
 ### Helper
 
@@ -173,18 +192,6 @@ You can access to the configuration plist anywhere, by using `caveman:config`.
 ### Extend the Context
 
 ### Database
-
-## Dependency
-
-* [Clack](http://clacklisp.org)
-* [cl-annot](https://github.com/arielnetworks/cl-annot)
-* [CL-Syntax](https://github.com/m2ym/cl-syntax)
-* [CL-Project](https://github.com/fukamachi/cl-project)
-* CL-PPCRE
-* CL-FAD
-* CLSQL
-* CL-EMB
-* LOCAL-TIME
 
 ## Author
 
