@@ -5,7 +5,7 @@
         :drakma
         :myapp.app))
 
-(plan 8)
+(plan 9)
 
 (cl-syntax:use-syntax :annot)
 
@@ -79,5 +79,19 @@
 (is (http-request "http://localhost:5000/response")
     "<RESPONSE>"
     "response")
+
+@url GET "/next"
+(defun next-test (params)
+  @ignore params
+  (format nil "(~A)" (next-route)))
+
+@url GET "/next"
+(defun next-test2 (params)
+  @ignore params
+  "This is the next route.")
+
+(is (http-request "http://localhost:5000/next")
+    "(This is the next route.)"
+    "next-route")
 
 (finalize)
