@@ -21,4 +21,5 @@
                 :components
                 ((:file "init")
                  (:file "caveman")
-                 (:file "final")))))
+                 (:file "final"))))
+  :perform (load-op :after (op c) (asdf:clear-system c)))
