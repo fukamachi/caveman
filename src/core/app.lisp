@@ -93,7 +93,9 @@
 
 (defun member-rule (path-info method rules)
   (member-if #'(lambda (rule)
-                 (match rule method path-info))
+                 (or (match rule method path-info)
+                     (and (eq method :HEAD)
+                          (match rule :GET path-info))))
              rules
              :key #'cadr))
 

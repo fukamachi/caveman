@@ -5,7 +5,7 @@
         :drakma
         :myapp.app))
 
-(plan 9)
+(plan 10)
 
 (cl-syntax:use-syntax :annot)
 
@@ -27,6 +27,12 @@
 (is (http-request "http://localhost:5000/" :method :POST)
     "Hello, Caveman!"
     "index (POST)")
+
+(multiple-value-bind (body status)
+    (http-request "http://localhost:5000/"
+                  :method :HEAD)
+  @ignore body
+  (is status 200 "index (HEAD)"))
 
 (is (http-request "http://localhost:5000/not-found-hoge")
     nil
