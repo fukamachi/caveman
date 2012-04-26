@@ -5,7 +5,7 @@
         :drakma
         :myapp.app))
 
-(plan 8)
+(plan 10)
 
 (cl-syntax:use-syntax :annot)
 
@@ -27,6 +27,12 @@
 (is (http-request "http://localhost:5000/" :method :POST)
     "Hello, Caveman!"
     "index (POST)")
+
+(multiple-value-bind (body status)
+    (http-request "http://localhost:5000/"
+                  :method :HEAD)
+  @ignore body
+  (is status 200 "index (HEAD)"))
 
 (is (http-request "http://localhost:5000/not-found-hoge")
     nil
@@ -79,5 +85,19 @@
 (is (http-request "http://localhost:5000/response")
     "<RESPONSE>"
     "response")
+
+@url GET "/next"
+(defun next-test (params)
+  @ignore params
+  (format nil "(~A)" (next-route)))
+
+@url GET "/next"
+(defun next-test2 (params)
+  @ignore params
+  "This is the next route.")
+
+(is (http-request "http://localhost:5000/next")
+    "(This is the next route.)"
+    "next-route")
 
 (finalize)

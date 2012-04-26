@@ -9,7 +9,8 @@
 (clack.util:namespace caveman.app
   (:use :cl
         :clack
-        :caveman.middleware.context)
+        :caveman.middleware.context
+        :anaphora)
   (:import-from :clack.util.route
                 :match)
   (:import-from :caveman.context
@@ -21,6 +22,9 @@
                 :parameter))
 
 (cl-syntax:use-syntax :annot)
+
+(defparameter *next-route-function* nil
+  "A function called when `next-route' is invoked. This will be overwritten in `dispatch-with-rules'.")
 
 @export
 (defclass <app> (<component>)
@@ -38,23 +42,27 @@
 (defmethod call ((this <app>) env)
   "Overriding method. This method will be called for each request."
   @ignore env
+  (dispatch-with-rules (reverse (routing-rules this))))
+
+(defun dispatch-with-rules (rules)
   (let* ((req *request*)
          (path-info (path-info req))
          (method (request-method req)))
-    (loop for (nil rule fn) in (reverse (routing-rules this))
-          do (multiple-value-bind (matchp params)
-                 (match rule method path-info)
-               (when matchp
-                 (setf (slot-value req 'clack.request::query-parameters)
-                       (append
-                        params
-                        (slot-value req 'clack.request::query-parameters)))
-                 (let ((res (call fn (parameter req))))
-                   (unless (eq res (next-route))
-                     (return res)))))
-          finally
-          (progn (setf (clack.response:status *response*) 404)
-                 nil))))
+    (acond
+     ((and rules
+           (member-rule path-info method rules))
+      (destructuring-bind ((_ url-rule fn) &rest other-rules) it
+        @ignore _
+        (let ((*next-route-function* #'(lambda () (dispatch-with-rules other-rules))))
+          (multiple-value-bind (_ params)
+              (match url-rule method path-info)
+            @ignore _
+            (setf (slot-value req 'clack.request::query-parameters)
+                  (append
+                   params
+                   (slot-value req 'clack.request::query-parameters)))
+            (funcall fn (parameter req))))))
+     (t (not-found)))))
 
 @export
 (defmethod add-route ((this <app>) routing-rule)
@@ -66,11 +74,15 @@
   (push routing-rule
         (routing-rules this)))
 
-(defparameter +next-route+ '#:next-route)
-
 @export
 (defun next-route ()
-  +next-route+)
+  (funcall *next-route-function*))
+
+@export
+(defun not-found ()
+  "An action when no routing rules are found."
+  (setf (clack.response:status *response*) 404)
+  nil)
 
 @export
 (defmethod lookup-route ((this <app>) symbol)
@@ -78,6 +90,14 @@
   (loop for rule in (reverse (routing-rules this))
         if (eq (first rule) symbol) do
           (return rule)))
+
+(defun member-rule (path-info method rules)
+  (member-if #'(lambda (rule)
+                 (or (match rule method path-info)
+                     (and (eq method :HEAD)
+                          (match rule :GET path-info))))
+             rules
+             :key #'cadr))
 
 (doc:start)
 
