@@ -15,7 +15,8 @@
   :depends-on (:caveman
                :cl-test-more
                :cl-fad
-               :drakma)
+               :drakma
+               :usocket)
   :components ((:module "t"
                 :serial t
                 :components

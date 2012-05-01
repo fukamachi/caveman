@@ -3,13 +3,15 @@
         :caveman
         :cl-test-more
         :drakma
-        :myapp.app))
+        :myapp.app)
+  (:import-from :caveman-test.init
+                :*myapp-url*))
 
 (plan 10)
 
 (cl-syntax:use-syntax :annot)
 
-(is (http-request "http://localhost:5000/")
+(is (http-request *myapp-url*)
     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
 <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"ja\" xml:lang=\"ja\">
@@ -24,17 +26,17 @@
 </html>
 "
     "index (GET)")
-(is (http-request "http://localhost:5000/" :method :POST)
+(is (http-request *myapp-url* :method :POST)
     "Hello, Caveman!"
     "index (POST)")
 
 (multiple-value-bind (body status)
-    (http-request "http://localhost:5000/"
+    (http-request *myapp-url*
                   :method :HEAD)
   @ignore body
   (is status 200 "index (HEAD)"))
 
-(is (http-request "http://localhost:5000/not-found-hoge")
+(is (http-request (format nil "~A/not-found-hoge" *myapp-url*))
     nil
     "not found")
 
@@ -42,7 +44,7 @@
 (defun member-profile (params)
   (format nil "Member Profile: ~d" (getf params :id)))
 
-(is (http-request "http://localhost:5000/member/11/profile")
+(is (http-request (format nil "~A/member/11/profile" *myapp-url*))
     "Member Profile: 11"
     "GET")
 
@@ -52,7 +54,7 @@
           (getf params :name)
           (getf params :pass)))
 
-(is (http-request "http://localhost:5000/login"
+(is (http-request (format nil "~A/login" *myapp-url*)
                   :method :post
                   :parameters '(("NAME" . "fukamachi")
                                 ("PASS" . "lispiscool")))
@@ -64,7 +66,7 @@
   @ignore params
   (princ-to-string (type-of *context*)))
 
-(is (http-request "http://localhost:5000/context")
+(is (http-request (format nil "~A/context" *myapp-url*))
     "HASH-TABLE"
     "context")
 
@@ -73,7 +75,7 @@
   @ignore params
   (princ-to-string (type-of *request*)))
 
-(is (http-request "http://localhost:5000/request")
+(is (http-request (format nil "~A/request" *myapp-url*))
     "<REQUEST>"
     "request")
 
@@ -82,7 +84,7 @@
   @ignore params
   (princ-to-string (type-of *response*)))
 
-(is (http-request "http://localhost:5000/response")
+(is (http-request (format nil "~A/response" *myapp-url*))
     "<RESPONSE>"
     "response")
 
@@ -96,7 +98,7 @@
   @ignore params
   "This is the next route.")
 
-(is (http-request "http://localhost:5000/next")
+(is (http-request (format nil "~A/next" *myapp-url*))
     "(This is the next route.)"
     "next-route")
 
