@@ -62,4 +62,4 @@
                                :fill-pointer t)))
           (setf (fill-pointer seq) (read-sequence seq stream))
           seq)))
-  :in-order-to ((test-op (load-op caveman-test))))
+  :in-order-to ((test-op (test-op caveman-test))))

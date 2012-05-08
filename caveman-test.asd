@@ -11,6 +11,14 @@
   (:use :cl :asdf))
 (in-package :caveman-test-asd)
 
+(defclass asdf::test-file (asdf:cl-source-file) ())
+(defmethod asdf:perform ((op asdf:load-op) (c asdf::test-file))
+  ;; do nothing
+  )
+(defmethod asdf:perform ((op asdf:test-op) (c asdf::test-file))
+  (asdf:perform (make-instance 'asdf:load-op)
+   (change-class c 'asdf:cl-source-file)))
+
 (defsystem caveman-test
   :depends-on (:caveman
                :cl-test-more
@@ -20,7 +28,6 @@
   :components ((:module "t"
                 :serial t
                 :components
-                ((:file "init")
-                 (:file "caveman")
-                 (:file "final"))))
-  :perform (load-op :after (op c) (asdf:clear-system c)))
+                ((:test-file "init")
+                 (:test-file "caveman")
+                 (:test-file "final")))))
