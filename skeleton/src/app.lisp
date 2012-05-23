@@ -3,10 +3,12 @@
 <% @if author %>  Copyright (c) <%= (local-time:timestamp-year (local-time:now)) %> <% @var author %><% @if email %> (<% @var email %>)<% @endif %>
 <% @endif %>|#
 
-(clack.util:namespace <% @var name %>.app
+(in-package :cl-user)
+(defpackage <% @var name %>.app
   (:use :cl)
   (:import-from :caveman.app
                 :<app>))
+(in-package :<% @var name %>.app)
 
 (cl-syntax:use-syntax :annot)
 

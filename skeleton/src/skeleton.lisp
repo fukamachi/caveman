@@ -3,7 +3,8 @@
 <% @if author %>  Copyright (c) <%= (local-time:timestamp-year (local-time:now)) %> <% @var author %><% @if email %> (<% @var email %>)<% @endif %>
 <% @endif %>|#
 
-(clack.util:namespace <% @var name %>
+(in-package :cl-user)
+(defpackage <% @var name %>
   (:use :cl
         :clack
         :clack.builder
@@ -24,6 +25,7 @@
   (:import-from :cl-ppcre
                 :scan
                 :regex-replace))
+(in-package :<% @var name %>)
 
 (cl-syntax:use-syntax :annot)
 
