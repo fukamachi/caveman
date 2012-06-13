@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Caveman.Route</title>
+  <link rel="stylesheet" href="./main.css" type="text/css" media="screen, tv, print" charset="UTF-8" />
+</head>
+<body>
+
+<div class="container">
+
+<h1>Caveman.Route</h1><h2>SYNOPSIS</h2><pre><code>;; for Function  
+@url GET "/login"  
+(defun login (req)  
+  ;; response  
+  )  
+ 
+;; for Clack Component  
+@url GET "/member/:id"  
+(defclass &lt;member-profile&gt; (&lt;component&gt;) ())  
+(defmethod call ((this &lt;member-profile&gt;) req)  
+  ;; response  
+  ) </code></pre><h2>DESCRIPTION</h2><p>Caveman.Route provides an useful annotation `url' to define a Caveman Action. </p><h2>AUTHOR</h2><ul><li>Eitarow Fukamachi (e.arrows@gmail.com)</li></ul>
+
+<h2>EXTERNAL SYMBOLS</h2>
+
+<div class="symbol">
+  <ul>
+
+<li>
+  Macro: <strong>url</strong>
+[method url-rule form]
+
+<pre>
+  Useful annotation to define actions.
+
+Example:
+  ;; for Function
+  @url GET "/login"
+  (defun login (req)
+    ;; response
+    )
+
+  ;; for Clack Component
+  @url GET "/member/:id"
+  (defclass <member-profile> (<component>) ())
+  (defmethod call ((this <member-profile>) req)
+    ;; response
+    )
+</pre>
+
+
+</li>
+
+<li>
+  Macro: <strong>url->routing-rule</strong>
+[method url-rule form]
+
+<pre>
+  
+Convert action form into a routing rule, a list.
+
+Example:
+  ((member-profile #<url-rule> #'member-profile)
+   (login-form #<url-rule> #'login-form))
+
+</pre>
+
+
+</li>
+
+<li>
+  Function: <strong>url-for</strong>
+[symbol &amp;rest params]
+
+<pre>
+  
+Make an URL for the action with PARAMS.
+
+Example:
+  @url GET "/animals/:type"
+  (defun animals (params))
+
+  (url-for 'animals :type "cat")
+  ;; => "/animals/cat"
+
+</pre>
+
+
+</li>
+
+  </ul>
+</div>
+
+</div>
+
+</body>
+</html>

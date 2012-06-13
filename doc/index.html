@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Caveman - Web Application Framework for Common Lisp</title>
+  <link rel="stylesheet" href="./main.css" type="text/css" media="screen, tv, print" charset="UTF-8" />
+</head>
+<body>
+<div class="container">
+<div class="sidebar">
+  <h2>Table of Contents</h2>
+  <ul><li><a href="#Usage">Usage</a></li><li><a href="#What%27s+Caveman">What's Caveman</a></li><li><a href="#Installation">Installation</a></li><li><a href="#Getting+started">Getting started</a></li><ul><li><a href="#Route">Route</a></li><li><a href="#Passing">Passing</a></li><li><a href="#Return+Value">Return Value</a></li><li><a href="#View">View</a></li><li><a href="#Configuration">Configuration</a></li><li><a href="#Helper">Helper</a></li><li><a href="#Session">Session</a></li></ul><li><a href="#More+practical">More practical</a></li><ul><li><a href="#Extend+the+Context">Extend the Context</a></li><li><a href="#Database">Database</a></li></ul><li><a href="#Dependency">Dependency</a></li><li><a href="#Author">Author</a></li><li><a href="#Contributors">Contributors</a></li><li><a href="#Copyright">Copyright</a></li><li><a href="#License">License</a></li>
+</div>
+<div class="content">
+  
+    <a name="Caveman+-+A+micro+web+framework+for+Common+Lisp"></a>
+    <h1>Caveman - A micro web framework for Common Lisp</h1>
+    <p>Caveman is a micro web framework for Common Lisp, based on <a href="http://clacklisp.org">Clack</a>. </p><ul><li><a href="https://github.com/fukamachi/caveman">https://github.com/fukamachi/caveman</a></li></ul>
+  
+    <a name="Usage"></a>
+    <h2>Usage</h2>
+    <pre><code>@url GET &quot;/hi&quot;  
+(defun say-hi (params)  
+  &quot;Hello, World!&quot;) </code></pre>
+  
+    <a name="What%27s+Caveman"></a>
+    <h2>What's Caveman</h2>
+    <p>Caveman is a micro web framework on <a href="http://clacklisp.org">Clack</a>. </p><p>Why we should use &quot;Framework&quot; or something even if we already have Clack. You know Clack provides a very extensible environment for web application. We can build applications from isolated parts of Clack like kneading dough clay. </p><p>But Clack isn&#039;t a real framework. If you say that Clack is a collection of cells, Caveman is a newborn baby. Caveman provides a minimum set for building web applications. You can decorate the baby as you like, of course, and also you can replace any parts in it. </p><p>Caveman has following features: </p><ul><li>Thin</li><li>Extensible</li><li>Easy to understand</li></ul>
+  
+    <a name="Installation"></a>
+    <h2>Installation</h2>
+    <p>Caveman is available on <a href="https://www.quicklisp.org/beta/">Quicklisp</a>. </p><pre><code>(ql:quickload :caveman) </code></pre>
+  
+    <a name="Getting+started"></a>
+    <h2>Getting started</h2>
+    <p>First, you have to generate a skeleton project. </p><pre><code>(caveman.skeleton:generate #p&quot;lib/myapp/&quot;) </code></pre><p>Then a project skeleton is generated at <code>lib/myapp/</code>. The new project can be loaded and runs on this state. </p><pre><code>(ql:quickload :myapp)  
+(myapp:start) </code></pre><p>Now you can access to http://localhost:5000/ and then Caveman may show you &quot;Hello, Caveman!&quot;. </p>
+  
+    <a name="Route"></a>
+    <h3>Route</h3>
+    <p>Caveman provides an useful annotation &quot;@url&quot; to define a controller (You don&#039;t already know the meaning of &quot;annotation&quot;? Check <a href="https://github.com/m2ym/cl-annot">cl-annot</a> out). It has same rules to <a href="http://clacklisp.org/doc/clack.app.route.html">Clack.App.Route</a>, it is an HTTP method paired with URL-matching pattern. </p><pre><code>@url GET &quot;/&quot;  
+(defun index (params) ...)  
+ 
+@url POST &quot;/&quot;  
+(defun index (params) ...)  
+ 
+@url PUT &quot;/&quot;  
+(defun index (params) ...)  
+ 
+@url DELETE &quot;/&quot;  
+(defun index (params) ...)  
+ 
+@url OPTIONS &quot;/&quot;  
+(defun index (params) ...) </code></pre><p>Route pattern may contain &quot;keyword&quot; to put the value into the argument. </p><pre><code>@url GET &quot;/hello/:name&quot;  
+(defun hello (params)  
+  (format nil &quot;Hello, ~A&quot; (getf params :name))) </code></pre><p>The above controller will be invoked when you access to &quot;/hello/Eitarow&quot; and &quot;/hello/Tomohiro&quot;, and then <code>(getf params :name)</code> will be &quot;Eitarow&quot; and &quot;Tomohiro&quot;. </p><p>Route patterns may also contain &quot;wildcard&quot; parameters. They are accessible to run <code>(getf params :splat)</code>. </p><pre><code>@url GET &quot;/say/*/to/*&quot;  
+(defun say (params)  
+  ; matches /say/hello/to/world  
+  (getf params :splat) ;=&gt; (&quot;hello&quot; &quot;world&quot;)  
+  )  
+ 
+@url GET &quot;/download/*.*&quot;  
+(defun download ()  
+  ; matches /download/path/to/file.xml  
+  (getf params :splat) ;=&gt; (&quot;path/to/file&quot; &quot;xml&quot;)  
+  )  
+</code></pre>
+  
+    <a name="Passing"></a>
+    <h3>Passing</h3>
+    <p>Normally, routes are matched in the order they are defined. Only the first route matched is invoked and rest of them just will be ignored. But, a route can punt processing to the next matching route using <code>next-route</code>. </p><pre><code>@url GET &quot;/guess/:who&quot;  
+(defun guess-me (params)  
+  (unless (string= (getf params :who) &quot;Eitarow&quot;)  
+    (next-route))  
+  &quot;You got me!&quot;)  
+ 
+@url GET &quot;/guess/*&quot;  
+(defun guess-anyone (params)  
+  &quot;You missed!&quot;) </code></pre>
+  
+    <a name="Return+Value"></a>
+    <h3>Return Value</h3>
+    <p>You can return following format as the result in actions. </p><ul><li>String</li><li>Pathname</li><li>Clack&#039;s response list (containing Status, Headers and Body)</li></ul>
+  
+    <a name="View"></a>
+    <h3>View</h3>
+    <p>Caveman adopt CL-EMB as the default template engine. A package, named <code>myapp.view.emb</code>, will be generated in your project which has one function <code>render</code>. It is simply execute <code>emb:execute-emb</code> and return the result as a string. </p><p>Of course, you can use other template engines, such as &quot;cl-markup&quot;. </p>
+  
+    <a name="Configuration"></a>
+    <h3>Configuration</h3>
+    <p>Caveman uses &quot;.lisp&quot; file as configuration file in <code>#p&quot;config/&quot;</code> directory. When a project is just generated, you might be able to find <code>dev.lisp</code> in it. It will be used when &quot;start&quot; the project application with &quot;dev&quot; mode. </p><pre><code>;; config/dev.lisp  
+`(:static-path #p&quot;static/&quot;  
+  :log-path #p&quot;log/&quot;  
+  :template-path #p&quot;tmpl/&quot;  
+  :application-root ,(asdf:component-pathname  
+                      (asdf:find-system :myapp))  
+  :server :hunchentoot  
+  :port 5000  
+  :database-type :sqlite3  
+  :database-connection-spec (,(namestring  
+                               (asdf:system-relative-pathname  
+                                :myapp  
+                                &quot;sqlite3.db&quot;)))) </code></pre><p>Obviously, this is just a plist. You can use following keys in there. </p><ul><li><code>:application-root</code> (Pathname): Pathname of the application root.</li><li><code>:static-path</code> (Pathname): Relative pathname of a static files directory from the root.</li><li><code>:log-path</code> (Pathname): Relative pathname of a log files directory from the root.</li><li><code>:template-path</code> (Pathname): Relative pathname of a template directory from the root.</li><li><code>:port</code> (Integer): Server port.</li><li><code>:server</code> (Keyword): Clack.Handler&#039;s server type. (ex. <code>:hunchentoot</code>)</li></ul><p>And following stuffs will be used by Clack.Middleware.Clsql  for integrating CLSQL. </p><ul><li><code>:database-type</code> (Keyword)</li><li><code>:database-connection-spec</code> (List)</li></ul><p>You can access to the configuration plist anywhere, by using <code>caveman:config</code>. </p><pre><code>(caveman:config)  
+;;=&gt; (:static-path #p&quot;public/&quot; :template-path ...)  
+(caveman:config :server)  
+;;=&gt; :hunchentoot </code></pre>
+  
+    <a name="Helper"></a>
+    <h3>Helper</h3>
+    <ul><li><code>context</code></li><li><code>with-context-variables</code></li><li><code>config</code></li><li><code>app-path</code></li><li><code>url-for</code></li><li><code>redirect-to</code></li><li><code>forward-to</code></li><li><code>current-uri</code></li><li><code>current-mode</code></li></ul>
+  
+    <a name="Session"></a>
+    <h3>Session</h3>
+    <p><code>caveman:*session*</code> is a hash table which represents a session for the current user. </p>
+  
+    <a name="More+practical"></a>
+    <h2>More practical</h2>
+    
+  
+    <a name="Extend+the+Context"></a>
+    <h3>Extend the Context</h3>
+    
+  
+    <a name="Database"></a>
+    <h3>Database</h3>
+    
+  
+    <a name="Dependency"></a>
+    <h2>Dependency</h2>
+    <ul><li><a href="http://clacklisp.org">Clack</a></li><li><a href="https://github.com/arielnetworks/cl-annot">cl-annot</a></li><li><a href="https://github.com/m2ym/cl-syntax">CL-Syntax</a></li><li><a href="https://github.com/fukamachi/cl-project">CL-Project</a></li><li>CL-PPCRE</li><li>CL-FAD</li><li>CLSQL</li><li>CL-EMB</li><li>LOCAL-TIME</li></ul>
+  
+    <a name="Author"></a>
+    <h2>Author</h2>
+    <ul><li>Eitarow Fukamachi (e.arrows@gmail.com)</li></ul>
+  
+    <a name="Contributors"></a>
+    <h2>Contributors</h2>
+    <ul><li>Tomohiro Matsuyama (tomo@cx4a.org)</li></ul>
+  
+    <a name="Copyright"></a>
+    <h2>Copyright</h2>
+    <p>Copyright (c) 2011 Eitarow Fukamachi </p>
+  
+    <a name="License"></a>
+    <h2>License</h2>
+    <p>Licensed under the LLGPL License. </p>
+  
+
+<h2>API Reference</h2>
+
+<ul>
+
+  <li>
+    <a href="caveman.html">
+      Caveman
+    </a>
+  </li>
+
+  <li>
+    <a href="caveman.app.html">
+      Caveman.App
+    </a>
+  </li>
+
+  <li>
+    <a href="caveman.project.html">
+      Caveman.Project
+    </a>
+  </li>
+
+  <li>
+    <a href="caveman.request.html">
+      Caveman.Request
+    </a>
+  </li>
+
+  <li>
+    <a href="caveman.response.html">
+      Caveman.Response
+    </a>
+  </li>
+
+  <li>
+    <a href="caveman.context.html">
+      Caveman.Context
+    </a>
+  </li>
+
+  <li>
+    <a href="caveman.middleware.context.html">
+      Caveman.Middleware.Context
+    </a>
+  </li>
+
+  <li>
+    <a href="caveman.skeleton.html">
+      Caveman.Skeleton
+    </a>
+  </li>
+
+  <li>
+    <a href="caveman.route.html">
+      Caveman.Route
+    </a>
+  </li>
+
+  <li>
+    <a href="caveman.widget.html">
+      Caveman.Widget
+    </a>
+  </li>
+
+  <li>
+    <a href="caveman.widget.form.html">
+      Caveman.Widget.Form
+    </a>
+  </li>
+
+  <li>
+    <a href="caveman.view.function.html">
+      Caveman.View.Function
+    </a>
+  </li>
+
+  <li>
+    <a href="caveman.view.emb.html">
+      Caveman.View.Emb
+    </a>
+  </li>
+
+</ul>
+</div>
+</div>
+</body>
+</html>

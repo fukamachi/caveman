@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Caveman.Widget.Form</title>
+  <link rel="stylesheet" href="./main.css" type="text/css" media="screen, tv, print" charset="UTF-8" />
+</head>
+<body>
+
+<div class="container">
+
+<h1>Caveman.Widget.Form - Widget for generating 'form'. </h1><h2>SYNOPSIS</h2><pre><code>(defvar form (make-form  
+              :method :POST  
+              :action "/post"  
+              :components other-widgets))  
+(add form widget)  
+(render form) </code></pre><h2>AUTHOR</h2><ul><li>Eitarow Fukamachi (e.arrows@gmail.com)</li></ul>
+
+<h2>EXTERNAL SYMBOLS</h2>
+
+<div class="symbol">
+  <ul>
+
+<li>
+  Class: <strong>&lt;caveman-widget-form&gt;</strong> inherits (&lt;caveman-widget&gt;)
+
+<dl>
+
+<dt><strong>action</strong> Accessor: form-action</small></dt>
+
+
+<dt><strong>method</strong> Accessor: form-method</small></dt>
+
+
+<dt><strong>components</strong> Accessor: form-components</small></dt>
+
+
+</dl>
+
+</li>
+
+<li>
+  Method: <strong>initialize-instance</strong>
+[(this &lt;caveman-widget-form&gt;) &amp;rest initargs]
+
+
+</li>
+
+<li>
+  Function: <strong>make-form</strong>
+[&amp;rest args]
+
+<pre>
+  A synonim for `(make-instance '<caveman-widget-form> ...)`.
+</pre>
+
+
+</li>
+
+<li>
+  Method: <strong>add</strong>
+[(this &lt;caveman-widget-form&gt;) widget]
+
+<pre>
+  Add another widget to this form. That will be rendered in 'form' tag.
+</pre>
+
+
+</li>
+
+<li>
+  Method: <strong>validate</strong>
+[(this &lt;caveman-widget-form&gt;) values]
+
+
+</li>
+
+  </ul>
+</div>
+
+</div>
+
+</body>
+</html>

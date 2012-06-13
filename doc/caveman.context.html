@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Caveman.Context</title>
+  <link rel="stylesheet" href="./main.css" type="text/css" media="screen, tv, print" charset="UTF-8" />
+</head>
+<body>
+
+<div class="container">
+
+<h1>Caveman.Context - Managing current state for each request. </h1><h2>SYNOPSIS</h2><pre><code>;; In the controller.  
+ 
+;; Get context object.  
+(context)  
+;=&gt; #&lt;HASH-TABLE :TEST EQL size 0/60 #x3020025FF5FD&gt;  
+ 
+;; Access to each value.  
+(context :hoge)  
+;=&gt; "Something set to :hoge."  
+ 
+;; Set to context  
+(setf (context :hoge) "hogehoge") </code></pre><h2>DESCRIPTION</h2><p>Caveman.Context is for managing current state for each request. It is called "Context" in Caveman. </p><p>Specifically, context is a hash table in global scope. you can access it with a function `context'. See SYNOPSIS for details. </p><h2>AUTHOR</h2><ul><li>Eitarow Fukamachi (e.arrows@gmail.com)</li></ul>
+
+<h2>EXTERNAL SYMBOLS</h2>
+
+<div class="symbol">
+  <ul>
+
+<li>
+  Variable: <strong>*project*</strong>
+
+
+</li>
+
+<li>
+  Variable: <strong>*context*</strong>
+
+
+</li>
+
+<li>
+  Variable: <strong>*request*</strong>
+
+
+</li>
+
+<li>
+  Variable: <strong>*response*</strong>
+
+
+</li>
+
+<li>
+  Variable: <strong>*session*</strong>
+
+
+</li>
+
+<li>
+  Function: <strong>make-context</strong>
+[req]
+
+<pre>
+  Create a new Context.
+</pre>
+
+
+</li>
+
+<li>
+  Function: <strong>context</strong>
+[&amp;optional key]
+
+<pre>
+  
+Access to current context. If key is specified, return the value in current context.
+If not, just return a current context.
+
+Example:
+  (context)
+  ;=> #<HASH-TABLE :TEST EQL size 0/60 #x3020025FF5FD>
+  (context :request)
+  ;=> #<CAVEMAN.REQUEST:<REQUEST> #x3020024FCCFD>
+
+</pre>
+
+
+</li>
+
+<li>
+  Function: <strong>(setf context)</strong>
+[val key]
+
+
+</li>
+
+<li>
+  Macro: <strong>with-context-variables</strong>
+[(&amp;rest vars) &amp;body body]
+
+
+</li>
+
+  </ul>
+</div>
+
+</div>
+
+</body>
+</html>

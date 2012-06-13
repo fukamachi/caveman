@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Caveman.App</title>
+  <link rel="stylesheet" href="./main.css" type="text/css" media="screen, tv, print" charset="UTF-8" />
+</head>
+<body>
+
+<div class="container">
+
+<h1>Caveman.App - Caveman Application Class. </h1><h2>SYNOPSIS</h2><pre><code>(defclass &lt;myapp-app&gt; (&lt;app&gt;) ())  
+(defvar *app* (make-instance '&lt;myapp-app&gt;))  
+(call *app*) </code></pre><h2>DESCRIPTION</h2><p>Caveman.App provides a base class `<app> ' for Caveman Applications. </p><h2>AUTHOR</h2><ul><li>Eitarow Fukamachi (e.arrows@gmail.com)</li></ul><h2>SEE ALSO</h2><ul><li>Clack.Component</li></ul>
+
+<h2>EXTERNAL SYMBOLS</h2>
+
+<div class="symbol">
+  <ul>
+
+<li>
+  Class: <strong>&lt;app&gt;</strong> inherits (&lt;component&gt;)
+
+<pre>
+  Base class for Caveman Application. All Caveman Application must inherit this class.
+</pre>
+
+<dl>
+
+<dt><strong>routing-rules</strong> Accessor: routing-rules</small></dt>
+
+
+</dl>
+
+</li>
+
+<li>
+  Method: <strong>call</strong>
+[(this &lt;app&gt;) req]
+
+<pre>
+  Overriding method. This method will be called for each request.
+</pre>
+
+
+</li>
+
+<li>
+  Method: <strong>add-route</strong>
+[(this &lt;app&gt;) routing-rule]
+
+<pre>
+  Add a routing rule to the Application.
+</pre>
+
+
+</li>
+
+<li>
+  Function: <strong>next-route</strong>
+[]
+
+
+</li>
+
+<li>
+  Method: <strong>lookup-route</strong>
+[(this &lt;app&gt;) symbol]
+
+<pre>
+  Lookup a routing rule with SYMBOL from the application.
+</pre>
+
+
+</li>
+
+  </ul>
+</div>
+
+</div>
+
+</body>
+</html>
