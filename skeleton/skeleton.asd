@@ -18,7 +18,7 @@
 (in-package :<% @var name %>-asd)
 
 (defsystem <% @var name %>
-  :version "0.1-SNAPSHOT"
+  :version "0.1"
   :author "<% @var author %>"
   :license "<% @var license %>"
   :depends-on (:clack
