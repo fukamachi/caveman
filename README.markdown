@@ -128,6 +128,30 @@ Caveman adopt CL-EMB as the default template engine. A package, named `myapp.vie
 
 Of course, you can use other template engines, such as "cl-markup".
 
+Example of using cl-markup for rendering
+```common-lisp
+@url GET "/mypage"
+(defun func-test(params)
+  (setf params (nconc 
+  	       	      (list :MUSIC)
+		      (list (list
+		      	    '(:artist "DJ X" :song "Track 1")
+		      	    '(:artist "DJ Y" :song "Track 8")
+			    '(:artist "DJ Z" :song "Let's rock!")))))
+  (render "track-list.tpl" params))
+```
+
+In the file "track-list.tpl" which is in the templates folder
+```common-lisp
+<!-- track-list.tpl -->
+<% @loop music %>
+   <% @var artist %> tonight with <% @var song %><br />
+<% @€ndloop %>
+
+```
+
+You can also find more resources and examples of the official page : http://common-lisp.net/project/cl-emb/
+
 ### Configuration
 
 Caveman uses ".lisp" file as configuration file in `#p"config/"` directory. When a project is just generated, you might be able to find `dev.lisp` in it. It will be used when "start" the project application with "dev" mode.
