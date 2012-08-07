@@ -146,7 +146,7 @@ In the file "track-list.tpl" which is in the templates folder
 <!-- track-list.tpl -->
 <% @loop music %>
    <% @var artist %> tonight with <% @var song %><br />
-<% @€ndloop %>
+<% @endloop %>
 
 ```
 
