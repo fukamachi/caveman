@@ -50,12 +50,12 @@
          (method (request-method req)))
     (acond
      ((and rules
-           (member-rule path-info method rules :allow-head-p t))
+           (member-rule path-info method rules :allow-head t))
       (destructuring-bind ((_ url-rule fn) &rest other-rules) it
         @ignore _
         (let ((*next-route-function* #'(lambda () (dispatch-with-rules other-rules))))
           (multiple-value-bind (_ params)
-              (match url-rule method path-info :allow-head-p t)
+              (match url-rule method path-info :allow-head t)
             @ignore _
             (setf (slot-value req 'clack.request::query-parameters)
                   (append
@@ -91,9 +91,9 @@
         if (eq (first rule) symbol) do
           (return rule)))
 
-(defun member-rule (path-info method rules &key allow-head-p)
+(defun member-rule (path-info method rules &key allow-head)
   (member-if #'(lambda (rule)
-                 (match rule method path-info :allow-head-p allow-head-p))
+                 (match rule method path-info :allow-head allow-head))
              rules
              :key #'cadr))
 
