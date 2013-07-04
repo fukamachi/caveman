@@ -53,7 +53,7 @@ Now you can access to http://localhost:5000/ and then Caveman may show you "Hell
 
 ### Route
 
-Caveman provides an useful annotation "@url" to define a controller (You don't already know the meaning of "annotation"? Check [cl-annot](https://github.com/m2ym/cl-annot) out). It has same rules to [Clack.App.Route](http://clacklisp.org/doc/clack.app.route.html), it is an HTTP method paired with URL-matching pattern.
+Caveman provides an useful annotation "@url" to define a controller (You don't already know the meaning of "annotation"? Check [cl-annot](https://github.com/arielnetworks/cl-annot) out). It has same rules to [Clack.App.Route](http://quickdocs.org/clack/api#system-clack-app-route), it is an HTTP method paired with URL-matching pattern.
 
 ```common-lisp
 @url GET "/"
