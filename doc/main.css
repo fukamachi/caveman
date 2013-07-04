@@ -104,3 +104,13 @@ dd {
   border: none;
   padding: 0;
 }
+
+.alert {
+  margin-bottom: 20px;
+  padding: 0 15px;
+  font-size: 100%;
+  border: 1px solid #eed3d7;
+  color: #b94a48;
+  background-color: #f2dede;
+  border-radius: 4px;
+}
