@@ -12,6 +12,7 @@
                 :redirect)
   (:import-from :caveman.route
                 :url
+                :defroute
                 :url-for)
   (:import-from :caveman.app
                 :next-route
@@ -32,6 +33,7 @@
            :*response*
            :*session*
            :context
+           :defroute
            :with-context-variables))
 
 (cl-syntax:use-syntax :annot)
