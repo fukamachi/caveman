@@ -51,6 +51,18 @@ Example:
                 (url->routing-rule ,method ,url-rule ,form))
      ,form))
 
+
+
+(progn
+  @export
+  (defmacro defroute (method url-rule form)
+    "Recreation of @URL annotation in S-expression form"
+    `(progn
+       (add-route ,(intern "*APP*" *package*)
+                  (url->routing-rule ,method ,url-rule ,form))
+       ,form)))
+
+
 @doc "
 Convert action form into a routing rule, a list.
 
@@ -121,7 +133,7 @@ Example:
     (defun login (req)
       ;; response
       )
-    
+
     ;; for Clack Component
     @url GET \"/member/:id\"
     (defclass <member-profile> (<component>) ())
