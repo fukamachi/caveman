@@ -4,7 +4,7 @@
 |#
 
 #|
-  Micro web application framework
+  Lightweight web application framework
 
   Author: Eitarow Fukamachi (e.arrows@gmail.com)
 |#
@@ -28,7 +28,7 @@
                  (:file "route")
                  (:file "exception")
                  (:file "skeleton"))))
-  :description "Micro web application framework"
+  :description "Lightweight web application framework"
   :long-description
   #.(with-open-file (stream (merge-pathnames
                              #p"README.markdown"

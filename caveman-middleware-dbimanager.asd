@@ -4,7 +4,7 @@
 |#
 
 #|
-  Micro web application framework
+  Clack Middleware for managing CL-DBI connections
 
   Author: Eitarow Fukamachi (e.arrows@gmail.com)
 |#
