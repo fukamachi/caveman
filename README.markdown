@@ -36,18 +36,18 @@ You came to here because you're interested in living like a caveman, right? Ther
 (caveman:make-project #P"/path/to/myapp/"
                       :author "<Your full name>")
 ;-> writing /path/to/myapp/.gitignore
-    writing /path/to/myapp/README.markdown
-    writing /path/to/myapp/app.lisp
-    writing /path/to/myapp/myapp-test.asd
-    writing /path/to/myapp/myapp.asd
-    writing /path/to/myapp/src/config.lisp
-    writing /path/to/myapp/src/myapp.lisp
-    writing /path/to/myapp/src/view.lisp
-    writing /path/to/myapp/src/web.lisp
-    writing /path/to/myapp/t/myapp.lisp
-    writing /path/to/myapp/templates/_errors/404.html
-    writing /path/to/myapp/templates/index.tmpl
-    writing /path/to/myapp/templates/layout/default.tmpl
+;   writing /path/to/myapp/README.markdown
+;   writing /path/to/myapp/app.lisp
+;   writing /path/to/myapp/myapp-test.asd
+;   writing /path/to/myapp/myapp.asd
+;   writing /path/to/myapp/src/config.lisp
+;   writing /path/to/myapp/src/myapp.lisp
+;   writing /path/to/myapp/src/view.lisp
+;   writing /path/to/myapp/src/web.lisp
+;   writing /path/to/myapp/t/myapp.lisp
+;   writing /path/to/myapp/templates/_errors/404.html
+;   writing /path/to/myapp/templates/index.tmpl
+;   writing /path/to/myapp/templates/layout/default.tmpl
 ```
 
 ### Routing
@@ -109,7 +109,7 @@ Caveman adopts [CL-EMB](http://www.common-lisp.net/project/cl-emb/) for the defa
 ```html
 <html>
   <head>
-    <title><% title %></title>
+    <title><% @var title %></title>
   </head>
   <body>
     <ul>
@@ -159,12 +159,14 @@ This is a typical example.
 
 (defconfig |development|
   '(:debug T
-    :databases ((:maindb :sqlite3 :database-name ,(merge-pathnames #P"test.db"
-                                                                   *application-root*)))))
+    :databases
+    ((:maindb :sqlite3 :database-name ,(merge-pathnames #P"test.db"
+                                                        *application-root*)))))
 
 (defconfig |production|
-  '(:databases ((:maindb :mysql :database-name "myapp" :username "whoami" :password "1234")
-                (:workerdb :mysql :database-name "jobs" :username "whoami" :password "1234"))))
+  '(:databases
+    ((:maindb :mysql :database-name "myapp" :username "whoami" :password "1234")
+     (:workerdb :mysql :database-name "jobs" :username "whoami" :password "1234"))))
 
 (defconfig |staging|
   `(:debug T
@@ -176,8 +178,10 @@ Every configuration is a property list. You can choose the configuration which t
 To get a value from the current configuration, call `myapp.config:config` with a key you want.
 
 ```common-lisp
+(import 'myapp.config:config)
+
 (setf (osicat:environment-variable "APP_ENV") "development")
-(myapp.config:config :debug)
+(config :debug)
 ;=> T
 ```
 
@@ -187,8 +191,9 @@ If you add `:databases` to the configuration, Caveman enables database support b
 
 ```common-lisp
 (defconfig |production|
-  '(:databases ((:maindb :mysql :database-name "myapp" :username "whoami" :password "1234")
-                (:workerdb :mysql :database-name "jobs" :username "whoami" :password "1234"))))
+  '(:databases
+    ((:maindb :mysql :database-name "myapp" :username "whoami" :password "1234")
+     (:workerdb :mysql :database-name "jobs" :username "whoami" :password "1234"))))
 ```
 
 After restarting a server, "Caveman.Middleware.DBIManager" will be enabled. To connect to each database, use `caveman.middleware.dbimanager:connect-to` in `defroute`s.
@@ -286,8 +291,9 @@ Caveman outputs error backtraces to a file which is wrote at `:error-log` of you
 ```common-lisp
 (defconfig |defautl|
   `(:error-log #P"/var/log/apps/myapp_error.log"
-    :databases ((:maindb :sqlite3 :database-name ,(merge-pathnames #P"myapp.db"
-                                                                     *application-root*)))))
+    :databases
+    ((:maindb :sqlite3 :database-name ,(merge-pathnames #P"myapp.db"
+                                                        *application-root*)))))
 ```
 
 ## Installation
