@@ -17,8 +17,7 @@
                :cl-emb
 
                ;; for CL-DBI
-               :dbi
-               :caveman-middleware-dbimanager)
+               :caveman-db)
   :components ((:module "src"
                 :components
                 ((:file "<% @var name %>" :depends-on ("config"))

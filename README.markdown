@@ -253,14 +253,16 @@ If you add `:databases` to the configuration, Caveman enables database support b
      (:workerdb :mysql :database-name "jobs" :username "whoami" :password "1234"))))
 ```
 
-After restarting a server, "Caveman.Middleware.DBIManager" will be enabled. To connect to each database, use `caveman.middleware.dbimanager:connect-to` in `defroute`s.
+After restarting a server, "Caveman.Middleware.DBIManager" will be enabled. To connect to each database, use `caveman.db:connect-db` in `defroute`s.
 
 ```common-lisp
-(import 'caveman.middleware.dbimanager:connect-to)
+(use-package :caveman.db)
 
 (defroute (*web* "/users") ()
-  (let ((db (connect-to :maindb)))
-    (dbi:execute (dbi:prepare db "SELECT ..."))
+  (let ((db (connect-db :maindb)))
+    (select-all db :*
+      (from :person)
+      (where (:>= :age 20)))
     ))
 ```
 
@@ -510,6 +512,7 @@ Caveman depends on the latest revision of Clack, ningle, CL-DBI and Envy.
 * [ningle](http://8arrow.org/ningle/) - Super micro web application framework Caveman bases on.
 * [CL-EMB](http://www.common-lisp.net/project/cl-emb/) - HTML Templating engine.
 * [CL-DBI](http://8arrow.org/cl-dbi/) - Database independent interface library.
+* [SxQL](http://8arrow.org/sxql/) - SQL builder library.
 * [Envy](https://github.com/fukamachi/envy) - Configuration switcher.
 * [Shelly](https://github.com/fukamachi/shelly) - Script to run Common Lisp from shell.
 
