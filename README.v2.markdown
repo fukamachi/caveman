@@ -26,7 +26,7 @@ These are noticeable points.
 * New separated configuration system ([Envy](https://github.com/fukamachi/envy))
 * New routing macro
 
-### Why did you write it from scratch?
+### "Why did you write it from scratch?"
 
 One of the most frequently asked question was "Which should I use ningle or Caveman? What are the differences?" I think it was because the role of them were too similar. Both of them are saying "micro" and no database support.
 
@@ -53,6 +53,16 @@ Caveman is intended to be a collection of common parts of web applications. Cave
 You came to here because you're interested in living like a caveman, right? There's no Disneyland, but it's good place to start. Let's get into a cave.
 
 ### Installation
+
+Caveman depends on the latest revision of Clack, ningle, CL-DBI, SxQL and Envy.
+
+    $ cd ~/quicklisp/local-projects
+    $ git clone https://github.com/fukamachi/clack
+    $ git clone https://github.com/fukamachi/ningle
+    $ git clone https://github.com/fukamachi/cl-dbi
+    $ git clone https://github.com/fukamachi/sxql
+    $ git clone https://github.com/fukamachi/envy
+    $ git clone https://github.com/fukamachi/caveman
 
 ```common-lisp
 (ql:quickload :caveman2)
@@ -274,7 +284,7 @@ After restarting a server, "Caveman.Middleware.DBIManager" will be enabled. To c
 
 The connection is alive during its Lisp session and will be reused for each HTTP requests.
 
-See a documentation of [CL-DBI](http://8arrow.org/cl-dbi/) for more details.
+See documentations of [CL-DBI](http://8arrow.org/cl-dbi/) and [SxQL](https://github.com/fukamachi/sxql) for more details.
 
 ### Set HTTP headers or HTTP status
 
@@ -500,17 +510,6 @@ In Caveman, add the middleware to `builder` in "PROJECT_ROOT/app.lisp".
 
 * [Clack.Middleware.Postmodern](http://quickdocs.org/clack/api#system-clack-middleware-postmodern)
 * [Postmodern](http://marijnhaverbeke.nl/postmodern/)
-
-## Installation
-
-Caveman depends on the latest revision of Clack, ningle, CL-DBI and Envy.
-
-    $ cd ~/quicklisp/local-projects
-    $ git clone https://github.com/fukamachi/clack
-    $ git clone https://github.com/fukamachi/ningle
-    $ git clone https://github.com/fukamachi/cl-dbi
-    $ git clone https://github.com/fukamachi/envy
-    $ git clone https://github.com/fukamachi/caveman
 
 ## See Also
 
