@@ -13,7 +13,7 @@
   :license "LLGPL"
   :depends-on (:caveman
                :cl-test-more)
-  :components ((:module "t"
+  :components ((:module "v2/t"
                 :components
                 ((:file "caveman"))))
   :perform (load-op :after (op c) (asdf:clear-system c)))

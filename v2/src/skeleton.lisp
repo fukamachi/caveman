@@ -10,7 +10,7 @@
 (in-package :caveman2.skeleton)
 
 (defvar *skeleton-directory*
-  (asdf:system-relative-pathname :caveman2 #p"skeleton/"))
+  (asdf:system-relative-pathname :caveman2 #p"v2/skeleton/"))
 
 (defun make-project (path &rest params &key name description author email license &allow-other-keys)
   (declare (ignore name description author email license))

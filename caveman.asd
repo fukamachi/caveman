@@ -24,7 +24,7 @@
                :cl-emb
                :local-time
                :cl-project)
-  :components ((:module "ver1/src"
+  :components ((:module "v1/src"
                 :components
                 ((:module "core"
                   :components

@@ -21,7 +21,7 @@
   :depends-on (:ningle
                :cl-project
                :dbi)
-  :components ((:module "src"
+  :components ((:module "v2/src"
                 :components
                 ((:file "caveman" :depends-on ("app" "route" "skeleton"))
                  (:file "app" :depends-on ("exception"))

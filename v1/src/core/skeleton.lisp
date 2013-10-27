@@ -16,7 +16,7 @@
 (defvar *skeleton-directory*
     #.(asdf:system-relative-pathname
        :caveman
-       #p"ver1/skeleton/"))
+       #p"v1/skeleton/"))
 
 @export
 (defun generate (path &rest params &key name description author email license depends-on &allow-other-keys)

@@ -20,5 +20,5 @@
   :license "LLGPL"
   :depends-on (:clack
                :dbi)
-  :components ((:file "src/middleware/dbimanager"))
+  :components ((:file "v2/src/middleware/dbimanager"))
   :description "Clack Middleware for managing CL-DBI connections")

@@ -10,5 +10,5 @@
   :depends-on (:caveman-middleware-dbimanager
                :dbi
                :sxql)
-  :components ((:file "src/db"))
+  :components ((:file "v2/src/db"))
   :description "Simple CL-DBI wrapper")
