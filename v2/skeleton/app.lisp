@@ -31,7 +31,9 @@
 (builder
  (<clack-middleware-static>
   :path (lambda (path)
-          (ppcre:scan "^(?:/images/|/css/|/js/|/robot\\.txt$|/favicon.ico$)" path))
+          (if (ppcre:scan "^(?:/images/|/css/|/js/|/robot\\.txt$|/favicon.ico$)" path)
+              path
+              nil))
   :root *static-directory*)
  (if (getf (config) :error-log)
      (make-instance '<clack-middleware-backtrace>
