@@ -52,6 +52,12 @@ Caveman is intended to be a collection of common parts of web applications. Cave
 
 You came to here because you're interested in living like a caveman, right? There's no Disneyland, but it's good place to start. Let's get into a cave.
 
+### Installation
+
+```common-lisp
+(ql:quickload :caveman2)
+```
+
 ### Generating a project skeleton
 
 ```common-lisp
