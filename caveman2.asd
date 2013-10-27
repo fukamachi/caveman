@@ -31,7 +31,7 @@
   :description "Lightweight web application framework"
   :long-description
   #.(with-open-file (stream (merge-pathnames
-                             #p"README-v2.markdown"
+                             #p"README.v2.markdown"
                              (or *load-pathname* *compile-file-pathname*))
                             :if-does-not-exist nil
                             :direction :input)
