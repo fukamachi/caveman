@@ -55,8 +55,8 @@ You came to here because you're interested in living like a caveman, right? Ther
 ### Generating a project skeleton
 
 ```common-lisp
-(caveman:make-project #P"/path/to/myapp/"
-                      :author "<Your full name>")
+(caveman2:make-project #P"/path/to/myapp/"
+                       :author "<Your full name>")
 ;-> writing /path/to/myapp/.gitignore
 ;   writing /path/to/myapp/README.markdown
 ;   writing /path/to/myapp/app.lisp
@@ -253,10 +253,10 @@ If you add `:databases` to the configuration, Caveman enables database support b
      (:workerdb :mysql :database-name "jobs" :username "whoami" :password "1234"))))
 ```
 
-After restarting a server, "Caveman.Middleware.DBIManager" will be enabled. To connect to each database, use `caveman.db:connect-db` in `defroute`s.
+After restarting a server, "Caveman.Middleware.DBIManager" will be enabled. To connect to each database, use `caveman2.db:connect-db` in `defroute`s.
 
 ```common-lisp
-(use-package :caveman.db)
+(use-package :caveman2.db)
 
 (defroute (*web* "/users") ()
   (let ((db (connect-db :maindb)))
@@ -275,8 +275,8 @@ See a documentation of [CL-DBI](http://8arrow.org/cl-dbi/) for more details.
 There are several special variables available during a HTTP request. `*request*` and `*response*` represents a request and a response. If you are familiar with [Clack](http://clacklisp.org/), these are instances of subclasses of [Clack.Request](http://quickdocs.org/clack/api#package-CLACK.REQUEST) and [Clack.Response](http://quickdocs.org/clack/api#package-CLACK.RESPONSE).
 
 ```common-lisp
-(import '(caveman:*request*
-          caveman:*response*
+(import '(caveman2:*request*
+          caveman2:*response*
           clack.request:http-referer
           clack.response:headers
           clack.response:status))
@@ -326,7 +326,7 @@ Session data is for memorizing user-specific data. `*session*` is a hash table r
 ### Throw an HTTP status code
 
 ```common-lisp
-(import 'caveman:throw-code)
+(import 'caveman2:throw-code)
 
 (defroute (*web* "/auth" :method :POST) (&key |name| |password|)
   (unless (authorize |name| |password|)
