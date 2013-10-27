@@ -1,16 +1,10 @@
 (in-package :cl-user)
 (defpackage <% @var name %>.web
-  (:use :cl)
-  (:import-from :<% @var name %>.config
-                :*template-directory*)
-  (:import-from :<% @var name %>.view
-                :render
-                :with-layout)
-  (:import-from :caveman2
-                :<app>
-                :defroute
-                :next-route
-                :on-exception)
+  (:use :cl
+        :caveman2
+        :caveman2.db
+        :<% @var name %>.config
+        :<% @var name %>.view)
   (:export :*web*))
 (in-package :<% @var name %>.web)
 
