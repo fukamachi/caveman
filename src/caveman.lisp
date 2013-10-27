@@ -4,13 +4,13 @@
 |#
 
 (in-package :cl-user)
-(defpackage caveman
+(defpackage caveman2
   (:use :cl)
-  (:import-from :caveman.route
+  (:import-from :caveman2.route
                 :defroute)
-  (:import-from :caveman.skeleton
+  (:import-from :caveman2.skeleton
                 :make-project)
-  (:import-from :caveman.app
+  (:import-from :caveman2.app
                 :<app>
                 :next-route
                 :*context*
@@ -21,7 +21,7 @@
                 :make-request
                 :make-response
                 :on-exception)
-  (:import-from :caveman.exception
+  (:import-from :caveman2.exception
                 :throw-code)
   (:export :defroute
            :<app>
@@ -36,4 +36,4 @@
            :make-project
            :on-exception
            :throw-code))
-(in-package :caveman)
+(in-package :caveman2)

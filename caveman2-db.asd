@@ -1,9 +1,9 @@
 (in-package :cl-user)
-(defpackage caveman-db-asd
+(defpackage caveman2-db-asd
   (:use :cl :asdf))
-(in-package :caveman-db-asd)
+(in-package :caveman2-db-asd)
 
-(defsystem caveman-db
+(defsystem caveman2-db
   :version "0.1"
   :author "Eitarow Fukamachi"
   :license "LLGPL"

@@ -8,7 +8,7 @@
   :author "<% @var author %>"
   :license "<% @var license %>"
   :depends-on (:clack
-               :caveman
+               :caveman2
                :envy
                :osicat
                :cl-ppcre
@@ -17,7 +17,7 @@
                :cl-emb
 
                ;; for CL-DBI
-               :caveman-db)
+               :caveman2-db)
   :components ((:module "src"
                 :components
                 ((:file "<% @var name %>" :depends-on ("config"))

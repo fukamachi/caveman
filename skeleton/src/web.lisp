@@ -6,7 +6,7 @@
   (:import-from :<% @var name %>.view
                 :render
                 :with-layout)
-  (:import-from :caveman
+  (:import-from :caveman2
                 :<app>
                 :defroute
                 :next-route
@@ -19,7 +19,7 @@
 (defparameter *web* (make-instance '<web>))
 
 (defroute (*web* "/") ()
-  (with-layout (:title "Welcome to Caveman")
+  (with-layout (:title "Welcome to Caveman2")
     (render #P"index.tmpl")))
 
 (defmethod on-exception ((app <web>) (code (eql 404)))

@@ -4,11 +4,11 @@
 |#
 
 (in-package :cl-user)
-(defpackage caveman-test
+(defpackage caveman2-test
   (:use :cl
-        :caveman
+        :caveman2
         :cl-test-more))
-(in-package :caveman-test)
+(in-package :caveman2-test)
 
 (plan nil)
 

@@ -4,14 +4,14 @@
 |#
 
 (in-package :cl-user)
-(defpackage caveman.exception
+(defpackage caveman2.exception
   (:use :cl)
   (:import-from :clack.http-status
                 :http-status-reason)
   (:export :caveman-exception
            :throw-code
            :exception-code))
-(in-package :caveman.exception)
+(in-package :caveman2.exception)
 
 (define-condition caveman-exception (simple-error)
   ((code :initarg :code :type integer :initform 500

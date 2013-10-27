@@ -4,9 +4,9 @@
 |#
 
 (in-package :cl-user)
-(defpackage caveman.app
+(defpackage caveman2.app
   (:use :cl)
-  (:import-from :caveman.exception
+  (:import-from :caveman2.exception
                 :caveman-exception
                 :exception-code
                 :throw-code)
@@ -36,7 +36,7 @@
            :make-request
            :make-response
            :on-exception))
-(in-package :caveman.app)
+(in-package :caveman2.app)
 
 (defclass <app> (ningle:<app>) ())
 

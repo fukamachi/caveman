@@ -4,13 +4,13 @@
 |#
 
 (in-package :cl-user)
-(defpackage :caveman.skeleton
+(defpackage :caveman2.skeleton
   (:use :cl)
   (:export :make-project))
-(in-package :caveman.skeleton)
+(in-package :caveman2.skeleton)
 
 (defvar *skeleton-directory*
-  (asdf:system-relative-pathname :caveman #p"skeleton/"))
+  (asdf:system-relative-pathname :caveman2 #p"skeleton/"))
 
 (defun make-project (path &rest params &key name description author email license &allow-other-keys)
   (declare (ignore name description author email license))

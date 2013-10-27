@@ -10,11 +10,11 @@
 |#
 
 (in-package :cl-user)
-(defpackage caveman-asd
+(defpackage caveman2-asd
   (:use :cl :asdf))
-(in-package :caveman-asd)
+(in-package :caveman2-asd)
 
-(defsystem caveman
+(defsystem caveman2
   :version "2.0.0"
   :author "Eitarow Fukamachi"
   :license "LLGPL"
@@ -31,7 +31,7 @@
   :description "Lightweight web application framework"
   :long-description
   #.(with-open-file (stream (merge-pathnames
-                             #p"README.markdown"
+                             #p"README-v2.markdown"
                              (or *load-pathname* *compile-file-pathname*))
                             :if-does-not-exist nil
                             :direction :input)
@@ -41,4 +41,4 @@
                                :fill-pointer t)))
           (setf (fill-pointer seq) (read-sequence seq stream))
           seq)))
-  :in-order-to ((test-op (load-op caveman-test))))
+  :in-order-to ((test-op (load-op caveman2-test))))

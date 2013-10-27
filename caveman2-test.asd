@@ -4,11 +4,11 @@
 |#
 
 (in-package :cl-user)
-(defpackage caveman-test-asd
+(defpackage caveman2-test-asd
   (:use :cl :asdf))
 (in-package :caveman-test-asd)
 
-(defsystem caveman-test
+(defsystem caveman2-test
   :author "Eitarow Fukamachi"
   :license "LLGPL"
   :depends-on (:caveman

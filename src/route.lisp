@@ -4,13 +4,13 @@
 |#
 
 (in-package :cl-user)
-(defpackage caveman.route
+(defpackage caveman2.route
   (:use :cl)
   (:import-from :ningle
                 :next-route)
   (:export :defroute
            :next-route))
-(in-package :caveman.route)
+(in-package :caveman2.route)
 
 (defmacro defroute (route-args args &body body)
   (let ((params (gensym "PARAMS")))

@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage caveman.db
+(defpackage caveman2.db
   (:use :cl)
   (:import-from :caveman.middleware.dbimanager
                 :connect-db)
@@ -37,7 +37,7 @@
            :left-join
            :union-queries
            :union-all-queries))
-(in-package :caveman.db)
+(in-package :caveman2.db)
 
 (defmacro aprogn (&rest expressions)
   `(let* (,@(mapcar
