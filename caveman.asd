@@ -24,7 +24,7 @@
                :cl-emb
                :local-time
                :cl-project)
-  :components ((:module "src"
+  :components ((:module "ver1/src"
                 :components
                 ((:module "core"
                   :components
@@ -52,7 +52,7 @@
   :description "Web Application Framework for Common Lisp"
   :long-description
   #.(with-open-file (stream (merge-pathnames
-                             #p"README.markdown"
+                             #p"README-v1.markdown"
                              (or *load-pathname* *compile-file-pathname*))
                             :if-does-not-exist nil
                             :direction :input)

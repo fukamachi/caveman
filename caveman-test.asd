@@ -17,7 +17,7 @@
                :cl-fad
                :drakma
                :usocket)
-  :components ((:module "t"
+  :components ((:module "ver1/t"
                 :serial t
                 :components
                 ((:test-file "init")
