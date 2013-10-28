@@ -102,6 +102,24 @@ Route patterns may also contain "wildcard" parameters. They are accessible to ru
   )
 ```
 
+### Multiple values in params
+
+If there are multiple values for the same key in query parameters (ex. ?item-id=1&item-id=2), the `param` would be like `(:|item-id| 1 :|item-id| 2)`. However, `getf` will return only the first one.
+
+```common-lisp
+(getf '(:|item-id| 1 :|item-id| 2) :|item-id|)
+;=> 1
+```
+
+For getting both of them as a list, [multival-plist](https://github.com/fukamachi/multival-plist) will help you.
+
+```common-lisp
+(import 'multival-plist:getf-all)
+
+(getf-all '(:|item-id| 1 :|item-id| 2) :|item-id|)
+;=> (1 2)
+```
+
 ### Passing
 
 Normally, routes are matched in the order they are defined. Only the first route matched is invoked and rest of them just will be ignored. But, a route can punt processing to the next matching route using `next-route`.
