@@ -70,6 +70,10 @@ Caveman provides an useful annotation "@url" to define a controller (You don't a
 
 @url OPTIONS "/"
 (defun index (params) ...)
+
+;; For all methods
+@url ANY "/"
+(defun index (params) ...)
 ```
 
 Route pattern may contain "keyword" to put the value into the argument.
