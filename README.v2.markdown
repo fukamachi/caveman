@@ -147,9 +147,9 @@ Normally, routes are matched in the order they are defined. Only the first route
 
 ```common-lisp
 (defroute (*web* "/guess/:who") (&key who)
-  (unless (string= who "Eitarow")
-    (next-route))
-  "You got me!")
+  (if (string= (getf params :who) "Eitarow")
+      "You got me!"
+      (next-route)))
 
 (defroute (*web* "/guess/*") ()
   "You missed!")

@@ -127,9 +127,9 @@ Normally, routes are matched in the order they are defined. Only the first route
 ```common-lisp
 @url GET "/guess/:who"
 (defun guess-me (params)
-  (unless (string= (getf params :who) "Eitarow")
-    (next-route))
-  "You got me!")
+  (if (string= (getf params :who) "Eitarow")
+      "You got me!"
+      (next-route)))
 
 @url GET "/guess/*"
 (defun guess-anyone (params)
