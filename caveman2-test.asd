@@ -6,12 +6,12 @@
 (in-package :cl-user)
 (defpackage caveman2-test-asd
   (:use :cl :asdf))
-(in-package :caveman-test-asd)
+(in-package :caveman2-test-asd)
 
 (defsystem caveman2-test
   :author "Eitarow Fukamachi"
   :license "LLGPL"
-  :depends-on (:caveman
+  :depends-on (:caveman2
                :cl-test-more)
   :components ((:module "v2/t"
                 :components
