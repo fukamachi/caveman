@@ -35,10 +35,20 @@
            :context
            :make-request
            :make-response
-           :on-exception))
+           :on-exception
+           :find-package-app))
 (in-package :caveman2.app)
 
-(defclass <app> (ningle:<app>) ())
+(defclass <app> (ningle:<app>)
+  ((package :initform *package*
+            :reader app-package)))
+
+(let ((package-app-map (make-hash-table :test 'eq)))
+  (defmethod initialize-instance :after ((app <app>) &key)
+    (setf (gethash *package* package-app-map) app))
+
+  (defun find-package-app (package)
+    (gethash package package-app-map)))
 
 (defmethod call ((this <app>) env)
   (declare (ignore env))

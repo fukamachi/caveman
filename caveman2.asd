@@ -25,7 +25,7 @@
                 :components
                 ((:file "caveman" :depends-on ("app" "route" "skeleton"))
                  (:file "app" :depends-on ("exception"))
-                 (:file "route")
+                 (:file "route" :depends-on ("app"))
                  (:file "exception")
                  (:file "skeleton"))))
   :description "Lightweight web application framework"

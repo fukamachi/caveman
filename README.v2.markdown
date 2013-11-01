@@ -5,11 +5,11 @@
 ```common-lisp
 (defparameter *web* (make-instance '<app>))
 
-(defroute (*web* "/") ()
+(defroute "/" ()
   (with-layout (:title "Welcome to My site")
     (render #P"index.tmpl")))
 
-(defroute (*web* "/hello") (&key (|user| "Guest"))
+(defroute "/hello" (&key (|user| "Guest"))
   (format nil "Hello, ~A" |user|))
 ```
 
@@ -94,28 +94,28 @@ Since Caveman bases on ningle, Caveman also has the [Sinatra](http://www.sinatra
 
 ```common-lisp
 ;; GET request (default)
-(defroute (*app* "/" :method :GET) () ...)
+(defroute ("/" :method :GET) () ...)
 
 ;; POST request
-(defroute (*app* "/" :method :POST) () ...)
+(defroute ("/" :method :POST) () ...)
 
 ;; PUT request
-(defroute (*app* "/" :method :PUT) () ...)
+(defroute ("/" :method :PUT) () ...)
 
 ;; DELETE request
-(defroute (*app* "/" :method :DELETE) () ...)
+(defroute ("/" :method :DELETE) () ...)
 
 ;; OPTIONS request
-(defroute (*app* "/" :method :OPTIONS) () ...)
+(defroute ("/" :method :OPTIONS) () ...)
 
 ;; For all methods
-(defroute (*app* "/" :method :ANY) () ...)
+(defroute ("/" :method :ANY) () ...)
 ```
 
 Route pattern may contain "keyword" to put the value into the argument.
 
 ```common-lisp
-(defroute (*app* "/hello/:name") (&key name)
+(defroute ("/hello/:name") (&key name)
   (format nil "Hello, ~A" name))
 ```
 
@@ -124,7 +124,7 @@ The above controller will be invoked when you access to "/hello/Eitarow" or "/he
 `(&key name)` is almost same as a lambda list of Common Lisp, excepts it always allows other keys.
 
 ```common-lisp
-(defroute (*app* "/hello/:name") (&rest params &key name)
+(defroute ("/hello/:name") (&rest params &key name)
   ;; ...
   )
 ```
@@ -132,12 +132,12 @@ The above controller will be invoked when you access to "/hello/Eitarow" or "/he
 Route patterns may also contain "wildcard" parameters. They are accessible by `splat`.
 
 ```common-lisp
-(defroute (*app* "/say/*/to/*") (&key splat)
+(defroute "/say/*/to/*" (&key splat)
   ; matches /say/hello/to/world
   splat ;=> ("hello" "world")
   ))
 
-(defroute (*app* "/download/*.*") (&key splat)
+(defroute "/download/*.*" (&key splat)
   ; matches /download/path/to/file.xml
   splat ;=> ("path/to/file" "xml")
   ))
@@ -146,12 +146,12 @@ Route patterns may also contain "wildcard" parameters. They are accessible by `s
 Normally, routes are matched in the order they are defined. Only the first route matched is invoked and rest of them just will be ignored. But, a route can punt processing to the next matching route using `next-route`.
 
 ```common-lisp
-(defroute (*web* "/guess/:who") (&key who)
+(defroute "/guess/:who" (&key who)
   (if (string= (getf params :who) "Eitarow")
       "You got me!"
       (next-route)))
 
-(defroute (*web* "/guess/*") ()
+(defroute "/guess/*" ()
   "You missed!")
 ```
 
@@ -274,7 +274,7 @@ After restarting a server, "Caveman.Middleware.DBIManager" will be enabled. To c
 ```common-lisp
 (use-package :caveman2.db)
 
-(defroute (*web* "/users") ()
+(defroute "/users" ()
   (let ((db (connect-db :maindb)))
     (select-all db :*
       (from :person)
@@ -312,7 +312,7 @@ This is an example of a JSON API.
 ```common-lisp
 (import 'yason:encode-plist)
 
-(defroute (*web* "/user.json") (&key |id|)
+(defroute "/user.json" (&key |id|)
   (setf (headers *response* :content-type) "application/json")
   (let ((person (find-person-from-db |id|)))
     ;; person => (:|name| "Eitarow Fukamachi" :|email| "e.arrows@gmail.com")
@@ -326,13 +326,13 @@ This is an example of a JSON API.
 If you would like to set Content-Type "application/json" for all "*.json" requests, `next-route` will help you.
 
 ```common-lisp
-(defroute (*web* "/*.json") ()
+(defroute "/*.json" ()
   (setf (headers *response* :content-type) "application/json")
   (next-route))
 
-(defroute (*web* "/user.json") () ...)
-(defroute (*web* "/search.json") () ...)
-(defroute (*web* "/new.json" :method :POST) () ...)
+(defroute "/user.json" () ...)
+(defroute "/search.json" () ...)
+(defroute ("/new.json" :method :POST) () ...)
 ```
 
 ### Use session
@@ -344,7 +344,7 @@ Session data is for memorizing user-specific data. `*session*` is a hash table r
 ```common-lisp
 (import 'caveman2:throw-code)
 
-(defroute (*web* "/auth" :method :POST) (&key |name| |password|)
+(defroute ("/auth" :method :POST) (&key |name| |password|)
   (unless (authorize |name| |password|)
     (throw-code 403)))
 ```
@@ -410,7 +410,7 @@ Caveman outputs error backtraces to a file which is specified at `:error-log` in
 ```common-lisp
 (import 'cl-who:with-html-output-to-string)
 
-(defroute (*web* "/") ()
+(defroute "/" ()
   (with-html-output-to-string (output nil :prologue t)
     (:html
       (:head (:title "Welcome to Caveman!"))
@@ -426,7 +426,7 @@ Caveman outputs error backtraces to a file which is specified at `:error-log` in
 ```common-lisp
 (import 'cl-markup:xhtml)
 
-(defroute (*web* "/") ()
+(defroute "/" ()
   (xhtml
     (:head (:title "Welcome to Caveman!))
     (:body "Blah blah blah.")))
@@ -459,7 +459,7 @@ Caveman outputs error backtraces to a file which is specified at `:error-log` in
 (closure-template:compile-cl-templates (merge-pathnames #P"index.tmpl"
                                                         *template-directory*))
 
-(defroute (*web* "/") ()
+(defroute "/" ()
   (myapp.view:render-index))
 ```
 

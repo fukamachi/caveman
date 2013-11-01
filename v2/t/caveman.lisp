@@ -12,47 +12,60 @@
 
 (plan nil)
 
-(is-expand
- (defroute (*web* "/") ()
-   (format nil "Welcome"))
- (setf (ningle:route *web* "/")
-      (lambda ($params)
-        (declare (ignorable $params))
-        (progn (format nil "Welcome"))))
- "defroute with no name")
+(defvar *app*)
 
-(is-expand
- (defroute index (*web* "/") ()
-   (format nil "Welcome"))
- (prog1
-     (defun index () (format nil "Welcome"))
-   (setf (ningle:route *web* "/")
-         (lambda ($params)
-           (declare (ignorable $params))
-           (funcall #'index))))
- "defroute with a name")
+(setf *app* (make-instance '<app>))
+(defroute "/" () "Welcome")
+(is (third (clack:call *app* '(:path-info "/"
+                               :request-method :get)))
+    '("Welcome"))
 
-(is-expand
- (defroute (*web* "/hello/?:name?") (&key name)
-   (format nil "Hello, ~A" name))
- (setf (ningle:route *web* "/hello/?:name?")
-       (lambda ($params)
-         (declare (ignorable $params))
-         (apply (lambda (&key name &allow-other-keys)
-                  (format nil "Hello, ~A" name))
-                $params)))
- "defroute with no name")
+(setf *app* (make-instance '<app>))
+(defroute ("/") () "Welcome again")
+(is (third (clack:call *app* '(:path-info "/"
+                               :request-method :get)))
+    '("Welcome again"))
 
-(is-expand
- (defroute say-hello (*web* "/hello/?:name?") (&key name)
-   (format nil "Hello, ~A" name))
- (prog1
-     (defun say-hello (&key name &allow-other-keys)
-       (format nil "Hello, ~A" name))
-   (setf (ningle:route *web* "/hello/?:name?")
-         (lambda ($params)
-           (declare (ignorable $params))
-           (apply #'say-hello $params))))
- "defroute with a name")
+(setf *app* (make-instance '<app>))
+(defroute ("/" :method :post) () "Can you still get me?")
+(is (first (clack:call *app* '(:path-info "/"
+                               :request-method :get)))
+    404
+    ":method :post")
+(is (third (clack:call *app* '(:path-info "/"
+                               :request-method :post)))
+    '("Can you still get me?")
+    ":method :post")
+
+(setf *app* (make-instance '<app>))
+(defroute (*app* "/") () "Hello")
+(is (third (clack:call *app* '(:path-info "/"
+                               :request-method :get)))
+    '("Hello")
+    "Specify an app")
+
+(setf *app* (make-instance '<app>))
+(defroute index "/" () "Hello")
+(is (third (clack:call *app* '(:path-info "/"
+                               :request-method :get)))
+    '("Hello")
+    "Named route")
+(defroute index ("/new" :method :post) () "okay")
+(is (third (clack:call *app* '(:path-info "/new"
+                               :request-method :post)))
+    '("okay")
+    "Named route")
+
+(setf *app* (make-instance '<app>))
+(defroute index (*app* "/" :method :get) () "Hello")
+(is (third (clack:call *app* '(:path-info "/"
+                               :request-method :get)))
+    '("Hello")
+    "Full")
+(defroute index (*app* "/" :method :get) () "Hello again")
+(is (third (clack:call *app* '(:path-info "/"
+                               :request-method :get)))
+    '("Hello again")
+    "Full")
 
 (finalize)
