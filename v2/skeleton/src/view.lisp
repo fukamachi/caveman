@@ -50,3 +50,10 @@
                        *template-directory*)
       :env (list :content (progn ,@body)
                  ,@env-for-layout))))
+
+;; Define functions that are available in templates.
+(defpackage cl-emb-intern
+  (:import-from :<% @var name %>.config
+                :config)
+  (:import-from :caveman2
+                :url-for))

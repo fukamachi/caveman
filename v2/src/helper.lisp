@@ -36,7 +36,7 @@
 
 (defun url-for (route-name &rest params)
   (let ((routing-rule (find-if #'(lambda (rule)
-                                   (eq (routing-rule-identifier rule) route-name))
+                                   (string-equal (routing-rule-identifier rule) route-name))
                                (routing-rules *current-app*))))
     (if routing-rule
         (multiple-value-bind (base-url rest-params)
