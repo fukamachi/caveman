@@ -8,13 +8,21 @@
   (:export :*web*))
 (in-package :<% @var name %>.web)
 
-(defclass <web> (<app>) ())
+;;
+;; Application
 
+(defclass <web> (<app>) ())
 (defparameter *web* (make-instance '<web>))
+
+;;
+;; Routing rules
 
 (defroute "/" ()
   (with-layout (:title "Welcome to Caveman2")
     (render #P"index.tmpl")))
+
+;;
+;; Error pages
 
 (defmethod on-exception ((app <web>) (code (eql 404)))
   (declare (ignore app))
