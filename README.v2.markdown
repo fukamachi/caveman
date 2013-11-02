@@ -38,10 +38,6 @@ Caveman2 is no more "micro" web application framework. It supports CL-DBI and ha
 
 No. Though Caveman "1" will be inactive project, you can keep using it. I don't wanna break existing Caveman apps.
 
-### Where's `@url` annotation?
-
-I'm going to add `@route` annotation. Don't worry.
-
 ## Design Goal
 
 Caveman is intended to be a collection of common parts of web applications. Caveman has 3 rules to make decisions.
