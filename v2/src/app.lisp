@@ -28,6 +28,7 @@
                 :not-found)
   (:export :<app>
            :next-route
+           :*current-app*
            :*context*
            :*request*
            :*response*
@@ -38,6 +39,8 @@
            :on-exception
            :find-package-app))
 (in-package :caveman2.app)
+
+(defparameter *current-app* nil)
 
 (defclass <app> (ningle:<app>)
   ((package :initform *package*
@@ -52,12 +55,13 @@
 
 (defmethod call ((this <app>) env)
   (declare (ignore env))
-  (handler-case (call-next-method)
-    (caveman-exception (c)
-      (let ((code (exception-code c)))
-        (setf (status *response*) code)
-        (or (on-exception this code)
-            (princ-to-string c))))))
+  (let ((*current-app* this))
+    (handler-case (call-next-method)
+      (caveman-exception (c)
+        (let ((code (exception-code c)))
+          (setf (status *response*) code)
+          (or (on-exception this code)
+              (princ-to-string c)))))))
 
 (defmethod not-found ((this <app>))
   (throw-code 404))

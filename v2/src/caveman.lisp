@@ -23,7 +23,8 @@
                 :make-response
                 :on-exception)
   (:import-from :caveman2.helper
-                :redirect)
+                :redirect
+                :url-for)
   (:import-from :caveman2.exception
                 :throw-code)
   (:export :defroute
@@ -31,6 +32,7 @@
            :<app>
            :next-route
            :redirect
+           :url-for
            :*context*
            :*request*
            :*response*
