@@ -20,7 +20,8 @@
   :license "LLGPL"
   :depends-on (:ningle
                :cl-project
-               :dbi)
+               :dbi
+               :cl-annot)
   :components ((:module "v2/src"
                 :components
                 ((:file "caveman" :depends-on ("app" "route" "skeleton"))

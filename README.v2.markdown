@@ -5,12 +5,14 @@
 ```common-lisp
 (defparameter *web* (make-instance '<app>))
 
-(defroute "/" ()
+@route GET "/"
+(defun index ()
   (with-layout (:title "Welcome to My site")
     (render #P"index.tmpl")))
 
-(defroute "/hello" (&key (|user| "Guest"))
-  (format nil "Hello, ~A" |user|))
+@route GET "/hello"
+(defun say-hello (&key (|name| "Guest"))
+  (format nil "Hello, ~A" |name|))
 ```
 
 ## About Caveman2
@@ -90,32 +92,66 @@ Caveman depends on the latest revision of Clack, ningle, CL-DBI, SxQL and Envy.
 
 ### Routing
 
+Caveman2 provides 2 ways to define a route -- `@route` and `defroute`. You can choose which to use.
+
+`@route` is an annotation macro defined by using [cl-annot](https://github.com/arielnetworks/cl-annot). It takes a method, an URL-string and a function.
+
+```common-lisp
+@route GET "/"
+(defun index ()
+  ...)
+
+;; A route with no name.
+@route GET "/welcome"
+(lambda (&key (|name| "Guest"))
+  (format nil "Welcome, ~A" |name))
+```
+
+This is similar to Caveman1's `@url` except its argument list. You don't have to specify an argument when you don't need it.
+
+`defroute` is just a macro. It provides same feature to `@route`.
+
+```common-lisp
+(defroute index "/" ()
+  ...)
+
+;; A route with no name.
+(defroute "/welcome" (&key (|name| "Guest"))
+  (format nil "Welcome, ~A" |name))
+```
+
 Since Caveman bases on ningle, Caveman also has the [Sinatra](http://www.sinatrarb.com/)-like routing system.
 
 ```common-lisp
 ;; GET request (default)
+@route GET "/" (lambda () ...)
 (defroute ("/" :method :GET) () ...)
 
 ;; POST request
+@route POST "/" (lambda () ...)
 (defroute ("/" :method :POST) () ...)
 
 ;; PUT request
+@route PUT "/" (lambda () ...)
 (defroute ("/" :method :PUT) () ...)
 
 ;; DELETE request
+@route DELETE "/" (lambda () ...)
 (defroute ("/" :method :DELETE) () ...)
 
 ;; OPTIONS request
+@route OPTIONS "/" (lambda () ...)
 (defroute ("/" :method :OPTIONS) () ...)
 
 ;; For all methods
+@route ANY "/" (lambda () ...)
 (defroute ("/" :method :ANY) () ...)
 ```
 
 Route pattern may contain "keyword" to put the value into the argument.
 
 ```common-lisp
-(defroute ("/hello/:name") (&key name)
+(defroute "/hello/:name" (&key name)
   (format nil "Hello, ~A" name))
 ```
 
@@ -124,7 +160,7 @@ The above controller will be invoked when you access to "/hello/Eitarow" or "/he
 `(&key name)` is almost same as a lambda list of Common Lisp, excepts it always allows other keys.
 
 ```common-lisp
-(defroute ("/hello/:name") (&rest params &key name)
+(defroute "/hello/:name" (&rest params &key name)
   ;; ...
   )
 ```

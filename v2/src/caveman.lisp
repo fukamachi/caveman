@@ -7,7 +7,8 @@
 (defpackage caveman2
   (:use :cl)
   (:import-from :caveman2.route
-                :defroute)
+                :defroute
+                :route)
   (:import-from :caveman2.skeleton
                 :make-project)
   (:import-from :caveman2.app
@@ -24,6 +25,7 @@
   (:import-from :caveman2.exception
                 :throw-code)
   (:export :defroute
+           :route
            :<app>
            :next-route
            :*context*
