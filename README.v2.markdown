@@ -100,7 +100,7 @@ Caveman2 provides 2 ways to define a route -- `@route` and `defroute`. You can c
 ;; A route with no name.
 @route GET "/welcome"
 (lambda (&key (|name| "Guest"))
-  (format nil "Welcome, ~A" |name))
+  (format nil "Welcome, ~A" |name|))
 ```
 
 This is similar to Caveman1's `@url` except its argument list. You don't have to specify an argument when you don't need it.
@@ -113,7 +113,7 @@ This is similar to Caveman1's `@url` except its argument list. You don't have to
 
 ;; A route with no name.
 (defroute "/welcome" (&key (|name| "Guest"))
-  (format nil "Welcome, ~A" |name))
+  (format nil "Welcome, ~A" |name|))
 ```
 
 Since Caveman bases on ningle, Caveman also has the [Sinatra](http://www.sinatrarb.com/)-like routing system.
