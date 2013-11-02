@@ -3,10 +3,22 @@
   (:use :cl)
   (:import-from :<% @var name %>.config
                 :*template-directory*)
+  (:import-from :caveman2
+                :*response*)
+  (:import-from :clack.response
+                :headers)
   (:import-from :cl-emb
                 :execute-emb)
+  (:import-from :yason
+                :encode
+                :encode-plist
+                :encode-alist)
+  (:import-from :trivial-types
+                :property-list-p
+                :association-list-p)
   (:export :*default-layout-path*
            :render
+           :render-json
            :with-layout))
 (in-package :<% @var name %>.view)
 
@@ -18,6 +30,14 @@
    (merge-pathnames template-path
                     *template-directory*)
    :env env))
+
+(defun render-json (object)
+  (setf (headers *response* :content-type) "application/json")
+  (with-output-to-string (s)
+    (cond
+      ((property-list-p object) (encode-plist object s))
+      ((association-list-p object) (encode-alist object s))
+      (T (encode object s)))))
 
 (defmacro with-layout ((&rest env-for-layout) &body body)
   (let ((layout-path (merge-pathnames *default-layout-path*

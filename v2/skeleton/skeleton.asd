@@ -16,6 +16,10 @@
                ;; HTML Template
                :cl-emb
 
+               ;; for rendering JSON
+               :yason
+               :trivial-types
+
                ;; for CL-DBI
                :caveman2-db)
   :components ((:module "src"

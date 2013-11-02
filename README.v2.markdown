@@ -231,6 +231,21 @@ Caveman adopts [CL-EMB](http://www.common-lisp.net/project/cl-emb/) for the defa
           :visitor user))
 ```
 
+### JSON API
+
+This is an example of a JSON API.
+
+```common-lisp
+(defroute "/user.json" (&key |id|)
+  (let ((person (find-person-from-db |id|)))
+    ;; person => (:|name| "Eitarow Fukamachi" :|email| "e.arrows@gmail.com")
+    (render-json person)))
+
+;=> {"name":"Eitarow Fukamachi","email":"e.arrows@gmail.com"}
+```
+
+`render-json` is a part of a skeleton project. You can find its code in "src/view.lisp".
+
 ### Static file
 
 Images, CSS, JS, favicon.ico and robot.txt in "static/" directory will be served by default.
@@ -337,22 +352,6 @@ There are several special variables available during a HTTP request. `*request*`
 
 ;; Set HTTP status.
 (setf (status *response*) 304)
-```
-
-This is an example of a JSON API.
-
-```common-lisp
-(import 'yason:encode-plist)
-
-(defroute "/user.json" (&key |id|)
-  (setf (headers *response* :content-type) "application/json")
-  (let ((person (find-person-from-db |id|)))
-    ;; person => (:|name| "Eitarow Fukamachi" :|email| "e.arrows@gmail.com")
-
-    (with-output-to-string (s)
-      (yason:encode-plist person s))))
-
-;=> {"name":"Eitarow Fukamachi","email":"e.arrows@gmail.com"}
 ```
 
 If you would like to set Content-Type "application/json" for all "*.json" requests, `next-route` will help you.
