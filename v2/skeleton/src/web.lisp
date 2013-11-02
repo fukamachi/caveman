@@ -12,7 +12,7 @@
 
 (defparameter *web* (make-instance '<web>))
 
-(defroute (*web* "/") ()
+(defroute "/" ()
   (with-layout (:title "Welcome to Caveman2")
     (render #P"index.tmpl")))
 
