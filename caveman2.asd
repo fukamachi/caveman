@@ -24,9 +24,10 @@
                :cl-annot)
   :components ((:module "v2/src"
                 :components
-                ((:file "caveman" :depends-on ("app" "route" "skeleton"))
+                ((:file "caveman" :depends-on ("app" "route" "helper" "skeleton"))
                  (:file "app" :depends-on ("exception"))
                  (:file "route" :depends-on ("app"))
+                 (:file "helper" :depends-on ("app"))
                  (:file "exception")
                  (:file "skeleton"))))
   :description "Lightweight web application framework"

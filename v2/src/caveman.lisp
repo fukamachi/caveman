@@ -22,12 +22,15 @@
                 :make-request
                 :make-response
                 :on-exception)
+  (:import-from :caveman2.helper
+                :redirect)
   (:import-from :caveman2.exception
                 :throw-code)
   (:export :defroute
            :route
            :<app>
            :next-route
+           :redirect
            :*context*
            :*request*
            :*response*
