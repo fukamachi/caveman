@@ -42,9 +42,7 @@
 
 (defparameter *current-app* nil)
 
-(defclass <app> (ningle:<app>)
-  ((package :initform *package*
-            :reader app-package)))
+(defclass <app> (ningle:<app>) ())
 
 (let ((package-app-map (make-hash-table :test 'eq)))
   (defmethod initialize-instance :after ((app <app>) &key)
