@@ -338,11 +338,7 @@ See documentations of [CL-DBI](http://8arrow.org/cl-dbi/) and [SxQL](https://git
 There are several special variables available during a HTTP request. `*request*` and `*response*` represents a request and a response. If you are familiar with [Clack](http://clacklisp.org/), these are instances of subclasses of [Clack.Request](http://quickdocs.org/clack/api#package-CLACK.REQUEST) and [Clack.Response](http://quickdocs.org/clack/api#package-CLACK.RESPONSE).
 
 ```common-lisp
-(import '(caveman2:*request*
-          caveman2:*response*
-          clack.request:http-referer
-          clack.response:headers
-          clack.response:status))
+(use-package :caveman2)
 
 ;; Get a value of Referer header.
 (http-referer *request*)
