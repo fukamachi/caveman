@@ -307,7 +307,7 @@ To get a value from the current configuration, call `myapp.config:config` with a
 
 ### Database
 
-If you add `:databases` to the configuration, Caveman enables database support by default. `:databases` is an association list of database settings.
+When you add `:databases` to the configuration, Caveman enables database support. `:databases` is an association list of database settings.
 
 ```common-lisp
 (defconfig |production|
@@ -316,7 +316,7 @@ If you add `:databases` to the configuration, Caveman enables database support b
      (:workerdb :mysql :database-name "jobs" :username "whoami" :password "1234"))))
 ```
 
-After restarting a server, "Caveman.Middleware.DBIManager" will be enabled. To connect to each database, use `caveman2.db:connect-db` in `defroute`s.
+After restarting a server, "Caveman.Middleware.DBIManager" will be enabled. You can use `connect-db` in `defroute`s for connecting to each databases.
 
 ```common-lisp
 (use-package :caveman2.db)
@@ -329,7 +329,7 @@ After restarting a server, "Caveman.Middleware.DBIManager" will be enabled. To c
     ))
 ```
 
-The connection is alive during its Lisp session and will be reused for each HTTP requests.
+The connection is alive during the Lisp session and will be reused in each HTTP requests.
 
 See documentations of [CL-DBI](http://8arrow.org/cl-dbi/) and [SxQL](https://github.com/fukamachi/sxql) for more details.
 
