@@ -58,7 +58,7 @@ Theme Styles
 body {
   box-sizing: border-box;
   color:#373737;
-  background: #212121;
+  background: #000;
   font-size: 16px;
   font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -329,8 +329,9 @@ Full-Width Styles
 }
 
 #footer_wrap {
-  background: #212121;
-  margin-top: 20px;
+  background: #000;
+  background: url(../images/header-bg@2x.png);
+  padding: 20px 0;
 }
 
 .gh-btn {
