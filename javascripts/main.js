@@ -24,4 +24,4 @@ $(document).on('click', 'a[href^=#]', function(e) {
     var target = $(href == "#" || href == "" ? 'html' : href);
     smoothScrollTo(target);
 });
-})(jQuery);
+}(jQuery));
