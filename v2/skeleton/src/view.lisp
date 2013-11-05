@@ -8,6 +8,7 @@
   (:import-from :clack.response
                 :headers)
   (:import-from :cl-emb
+                :*escape-type*
                 :execute-emb)
   (:import-from :yason
                 :encode
@@ -26,10 +27,11 @@
 (defvar *default-layout-path* #P"default.tmpl")
 
 (defun render (template-path &optional env)
-  (emb:execute-emb
-   (merge-pathnames template-path
-                    *template-directory*)
-   :env env))
+  (let ((emb:*escape-type* :html))
+    (emb:execute-emb
+     (merge-pathnames template-path
+                      *template-directory*)
+     :env env)))
 
 (defun render-json (object)
   (setf (headers *response* :content-type) "application/json")
@@ -45,11 +47,12 @@
     (when (pathnamep (car env-for-layout))
       (setf layout-path (pop env-for-layout)))
 
-    `(emb:execute-emb
-      (merge-pathnames ,layout-path
-                       *template-directory*)
-      :env (list :content (progn ,@body)
-                 ,@env-for-layout))))
+    `(let ((emb:*escape-type* :html))
+       (emb:execute-emb
+        (merge-pathnames ,layout-path
+                         *template-directory*)
+        :env (list :content (progn ,@body)
+                   ,@env-for-layout)))))
 
 ;; Define functions that are available in templates.
 (defpackage cl-emb-intern
