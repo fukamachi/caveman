@@ -17,7 +17,7 @@
 
 ## About Caveman2
 
-### What's the difference from Caveman "1" ?
+### What's the difference from Caveman "1"?
 
 All of them. Caveman2 was written from scratch.
 
@@ -30,11 +30,11 @@ These are noticeable points.
 
 ### "Why did you write it from scratch?"
 
-One of the most frequently asked question was "Which should I use ningle or Caveman? What are the differences?" I think it was because the role of them were too similar. Both of them are saying "micro" and no database support.
+One of the most frequently asked questions was "Which should I use ningle or Caveman? What are the differences?" I think it was because the roles of them were too similar. Both of them are saying "micro" and no database support.
 
 Caveman2 is no more "micro" web application framework. It supports CL-DBI and has database connection management by default. Caveman has started growing up.
 
-### So, Caveman "1" will be dead?
+### So, Caveman "1" will be obsolete?
 
 No. Though Caveman "1" will be inactive project, you can keep using it. I don't wanna break existing Caveman apps.
 
@@ -48,7 +48,7 @@ Caveman is intended to be a collection of common parts of web applications. Cave
 
 ## Quickstart
 
-You came to here because you're interested in living like a caveman, right? There's no Disneyland, but it's good place to start. Let's get into a cave.
+You came here because you're interested in living like a caveman, right? There's no Disneyland, but it's good place to start. Let's get into a cave.
 
 ### Installation
 
@@ -321,12 +321,11 @@ After restarting a server, "Caveman.Middleware.DBIManager" will be enabled. You 
 ```common-lisp
 (use-package :caveman2.db)
 
-(defroute "/users" ()
+(defun search-adults ()
   (let ((db (connect-db :maindb)))
     (select-all db :*
       (from :person)
-      (where (:>= :age 20)))
-    ))
+      (where (:>= :age 20)))))
 ```
 
 The connection is alive during the Lisp session and will be reused in each HTTP requests.
@@ -423,7 +422,7 @@ To restart the server, send HUP signal (`kill -HUP <pid>`) to the `start_server`
 Caveman outputs error backtraces to a file which is specified at `:error-log` in your configuration.
 
 ```common-lisp
-(defconfig |defautl|
+(defconfig |default|
   `(:error-log #P"/var/log/apps/myapp_error.log"
     :databases
     ((:maindb :sqlite3 :database-name ,(merge-pathnames #P"myapp.db"
