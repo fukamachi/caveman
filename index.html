@@ -8,7 +8,9 @@
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Caveman</title>
+    <title>Caveman2 - The real web framework</title>
+    <script type="text/javascript" src="javascripts/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="javascripts/main.js"></script>
   </head>
 
   <body>
@@ -16,59 +18,91 @@
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <a id="forkme_banner" href="https://github.com/fukamachi/caveman">Fork Me on GitHub</a>
-
-          <h1 id="project_title">Caveman</h1>
-          <h2 id="project_tagline">A micro web framework for Common Lisp based on Clack</h2>
-
-          <section id="downloads">
-            <a class="zip_download_link" href="https://github.com/fukamachi/caveman/zipball/master">Download this project as a .zip file</a>
-            <a class="tar_download_link" href="https://github.com/fukamachi/caveman/tarball/master">Download this project as a tar.gz file</a>
-          </section>
+          <h1 id="project_title"><img src="images/caveman2-logo@2x.png" width="287px" height="71px" alt="Caveman 2" /></h1>
         </header>
+
+        <p class="coming-soon blinking">Coming Soon to <span class="quicklisp">Quicklisp</span></p>
+
+        <!--
+        <nav>
+          <ul>
+            <li><a href="#overview">overview</a></li>
+            <li><a href="#documentation">documentation</a></li>
+            <li><a href="#contribute">contribute</a></li>
+          </ul>
+        </nav>
+        -->
     </div>
 
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <p>Caveman is a micro web framework on <a href="http://clacklisp.org">Clack</a>.</p>
+      <section id="overview" class="inner">
+        <pre><code><span style="color:#888">(defparameter *app* (make-instance '&lt;app&gt;))</span>
 
-<ul>
-<li><a href="http://quickdocs.org/caveman/">Documentation</a></li>
-<li><a href="https://github.com/fukamachi/caveman/contributors">Contributors</a></li>
-<li><a href="https://github.com/fukamachi/caveman/">Code</a></li>
-</ul><h2>Welcome to Caveman!</h2>
+@route GET "/"
+(defun index ()
+  (with-layout (:title "Welcome to My site")
+    (render #P"index.tmpl")))</code></pre>
 
-<div class="highlight">
-<pre><span class="nv">@url</span> <span class="nv">GET</span> <span class="s">"/hi"</span>
-<span class="p">(</span><span class="nb">defun</span> <span class="nv">say-hi</span> <span class="p">(</span><span class="nv">params</span><span class="p">)</span>
-  <span class="s">"Hello, World!"</span><span class="p">)</span>
-</pre>
-</div>
+        <h3>Most powerful language, Common Lisp</h3>
+        <blockquote>
+          <div class="quote">
+            <p>Lisp is a language for doing what you've been told is impossible.</p>
+            <div class="who">— Kent Pitman</div>
+          </div>
+        </blockquote>
+        <p>Common Lisp is the standardized most powerful language with high-performance implementations in the world. It has lexical closures, multi-dispatch object system called CLOS, the metaobject protocol and macros.</p>
+        <p>Caveman2 is written in portable Common Lisp. You don't need to compromise on its language.</p>
 
+        <h3>Server independent</h3>
+        <p>As Caveman2 bases on <a href="http://clacklisp.org/">Clack</a>, your web application works on many web servers without changing any code.</p>
+        <p>It is possible to run an application on <a href="http://weitz.de/hunchentoot/">Hunchentoot</a> during development, and then use a faster backend like <a href="http://www.fastcgi.com/">FastCGI</a> for your production environment.</p>
+        <h3>Database integration</h3>
+        <p>Are you tired of hearing &ldquo;lightweight&rdquo; or &ldquo;micro&rdquo; web application framework with no database support?</p>
+        <p>Caveman2 provides a database integration feature by default without riding on rails.</p>
+        <pre><code><span style="color:#888">(use-package :caveman2.db)</span>
 
-<h2>Easy to Setup</h2>
+(defun search-adults ()
+  (let ((db (connect-db :maindb)))
+    (select-all db :*
+      (from :person)
+      (where (:>= :age 20)))))</code></pre>
+        <h3>Fully extensible</h3>
+        <p>Caveman2 is designed to not force anything to users. When you find a point you don't like in Caveman2, you can replace it by your favorites in most cases.</p>
+        <p>Do you want to use <a href="http://weitz.de/cl-who/">CL-WHO</a> instead of <a href="http://www.common-lisp.net/project/cl-emb/">CL-EMB</a>? Are you a <a href="http://marijnhaverbeke.nl/postmodern/">Postmodern</a> fan? You can use them with Caveman2.</p>
 
-<p>Install <a href="http://www.quicklisp.org/beta/">Quicklisp</a> and execute the following code on your Lisp.</p>
+      </section>
+      <section id="documentation" class="inner">
+        <h2>Documentation</h2>
+        <p>Not ready yet. See <a href="https://github.com/fukamachi/caveman/blob/master/README.v2.markdown">README</a>.</p>
 
-<pre><code>(ql:quickload :caveman)
-</code></pre>
+        <h3>See Also</h3>
+        <ul>
+          <li><a href="http://clacklisp.org/">Clack</a> - Web application environment.</li>
+          <li><a href="http://8arrow.org/ningle/">ningle</a> - Super micro web application framework Caveman bases on.</li>
+          <li><a href="http://www.common-lisp.net/project/cl-emb/">CL-EMB</a> - HTML Templating engine.</li>
+          <li><a href="http://8arrow.org/cl-dbi/">CL-DBI</a> - Database independent interface library.</li>
+          <li><a href="https://github.com/fukamachi/sxql">SxQL</a> - SQL builder library.</li>
+          <li><a href="https://github.com/fukamachi/envy">Envy</a> - Configuration switcher.</li>
+          <li><a href="https://github.com/fukamachi/shelly">Shelly</a> - Script to run Common Lisp from shell.</li>
+        </ul>
+      </section>
+      <section id="contribute" class="inner">
+        <iframe class="gh-btn"
+                src="http://ghbtns.com/github-btn.html?user=fukamachi&repo=caveman&type=watch&count=true&size=large"
+                allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe>
+        <h2>Contribute</h2>
 
-<h2>Contribution</h2>
-
-<p>If you found a bug, report it on <a href="https://github.com/fukamachi/caveman/issues">GitHub Issues</a>. Of course you can fork and send a pull request to me. Thank you for your contribution.</p>
+        <p>If you found a bug, report it on <a href="https://github.com/fukamachi/caveman/issues">GitHub Issues</a>. Of course, you can fork and send a pull request to me. Thank you for your contribution.</p>
       </section>
     </div>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Caveman maintained by <a href="https://github.com/fukamachi">fukamachi</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        <p class="copyright">&copy; <a href="http://8arrow.org/">Eitarow Fukamachi</a></p>
       </footer>
     </div>
-
-    
 
   </body>
 </html>
