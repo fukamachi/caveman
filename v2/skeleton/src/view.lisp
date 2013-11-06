@@ -10,6 +10,7 @@
   (:import-from :cl-emb
                 :*escape-type*
                 :*case-sensitivity*
+                :*function-package*
                 :execute-emb)
   (:import-from :yason
                 :encode
@@ -58,8 +59,6 @@
                    ,@env-for-layout)))))
 
 ;; Define functions that are available in templates.
-(defpackage cl-emb-intern
-  (:import-from :<% @var name %>.config
-                :config)
-  (:import-from :caveman2
-                :url-for))
+(import '(<% @var name %>.config
+          caveman2:url-for)
+        emb:*function-package*)
