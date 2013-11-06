@@ -17,8 +17,7 @@
 (defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
 
 (defconfig |default|
-  `(:databases ((:maindb :sqlite3 :database-name ,(merge-pathnames #P"<% @var name %>.db"
-                                                                   *application-root*)))))
+  `(:databases ((:maindb :sqlite3 :database-name ":memory:"))))
 
 (defun config (&optional key)
   (envy:config #.(package-name *package*) key))
