@@ -7,120 +7,61 @@
 (defpackage caveman2-test
   (:use :cl
         :caveman2
-        :cl-test-more))
+        :cl-test-more
+        :usocket
+        :cl-fad))
 (in-package :caveman2-test)
 
-(plan nil)
+(plan 4)
 
-(defvar *app*)
+(defun port-available-p (port)
+  (handler-case (let ((socket (usocket:socket-listen "127.0.0.1" port :reuse-address t)))
+                  (usocket:socket-close socket))
+    (usocket:address-in-use-error (e) (declare (ignore e)) nil)))
 
-(setf *app* (make-instance '<app>))
-(defroute "/" () "Welcome")
-(is (third (clack:call *app* '(:path-info "/"
-                               :request-method :get)))
-    '("Welcome"))
+(defun find-port-not-in-use (&key (from-port 50000) (to-port 60000))
+  (loop for port from (+ from-port (random (- to-port from-port))) upto to-port
+        if (port-available-p port)
+          return port))
 
-(setf *app* (make-instance '<app>))
-(defroute ("/") () "Welcome again")
-(is (third (clack:call *app* '(:path-info "/"
-                               :request-method :get)))
-    '("Welcome again"))
+(defparameter *app-name*
+  (loop for name = (symbol-name (gensym "myapp"))
+        while (asdf:find-system name nil)
+        finally (return name)))
 
-(setf *app* (make-instance '<app>))
-(defroute ("/" :method :post) () "Can you still get me?")
-(is (first (clack:call *app* '(:path-info "/"
-                               :request-method :get)))
-    404
-    ":method :post")
-(is (third (clack:call *app* '(:path-info "/"
-                               :request-method :post)))
-    '("Can you still get me?")
-    ":method :post")
+(defparameter *tmp-root*
+  (asdf:system-relative-pathname :caveman2 "v2/t/tmp/"))
 
-(setf *app* (make-instance '<app>))
-(defroute (*app* "/") () "Hello")
-(is (third (clack:call *app* '(:path-info "/"
-                               :request-method :get)))
-    '("Hello")
-    "Specify an app")
+(defparameter *project-root*
+  (merge-pathnames (format nil "~A/" *app-name*) *tmp-root*))
 
-(setf *app* (make-instance '<app>))
-(defroute index "/" () "Hello")
-(is (third (clack:call *app* '(:path-info "/"
-                               :request-method :get)))
-    '("Hello")
-    "Named route")
-(defroute index ("/new" :method :post) () "okay")
-(is (third (clack:call *app* '(:path-info "/new"
-                               :request-method :post)))
-    '("okay")
-    "Named route")
+(defparameter *cl-emb-intern-package-name*
+  (intern (format nil "CL-EMB-INTERN-~A" *app-name*)
+          :keyword))
 
-(setf *app* (make-instance '<app>))
-(defroute index (*app* "/" :method :get) () "Hello")
-(is (third (clack:call *app* '(:path-info "/"
-                               :request-method :get)))
-    '("Hello")
-    "Full")
-(defroute index (*app* "/" :method :get) () "Hello again")
-(is (third (clack:call *app* '(:path-info "/"
-                               :request-method :get)))
-    '("Hello again")
-    "Full")
+(let ((emb:*function-package* (eval
+                               `(defpackage ,*cl-emb-intern-package-name*
+                                  (:use :cl)))))
 
-(cl-annot:enable-annot-syntax)
+  (when (cl-fad:file-exists-p *tmp-root*)
+    (cl-fad:delete-directory-and-files *tmp-root*))
+  (ensure-directories-exist *tmp-root*)
 
-(setf *app* (make-instance '<app>))
+  (caveman2:make-project *project-root*)
+  (load (merge-pathnames (format nil "~A.asd" *app-name*) *project-root*))
+  (asdf:load-system *app-name*)
 
-@route GET "/"
-(defun index ()
-  "Welcome")
-@route (GET POST) "/new"
-(defun new ()
-  "Create something")
-@route GET "/myname"
-(lambda (&key |name|)
-  (if |name|
-      (format nil "My name is ~A." |name|)
-      "I have no name yet."))
-@route GET "/hello"
-@route GET "/hello/:name"
-(defun say-hello (&key (name "Guest"))
-  (format nil "Hello, ~A" name))
+  (let* ((port (find-port-not-in-use)))
+    (ok (funcall (intern #.(string :start) (string-upcase *app-name*)) :port port))
+    (multiple-value-bind (body status)
+        (drakma:http-request (format nil "http://127.0.0.1:~D"
+                                     port))
+      (is status 200)
+      (like body "Welcome to Caveman2"))
+    (ok (funcall (intern #.(string :stop) (string-upcase *app-name*))))))
 
-(is (third (clack:call *app* '(:path-info "/"
-                               :request-method :get)))
-    '("Welcome")
-    "@route")
-(is (third (clack:call *app* '(:path-info "/new"
-                               :request-method :get)))
-    '("Create something")
-    "@route")
-(is (third (clack:call *app* '(:path-info "/new"
-                               :request-method :post)))
-    '("Create something")
-    "@route")
-(is (third (clack:call *app* '(:path-info "/myname"
-                               :request-method :get)))
-    '("I have no name yet.")
-    "@route")
-(is (third (clack:call *app* '(:path-info "/myname"
-                               :query-string "name=Eitarow"
-                               :request-method :get)))
-    '("My name is Eitarow.")
-    "@route")
-(is (third (clack:call *app* '(:path-info "/hello"
-                               :request-method :get)))
-    '("Hello, Guest")
-    "@route")
-(is (third (clack:call *app* '(:path-info "/hello/Eitarow"
-                               :request-method :get)))
-    '("Hello, Eitarow")
-    "@route")
-(is (third (clack:call *app* '(:path-info "/hello/Eitarow"
-                               :query-string "id=12345"
-                               :request-method :get)))
-    '("Hello, Eitarow")
-    "@route")
+(delete-package *cl-emb-intern-package-name*)
 
 (finalize)
+
+(asdf:clear-system *app-name*)

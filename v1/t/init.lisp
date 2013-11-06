@@ -19,7 +19,7 @@
 ;; }} Utilities
 
 (defvar *project-root*
-    (asdf:system-relative-pathname :caveman "t/tmp/"))
+    (asdf:system-relative-pathname :caveman "v1/t/tmp/"))
 
 (defvar *myapp-root*
     (merge-pathnames "myapp/" *project-root*))

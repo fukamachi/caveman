@@ -12,8 +12,13 @@
   :author "Eitarow Fukamachi"
   :license "LLGPL"
   :depends-on (:caveman2
+               :cl-fad
+               :usocket
+               :drakma
                :cl-test-more)
   :components ((:module "v2/t"
+                :serial t
                 :components
-                ((:file "caveman"))))
+                ((:file "caveman")
+                 (:file "route"))))
   :perform (load-op :after (op c) (asdf:clear-system c)))
