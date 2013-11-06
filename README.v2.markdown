@@ -52,13 +52,14 @@ You came here because you're interested in living like a caveman, right? There's
 
 ### Installation
 
-Caveman depends on the latest revision of Clack, ningle, CL-DBI, SxQL and Envy.
+Caveman depends on the latest revision of Clack, ningle, CL-DBI, SxQL, CL-EMB and Envy.
 
     $ cd ~/quicklisp/local-projects
     $ git clone https://github.com/fukamachi/clack
     $ git clone https://github.com/fukamachi/ningle
     $ git clone https://github.com/fukamachi/cl-dbi
     $ git clone https://github.com/fukamachi/sxql
+    $ git clone https://github.com/38a938c2/cl-emb
     $ git clone https://github.com/fukamachi/envy
     $ git clone https://github.com/fukamachi/caveman
 

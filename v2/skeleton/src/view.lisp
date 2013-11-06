@@ -9,6 +9,7 @@
                 :headers)
   (:import-from :cl-emb
                 :*escape-type*
+                :*case-sensitivity*
                 :execute-emb)
   (:import-from :yason
                 :encode
@@ -27,7 +28,8 @@
 (defvar *default-layout-path* #P"default.tmpl")
 
 (defun render (template-path &optional env)
-  (let ((emb:*escape-type* :html))
+  (let ((emb:*escape-type* :html)
+        (emb:*case-sensitivity* nil))
     (emb:execute-emb
      (merge-pathnames template-path
                       *template-directory*)
@@ -47,7 +49,8 @@
     (when (pathnamep (car env-for-layout))
       (setf layout-path (pop env-for-layout)))
 
-    `(let ((emb:*escape-type* :html))
+    `(let ((emb:*escape-type* :html)
+           (emb:*case-sensitivity* nil))
        (emb:execute-emb
         (merge-pathnames ,layout-path
                          *template-directory*)
