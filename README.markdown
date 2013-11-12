@@ -4,6 +4,12 @@ Caveman is a micro web framework for Common Lisp, based on [Clack](http://clackl
 
 * [https://github.com/fukamachi/caveman](https://github.com/fukamachi/caveman)
 
+## Annoucement: Caveman2 Alpha has released
+
+Caveman2, the next major release, is now available on Quicklisp, though it is still ALPHA quality.
+
+- [README for v2](https://github.com/fukamachi/caveman/blob/master/README.v2.markdown)
+
 ## Usage
 
 ```common-lisp

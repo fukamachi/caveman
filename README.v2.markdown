@@ -28,15 +28,11 @@ These are noticeable points.
 * New separated configuration system ([Envy](https://github.com/fukamachi/envy))
 * New routing macro
 
-### "Why did you write it from scratch?"
+### The reason I wrote it from scratch
 
 One of the most frequently asked questions was "Which should I use ningle or Caveman? What are the differences?" I think it was because the roles of them were too similar. Both of them are saying "micro" and no database support.
 
 Caveman2 is no more "micro" web application framework. It supports CL-DBI and has database connection management by default. Caveman has started growing up.
-
-### So, Caveman "1" will be obsolete?
-
-No. Though Caveman "1" will be inactive project, you can keep using it. I don't wanna break existing Caveman apps.
 
 ## Design Goal
 
