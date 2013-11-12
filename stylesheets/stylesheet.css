@@ -146,7 +146,6 @@ strong {
 }
 
 pre, code {
-  padding: 8px 0 8px 20px !important;
   color: #fff;
   background-color: #222;
 
@@ -160,7 +159,7 @@ pre, code {
 pre {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px;
+  padding: 10px 0 10px 15px;
   box-shadow: 0 0 10px rgba(0,0,0,.1);
   overflow: auto;
   font-size: 120%;
@@ -344,16 +343,25 @@ section {
   padding-top: 10px !important;
 }
 
-.coming-soon {
+.available-on-quicklisp {
   color: #eee;
   font-size: 120%;
   margin: 40px 0 0;
 }
 
+.available-on-quicklisp a {
+  color: #eee;
+}
+
 .quicklisp {
+  color:#373737;
   font-size: 110%;
   font-weight: bold;
   font-family: Baskerville, "Baskerville Win95BT", "Times New Roman", Times, serif;
+}
+
+.available-on-quicklisp .quicklisp {
+  color: #eee;
 }
 
 @-webkit-keyframes pulse {
@@ -478,7 +486,7 @@ Small Device Styles
     margin-top: 27px;
   }
 
-  .coming-soon {
+  .available-on-quicklisp {
     margin-top: 20px;
     padding-bottom: 20px;
     font-size: 90%;
