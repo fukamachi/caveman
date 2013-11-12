@@ -59,6 +59,6 @@
                    ,@env-for-layout)))))
 
 ;; Define functions that are available in templates.
-(import '(<% @var name %>.config
+(import '(<% @var name %>.config:config
           caveman2:url-for)
         emb:*function-package*)
