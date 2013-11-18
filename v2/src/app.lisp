@@ -67,6 +67,8 @@
 (defmethod make-response ((app <app>) &optional status headers body)
   (declare (ignore status headers body))
   (let ((res (call-next-method)))
+    (unless (headers res :content-type)
+      (setf (headers res :content-type) "text/html"))
     (unless (headers res :X-Content-Type-Options)
       (setf (headers res :X-Content-Type-Options) "nosniff"))
     (unless (headers res :X-Frame-Options)
