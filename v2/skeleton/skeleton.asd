@@ -24,7 +24,7 @@
                :caveman2-db)
   :components ((:module "src"
                 :components
-                ((:file "<% @var name %>" :depends-on ("config"))
+                ((:file "main" :depends-on ("config"))
                  (:file "web" :depends-on ("view"))
                  (:file "view" :depends-on ("config"))
                  (:file "config"))))
