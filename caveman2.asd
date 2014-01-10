@@ -15,7 +15,7 @@
 (in-package :caveman2-asd)
 
 (defsystem caveman2
-  :version "2.0.0"
+  :version "2.1.0"
   :author "Eitarow Fukamachi"
   :license "LLGPL"
   :depends-on (:ningle
