@@ -181,9 +181,9 @@ You can return following formats as the result of `defroute`.
 * Pathname
 * Clack's response list (containing Status, Headers and Body)
 
-### Nested query/post parameters
+### Structured query/post parameters
 
-Parameter keys contain square brackets ("[" & "]") will be parsed as nested parameters.
+Parameter keys contain square brackets ("[" & "]") will be parsed as structured parameters. You can access the parsed parameters as `_parsed` in routers.
 
     <form action="/edit">
       <input type="name" name="person[name]" />
@@ -193,8 +193,8 @@ Parameter keys contain square brackets ("[" & "]") will be parsed as nested para
       <input type="name" name="person[birth][day]" />
     </form>
     
-    (defroute "/edit" (&key |person|)
-      (format nil "~S" |person|))
+    (defroute "/edit" (&key _parsed)
+      (format nil "~S" (getf _parsed :|person|)))
     ;=> "(:|name| \"Eitarow\" :|email| \"e.arrows@gmail.com\" :|birth| (:|year| 2000 :|month| 1 :|day| 1))"
 
 Blank keys mean they have multiple values.
@@ -209,8 +209,8 @@ Blank keys mean they have multiple values.
       <input type="submit" value="Add" />
     </form>
 
-    (defroute "/add" (&key |items|)
-      (format nil "~S" |items|))
+    (defroute "/add" (&key _parsed)
+      (format nil "~S" (getf _parsed :|items|)))
     ;=> "((:|name| \"WiiU\" :|price| \"30000\") (:|name| \"PS4\" :|price| \"69000\"))"
 
 ### Templates

@@ -5,7 +5,7 @@
         :cl-test-more))
 (in-package :caveman2-test)
 
-(plan 18)
+(plan 19)
 
 (defvar *app*)
 
@@ -83,10 +83,6 @@
 (defun say-hello (&key (name "Guest"))
   (format nil "Hello, ~A" name))
 
-@route POST "/post"
-(defun add-item (&key |items|)
-  (format nil "~S" |items|))
-
 (is (third (clack:call *app* '(:path-info "/"
                                :request-method :get)))
     '("Welcome")
@@ -122,8 +118,17 @@
     '("Hello, Eitarow")
     "@route")
 
+(defroute add-item (*app* "/post" :method :post) (&key _parsed)
+  (format nil "~S" (getf _parsed :|items|)))
+
 (is (third (clack:call *app* '(:path-info "/post"
                                :query-string "items[][name]=WiiU&items[][price]=30000&items[][name]=PS4&items[][price]=69000"
+                               :request-method :post)))
+    '("((:|name| \"WiiU\" :|price| \"30000\") (:|name| \"PS4\" :|price| \"69000\"))")
+    "@route")
+
+(is (third (clack:call *app* '(:path-info "/post"
+                               :query-string "_PARSED=&items[][name]=WiiU&items[][price]=30000&items[][name]=PS4&items[][price]=69000"
                                :request-method :post)))
     '("((:|name| \"WiiU\" :|price| \"30000\") (:|name| \"PS4\" :|price| \"69000\"))")
     "@route")

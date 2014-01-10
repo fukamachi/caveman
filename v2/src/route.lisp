@@ -17,7 +17,8 @@
                 :definition-form-symbol
                 :definition-form-type)
   (:export :defroute
-           :route))
+           :route
+           :*parsed-parameters-symbol-name*))
 (in-package :caveman2.route)
 
 (defun add-app-if-omitted (routing-rule)
@@ -36,6 +37,14 @@
       (append lambda-list '(cl:&allow-other-keys))
       lambda-list))
 
+(defparameter *parsed-parameters-symbol-name* #.(string :_parsed))
+
+(defun need-parsed-parameters (lambda-list)
+  (member-if (lambda (p)
+               (and (symbolp p)
+                    (string= *parsed-parameters-symbol-name* p)))
+             lambda-list))
+
 (defmacro defroute (&rest args)
   (let ((params (gensym "PARAMS")))
     (typecase (car args)
@@ -51,7 +60,12 @@
                   (lambda (,params)
                     (declare (ignorable ,params))
                     ,(if lambda-list
-                         `(apply (function ,name) (parse-parameters ,params))
+                         `(apply (function ,name) ,(if (need-parsed-parameters lambda-list)
+                                                       `(append (list
+                                                                 ,(intern *parsed-parameters-symbol-name* :keyword)
+                                                                 (parse-parameters ,params))
+                                                                ,params)
+                                                       params))
                          `(funcall (function ,name))))))))
       (list
        (destructuring-bind (routing-rule lambda-list &rest body) args
@@ -61,7 +75,12 @@
                   (declare (ignorable ,params))
                   ,(if lambda-list
                        `(apply (lambda ,(make-lambda-list lambda-list) ,@body)
-                               (parse-parameters ,params))
+                               ,(if (need-parsed-parameters lambda-list)
+                                    `(append (list
+                                              ,(intern *parsed-parameters-symbol-name* :keyword)
+                                              (parse-parameters ,params))
+                                             ,params)
+                                    params))
                        `(progn ,@body))))))
       (T `(defroute (,(car args)) ,@(cdr args))))))
 
@@ -80,7 +99,12 @@
               (lambda (,params)
                 (declare (ignorable ,params))
                 ,(if lambda-list
-                     `(apply ,form (parse-parameters ,params))
+                     `(apply ,form ,(if (need-parsed-parameters lambda-list)
+                                        `(append (list
+                                                  ,(intern *parsed-parameters-symbol-name* :keyword)
+                                                  (parse-parameters ,params))
+                                                 ,params)
+                                        params))
                      `(funcall ,form)))))
       (cl:defun `(progn
                    (setf (apply #'ningle:route
@@ -91,7 +115,13 @@
                          (lambda (,params)
                            (declare (ignorable ,params))
                            ,(if lambda-list
-                                `(apply (function ,symbol) (parse-parameters ,params))
+                                `(apply (function ,symbol)
+                                        ,(if (need-parsed-parameters lambda-list)
+                                             `(append (list
+                                                       ,(intern *parsed-parameters-symbol-name* :keyword)
+                                                       (parse-parameters ,params))
+                                                      ,params)
+                                             params))
                                 `(funcall (function ,symbol)))))
                    ,(progn-form-replace-last
                      (list* (first last-form) (second last-form)
