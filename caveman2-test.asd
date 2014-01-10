@@ -15,10 +15,17 @@
                :cl-fad
                :usocket
                :drakma
-               :cl-test-more)
+               :cl-test-more
+               :trivial-types)
   :components ((:module "v2/t"
                 :serial t
                 :components
-                ((:file "caveman")
-                 (:file "route"))))
-  :perform (load-op :after (op c) (asdf:clear-system c)))
+                ((:test-file "caveman")
+                 (:test-file "route")
+                 (:test-file "nested-parameter"))))
+
+  :defsystem-depends-on (:cl-test-more)
+  :perform (test-op :after (op c)
+                    (funcall (intern #. (string :run-test-system) :cl-test-more)
+                             c)
+                    (asdf:clear-system c)))

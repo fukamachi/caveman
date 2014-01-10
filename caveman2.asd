@@ -26,7 +26,8 @@
                 :components
                 ((:file "caveman" :depends-on ("app" "route" "helper" "skeleton"))
                  (:file "app" :depends-on ("exception"))
-                 (:file "route" :depends-on ("app"))
+                 (:file "route" :depends-on ("app" "nested-parameter"))
+                 (:file "nested-parameter")
                  (:file "helper" :depends-on ("app"))
                  (:file "exception")
                  (:file "skeleton"))))
@@ -43,4 +44,4 @@
                                :fill-pointer t)))
           (setf (fill-pointer seq) (read-sequence seq stream))
           seq)))
-  :in-order-to ((test-op (load-op caveman2-test))))
+  :in-order-to ((test-op (test-op caveman2-test))))

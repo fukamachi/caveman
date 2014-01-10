@@ -9,6 +9,8 @@
         :cl-annot)
   (:import-from :caveman2.app
                 :find-package-app)
+  (:import-from :caveman2.nested-parameter
+                :parse-parameters)
   (:import-from :cl-annot.util
                 :progn-form-last
                 :progn-form-replace-last
@@ -35,8 +37,7 @@
       lambda-list))
 
 (defmacro defroute (&rest args)
-  (let ((params (gensym "PARAMS"))
-        (route-args (gensym "ROUTE-ARGS")))
+  (let ((params (gensym "PARAMS")))
     (typecase (car args)
       (symbol
        (destructuring-bind (name routing-rule lambda-list &rest body) args
@@ -50,7 +51,7 @@
                   (lambda (,params)
                     (declare (ignorable ,params))
                     ,(if lambda-list
-                         `(apply (function ,name) ,params)
+                         `(apply (function ,name) (parse-parameters ,params))
                          `(funcall (function ,name))))))))
       (list
        (destructuring-bind (routing-rule lambda-list &rest body) args
@@ -60,7 +61,7 @@
                   (declare (ignorable ,params))
                   ,(if lambda-list
                        `(apply (lambda ,(make-lambda-list lambda-list) ,@body)
-                               ,params)
+                               (parse-parameters ,params))
                        `(progn ,@body))))))
       (T `(defroute (,(car args)) ,@(cdr args))))))
 
@@ -79,7 +80,7 @@
               (lambda (,params)
                 (declare (ignorable ,params))
                 ,(if lambda-list
-                     `(apply ,form ,params)
+                     `(apply ,form (parse-parameters ,params))
                      `(funcall ,form)))))
       (cl:defun `(progn
                    (setf (apply #'ningle:route
@@ -90,7 +91,7 @@
                          (lambda (,params)
                            (declare (ignorable ,params))
                            ,(if lambda-list
-                                `(apply (function ,symbol) ,params)
+                                `(apply (function ,symbol) (parse-parameters ,params))
                                 `(funcall (function ,symbol)))))
                    ,(progn-form-replace-last
                      (list* (first last-form) (second last-form)

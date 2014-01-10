@@ -181,6 +181,38 @@ You can return following formats as the result of `defroute`.
 * Pathname
 * Clack's response list (containing Status, Headers and Body)
 
+### Nested query/post parameters
+
+Parameter keys contain square brackets ("[" & "]") will be parsed as nested parameters.
+
+    <form action="/edit">
+      <input type="name" name="person[name]" />
+      <input type="name" name="person[email]" />
+      <input type="name" name="person[birth][year]" />
+      <input type="name" name="person[birth][month]" />
+      <input type="name" name="person[birth][day]" />
+    </form>
+    
+    (defroute "/edit" (&key |person|)
+      (format nil "~S" |person|))
+    ;=> "(:|name| \"Eitarow\" :|email| \"e.arrows@gmail.com\" :|birth| (:|year| 2000 :|month| 1 :|day| 1))"
+
+Blank keys mean they have multiple values.
+
+    <form action="/add">
+      <input type="text" name="items[][name]" />
+      <input type="text" name="items[][price]" />
+    
+      <input type="text" name="items[][name]" />
+      <input type="text" name="items[][price]" />
+    
+      <input type="submit" value="Add" />
+    </form>
+
+    (defroute "/add" (&key |items|)
+      (format nil "~S" |items|))
+    ;=> "((:|name| \"WiiU\" :|price| \"30000\") (:|name| \"PS4\" :|price| \"69000\"))"
+
 ### Templates
 
 Caveman adopts [CL-EMB](http://www.common-lisp.net/project/cl-emb/) for the default templating engine.
