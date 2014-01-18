@@ -23,7 +23,8 @@
                :cl-fad
                :cl-emb
                :local-time
-               :cl-project)
+               :cl-project
+               :cl-test-more)
   :components ((:module "v1/src"
                 :components
                 ((:module "core"
