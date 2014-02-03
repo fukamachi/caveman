@@ -1,6 +1,8 @@
-(clack.util:namespace caveman-test.init
+(in-package :cl-user)
+(defpackage caveman-test.init
   (:use :cl
         :cl-test-more))
+(in-package :caveman-test.init)
 
 (plan 0)
 

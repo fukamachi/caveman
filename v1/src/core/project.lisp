@@ -6,7 +6,8 @@
   Caveman is freely distributable under the LLGPL License.
 |#
 
-(clack.util:namespace caveman.project
+(in-package :cl-user)
+(defpackage caveman.project
   (:use :cl
         :anaphora
         :clack
@@ -19,6 +20,7 @@
   (:export :debug-mode-p
            :project-mode
            :config))
+(in-package :caveman.project)
 
 (cl-syntax:use-syntax :annot)
 

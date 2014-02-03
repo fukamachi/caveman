@@ -6,7 +6,8 @@
   Caveman is freely distributable under the LLGPL License.
 |#
 
-(clack.util:namespace caveman.app
+(in-package :cl-user)
+(defpackage caveman.app
   (:use :cl
         :clack
         :caveman.middleware.context
@@ -20,6 +21,7 @@
                 :request-method
                 :path-info
                 :parameter))
+(in-package :caveman.app)
 
 (cl-syntax:use-syntax :annot)
 

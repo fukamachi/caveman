@@ -6,7 +6,8 @@
   Caveman is freely distributable under the LLGPL License.
 |#
 
-(clack.util:namespace caveman.response
+(in-package :cl-user)
+(defpackage caveman.response
   (:use :cl
         :clack.response)
   (:shadow :<response>)
@@ -17,6 +18,7 @@
            :set-cookie
            :redirect
            :finalize))
+(in-package :caveman.response)
 
 (cl-syntax:use-syntax :annot)
 

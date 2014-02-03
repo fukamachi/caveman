@@ -6,7 +6,8 @@
   Caveman is freely distributable under the LLGPL License.
 |#
 
-(clack.util:namespace caveman.request
+(in-package :cl-user)
+(defpackage caveman.request
   (:use :cl
         :clack.request)
   (:shadow :<request>
@@ -36,6 +37,7 @@
            :body-parameter
            :query-parameter
            :parameter))
+(in-package :caveman.request)
 
 (cl-syntax:use-syntax :annot)
 

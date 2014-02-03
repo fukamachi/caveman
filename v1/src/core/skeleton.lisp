@@ -6,10 +6,12 @@
   Caveman is freely distributable under the LLGPL License.
 |#
 
-(clack.util:namespace caveman.skeleton
+(in-package :cl-user)
+(defpackage caveman.skeleton
   (:use :cl)
   (:import-from :cl-project
                 :make-project))
+(in-package :caveman.skeleton)
 
 (cl-syntax:use-syntax :annot)
 

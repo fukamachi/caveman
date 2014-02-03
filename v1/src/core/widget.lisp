@@ -6,10 +6,12 @@
   Caveman is freely distributable under the LLGPL License.
 |#
 
-(clack.util:namespace caveman.widget
+(in-package :cl-user)
+(defpackage caveman.widget
   (:use :cl
         :clack)
   (:export :view))
+(in-package :caveman.widget)
 
 (cl-syntax:use-syntax :annot)
 

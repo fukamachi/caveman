@@ -1,4 +1,5 @@
-(clack.util:namespace caveman-test
+(in-package :cl-user)
+(defpackage caveman-test
   (:use :cl
         :caveman
         :cl-test-more
@@ -6,6 +7,7 @@
         :myapp.app)
   (:import-from :caveman-test.init
                 :*myapp-url*))
+(in-package :caveman-test)
 
 (plan 10)
 
