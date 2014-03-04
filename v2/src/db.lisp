@@ -63,6 +63,15 @@
            (dbi:prepare ,db ,sql)
            (apply #'dbi:execute it ,bind))))))
 
+(defmacro do-sxql (db fn field &body clauses)
+  (let ((sql (gensym "SQL"))
+        (bind (gensym "BIND")))
+    `(let ((*quote-character* (or *quote-character*
+                                  (connection-quote-character ,db))))
+       (multiple-value-bind (,sql ,bind)
+           (yield (,fn ,field ,@clauses))
+         (apply #'dbi:do-sql ,db ,sql ,bind)))))
+
 (defmacro select-all (db field &body clauses)
   `(dbi:fetch-all (execute-sxql ,db sxql:select ,field ,@clauses)))
 
@@ -70,10 +79,10 @@
   `(dbi:fetch (execute-sxql ,db sxql:select ,field ,@clauses)))
 
 (defmacro insert-into (db table &body clauses)
-  `(execute-sxql ,db sxql:insert-into ,table ,@clauses))
+  `(do-sxql ,db sxql:insert-into ,table ,@clauses))
 
 (defmacro update (db table &body clauses)
-  `(execute-sxql ,db sxql:update ,table ,@clauses))
+  `(do-sxql ,db sxql:update ,table ,@clauses))
 
 (defmacro delete-from (db table &body clauses)
-  `(execute-sxql ,db sxql:delete-from ,table ,@clauses))
+  `(do-sxql ,db sxql:delete-from ,table ,@clauses))
