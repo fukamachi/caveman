@@ -16,7 +16,7 @@
 (defparameter *static-directory*   (merge-pathnames #P"static/" *application-root*))
 (defparameter *template-directory* (merge-pathnames #P"templates/" *application-root*))
 
-(defconfig |default|
+(defconfig :common
   `(:databases ((:maindb :sqlite3 :database-name ":memory:"))))
 
 (defun config (&optional key)
