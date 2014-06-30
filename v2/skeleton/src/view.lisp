@@ -20,6 +20,7 @@
                 :property-list-p
                 :association-list-p)
   (:export :*default-layout-path*
+           :*default-layout-env*
            :render
            :render-json
            :with-layout))
@@ -27,6 +28,8 @@
 
 (defvar *default-layout-directory* #P"layouts/")
 (defvar *default-layout-path* #P"default.tmpl")
+
+(defvar *default-layout-env* '())
 
 (defun render (template-path &optional env)
   (let ((emb:*escape-type* :html)
@@ -56,7 +59,8 @@
         (merge-pathnames ,layout-path
                          *template-directory*)
         :env (list :content (progn ,@body)
-                   ,@env-for-layout)))))
+                   ,@env-for-layout
+                   *default-layout-env*)))))
 
 ;; Define functions that are available in templates.
 (import '(<% @var name %>.config:config
