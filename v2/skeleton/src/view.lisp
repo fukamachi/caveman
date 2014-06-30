@@ -60,5 +60,8 @@
 
 ;; Define functions that are available in templates.
 (import '(<% @var name %>.config:config
+          <% @var name %>.config:appenv
+          <% @var name %>.config:developmentp
+          <% @var name %>.config:productionp
           caveman2:url-for)
         emb:*function-package*)
