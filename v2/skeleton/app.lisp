@@ -13,18 +13,12 @@
   (:import-from :ppcre
                 :scan
                 :regex-replace)
-  (:import-from :osicat
-                :environment-variable)
   (:import-from :<% @var name %>.web
                 :*web*)
   (:import-from :<% @var name %>.config
                 :config
                 :*static-directory*))
 (in-package :<% @var name %>.app)
-
-(symbol-macrolet ((appenv (environment-variable "APP_ENV")))
-  (unless appenv
-    (setf appenv "default")))
 
 (builder
  (<clack-middleware-static>

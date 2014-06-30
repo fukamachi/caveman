@@ -10,7 +10,6 @@
   :depends-on (:clack
                :caveman2
                :envy
-               :osicat
                :cl-ppcre
 
                ;; HTML Template
