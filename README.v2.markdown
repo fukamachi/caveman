@@ -336,21 +336,22 @@ When you add `:databases` to the configuration, Caveman enables database support
      (:workerdb :mysql :database-name "jobs" :username "whoami" :password "1234"))))
 ```
 
-After restarting a server, "Caveman.Middleware.DBIManager" will be enabled. You can use `connect-db` in `defroute`s for connecting to each databases.
+`db` in a package `myapp.db` is a function for connecting to each databases configured the above. Here is an example.
 
 ```common-lisp
-(use-package :caveman2.db)
+(use-package '(:myapp.db :sxql :datafly))
 
 (defun search-adults ()
-  (let ((db (connect-db :maindb)))
-    (select-all db :*
-      (from :person)
-      (where (:>= :age 20)))))
+  (with-connection (db)
+    (retrieve-all
+      (select :*
+        (from :person)
+        (where (:>= :age 20))))))
 ```
 
 The connection is alive during the Lisp session and will be reused in each HTTP requests.
 
-See documentations of [CL-DBI](http://8arrow.org/cl-dbi/) and [SxQL](https://github.com/fukamachi/sxql) for more details.
+`retrieve-all` and the query language came from [datafly](https://github.com/fukamachi/datafly) and [SxQL](https://github.com/fukamachi/sxql). See those documentations for more informations.
 
 ### Set HTTP headers or HTTP status
 

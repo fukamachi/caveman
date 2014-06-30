@@ -8,8 +8,6 @@
                 :<clack-middleware-static>)
   (:import-from :clack.middleware.session
                 :<clack-middleware-session>)
-  (:import-from :caveman.middleware.dbimanager
-                :<caveman-middleware-dbimanager>)
   (:import-from :clack.middleware.backtrace
                 :<clack-middleware-backtrace>)
   (:import-from :ppcre
@@ -40,8 +38,4 @@
                     :output (getf (config) :error-log))
      nil)
  <clack-middleware-session>
- (if (getf (config) :databases)
-     (make-instance '<caveman-middleware-dbimanager>
-                    :database-settings (config :databases))
-     nil)
  *web*)

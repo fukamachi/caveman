@@ -2,9 +2,11 @@
 (defpackage <% @var name %>.web
   (:use :cl
         :caveman2
-        :caveman2.db
         :<% @var name %>.config
-        :<% @var name %>.view)
+        :<% @var name %>.view
+        :<% @var name %>.db
+        :datafly
+        :sxql)
   (:export :*web*))
 (in-package :<% @var name %>.web)
 
