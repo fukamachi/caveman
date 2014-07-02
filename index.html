@@ -21,7 +21,7 @@
           <h1 id="project_title"><img src="images/caveman2-logo@2x.png" width="287px" height="71px" alt="Caveman 2" /></h1>
         </header>
 
-        <p class="available-on-quicklisp"><a href="http://www.quicklisp.org/beta/">Now Available on <span class="quicklisp">Quicklisp</span></a></p>
+        <p class="available-on-quicklisp"><a href="http://www.quicklisp.org/beta/" target="_blank">Now Available on <span class="quicklisp">Quicklisp</span></a></p>
 
         <!--
         <nav>
@@ -52,29 +52,31 @@
           </div>
         </blockquote>
         <p>Common Lisp is the standardized most powerful language with high-performance implementations in the world. It has lexical closures, multi-dispatch object system called CLOS, the metaobject protocol and macros.</p>
-        <p>Caveman2 is written in portable Common Lisp. You don't need to compromise on its language.</p>
+        <p>As Caveman2 is written in portable Common Lisp, you don't need to compromise on its language.</p>
 
         <h3>Server independent</h3>
-        <p>As Caveman2 bases on <a href="http://clacklisp.org/">Clack</a>, your web application works on many web servers without changing any code.</p>
-        <p>It is possible to run an application on <a href="http://weitz.de/hunchentoot/">Hunchentoot</a> during development, and then use a faster backend like <a href="http://www.fastcgi.com/">FastCGI</a> for your production environment.</p>
+        <p>As Caveman2 bases on <a href="http://clacklisp.org/" target="_blank">Clack</a>, your web application works on many web servers without changing any code.</p>
+        <p>It is possible to run an application on <a href="http://weitz.de/hunchentoot/" target="_blank">Hunchentoot</a> during development, and then use a faster backend like <a href="http://www.fastcgi.com/" target="_blank">FastCGI</a> for your production environment.</p>
         <h3>Database integration</h3>
         <p>Are you tired of hearing &ldquo;lightweight&rdquo; or &ldquo;micro&rdquo; web application framework with no database support?</p>
-        <p>Caveman2 provides a database integration feature by default without riding on rails.</p>
-        <pre><code><span style="color:#888">(use-package :caveman2.db)</span>
+        <p>Caveman2 adopts <a href="https://github.com/fukamachi/datafly" target="_blank">datafly</a> as the default database library. Only after adding the database connection setting, it would be ready to use.</p>
+        <pre><code><span style="color:#888">(use-package '(:myapp.db :sxql :datafly))</span>
 
 (defun search-adults ()
-  (let ((db (connect-db :maindb)))
-    (select-all db :*
-      (from :person)
-      (where (:>= :age 20)))))</code></pre>
+  (with-connection (db)
+    (retrieve-all
+      (select :*
+        (from :person)
+        (where (:>= :age 20))))))</code></pre>
+        <p>Datafly also has a powerful feature, &ldquo;Model&rdquo;. See <a href="https://github.com/fukamachi/datafly" target="_blank">the datafly documentation</a> for advanced usage.</p>
         <h3>Fully extensible</h3>
         <p>Caveman2 is designed to not force anything to users. When you find a point you don't like in Caveman2, you can replace it by your favorites in most cases.</p>
-        <p>Do you want to use <a href="http://weitz.de/cl-who/">CL-WHO</a> instead of <a href="http://www.common-lisp.net/project/cl-emb/">CL-EMB</a>? Are you a <a href="http://marijnhaverbeke.nl/postmodern/">Postmodern</a> fan? You can use them with Caveman2.</p>
+        <p>Do you want to use <a href="http://weitz.de/cl-who/" target="_blank">CL-WHO</a> instead of <a href="http://www.common-lisp.net/project/cl-emb/" target="_blank">CL-EMB</a>? Are you a <a href="http://marijnhaverbeke.nl/postmodern/" target="_blank">Postmodern</a> fan? You can use them with Caveman2.</p>
 
       </section>
       <section id="installation" class="inner">
         <h2>Installation</h2>
-        <p>Caveman2 is available on <a href="http://www.quicklisp.org/beta/"><span class="quicklisp">Quicklisp</span></a> since November 11, 2013.</p>
+        <p>Caveman2 is available on <a href="http://www.quicklisp.org/beta/" target="_blank"><span class="quicklisp">Quicklisp</span></a> since November 11, 2013.</p>
         <pre><code>(ql:quickload :caveman2)</code></pre>
       </section>
       <section id="documentation" class="inner">
@@ -88,6 +90,7 @@
           <li><a href="http://www.common-lisp.net/project/cl-emb/">CL-EMB</a> - HTML Templating engine.</li>
           <li><a href="http://8arrow.org/cl-dbi/">CL-DBI</a> - Database independent interface library.</li>
           <li><a href="https://github.com/fukamachi/sxql">SxQL</a> - SQL builder library.</li>
+          <li><a href="https://github.com/fukamachi/datafly">datafly</a> - Lightweight database library.</li>
           <li><a href="https://github.com/fukamachi/envy">Envy</a> - Configuration switcher.</li>
           <li><a href="https://github.com/fukamachi/shelly">Shelly</a> - Script to run Common Lisp from shell.</li>
         </ul>
@@ -105,7 +108,7 @@
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">&copy; <a href="http://8arrow.org/">Eitarow Fukamachi</a></p>
+        <p class="copyright">&copy; <a href="http://8arrow.org/">Eitaro Fukamachi</a></p>
       </footer>
     </div>
 
