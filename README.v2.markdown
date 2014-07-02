@@ -62,12 +62,16 @@ Caveman2 is now available on [Quicklisp](https://www.quicklisp.org/beta/).
 ;-> writing /path/to/myapp/.gitignore
 ;   writing /path/to/myapp/README.markdown
 ;   writing /path/to/myapp/app.lisp
+;   writing /path/to/myapp/db/schema.sql
+;   writing /path/to/myapp/shlyfile.lisp
 ;   writing /path/to/myapp/myapp-test.asd
 ;   writing /path/to/myapp/myapp.asd
 ;   writing /path/to/myapp/src/config.lisp
-;   writing /path/to/myapp/src/myapp.lisp
+;   writing /path/to/myapp/src/db.lisp
+;   writing /path/to/myapp/src/main.lisp
 ;   writing /path/to/myapp/src/view.lisp
 ;   writing /path/to/myapp/src/web.lisp
+;   writing /path/to/myapp/static/css/main.css
 ;   writing /path/to/myapp/t/myapp.lisp
 ;   writing /path/to/myapp/templates/_errors/404.html
 ;   writing /path/to/myapp/templates/index.tmpl
@@ -185,33 +189,41 @@ You can return following formats as the result of `defroute`.
 
 Parameter keys contain square brackets ("[" & "]") will be parsed as structured parameters. You can access the parsed parameters as `_parsed` in routers.
 
-    <form action="/edit">
-      <input type="name" name="person[name]" />
-      <input type="name" name="person[email]" />
-      <input type="name" name="person[birth][year]" />
-      <input type="name" name="person[birth][month]" />
-      <input type="name" name="person[birth][day]" />
-    </form>
-    
-    (defroute "/edit" (&key _parsed)
-      (format nil "~S" (getf _parsed :|person|)))
-    ;=> "(:|name| \"Eitarow\" :|email| \"e.arrows@gmail.com\" :|birth| (:|year| 2000 :|month| 1 :|day| 1))"
+```html
+<form action="/edit">
+  <input type="name" name="person[name]" />
+  <input type="name" name="person[email]" />
+  <input type="name" name="person[birth][year]" />
+  <input type="name" name="person[birth][month]" />
+  <input type="name" name="person[birth][day]" />
+</form>
+```
+
+```common-lisp
+(defroute "/edit" (&key _parsed)
+  (format nil "~S" (getf _parsed :|person|)))
+;=> "(:|name| \"Eitarow\" :|email| \"e.arrows@gmail.com\" :|birth| (:|year| 2000 :|month| 1 :|day| 1))"
+```
 
 Blank keys mean they have multiple values.
 
-    <form action="/add">
-      <input type="text" name="items[][name]" />
-      <input type="text" name="items[][price]" />
-    
-      <input type="text" name="items[][name]" />
-      <input type="text" name="items[][price]" />
-    
-      <input type="submit" value="Add" />
-    </form>
+```html
+<form action="/add">
+  <input type="text" name="items[][name]" />
+  <input type="text" name="items[][price]" />
 
-    (defroute "/add" (&key _parsed)
-      (format nil "~S" (getf _parsed :|items|)))
-    ;=> "((:|name| \"WiiU\" :|price| \"30000\") (:|name| \"PS4\" :|price| \"69000\"))"
+  <input type="text" name="items[][name]" />
+  <input type="text" name="items[][price]" />
+
+  <input type="submit" value="Add" />
+</form>
+```
+
+```common-lisp
+(defroute "/add" (&key _parsed)
+  (format nil "~S" (getf _parsed :|items|)))
+;=> "((:|name| \"WiiU\" :|price| \"30000\") (:|name| \"PS4\" :|price| \"69000\"))"
+```
 
 ### Templates
 
@@ -258,10 +270,10 @@ This is an example of a JSON API.
 ```common-lisp
 (defroute "/user.json" (&key |id|)
   (let ((person (find-person-from-db |id|)))
-    ;; person => (:|name| "Eitarow Fukamachi" :|email| "e.arrows@gmail.com")
+    ;; person => (:|name| "Eitaro Fukamachi" :|email| "e.arrows@gmail.com")
     (render-json person)))
 
-;=> {"name":"Eitarow Fukamachi","email":"e.arrows@gmail.com"}
+;=> {"name":"Eitaro Fukamachi","email":"e.arrows@gmail.com"}
 ```
 
 `render-json` is a part of a skeleton project. You can find its code in "src/view.lisp".
@@ -475,7 +487,7 @@ Caveman outputs error backtraces to a file which is specified at `:error-log` in
 
 (defroute "/" ()
   (xhtml
-    (:head (:title "Welcome to Caveman!))
+    (:head (:title "Welcome to Caveman!"))
     (:body "Blah blah blah.")))
 ;=> "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html><head><title>Welcome to Caveman!</title></head><body>Blah blah blah.</body></html>"
 ```
@@ -570,11 +582,7 @@ In Caveman, add the middleware to `builder` in "PROJECT_ROOT/app.lisp".
 
 ## Author
 
-* Eitarow Fukamachi (e.arrows@gmail.com)
-
-## Copyright
-
-Copyright (c) 2011 Eitarow Fukamachi (e.arrows@gmail.com)
+* Eitaro Fukamachi (e.arrows@gmail.com)
 
 # License
 
