@@ -12,13 +12,8 @@
                 :*case-sensitivity*
                 :*function-package*
                 :execute-emb)
-  (:import-from :yason
-                :encode
-                :encode-plist
-                :encode-alist)
-  (:import-from :trivial-types
-                :property-list-p
-                :association-list-p)
+  (:import-from :datafly
+                :encode-json)
   (:export :*default-layout-path*
            :*default-layout-env*
            :render
@@ -41,11 +36,7 @@
 
 (defun render-json (object)
   (setf (headers *response* :content-type) "application/json")
-  (with-output-to-string (s)
-    (cond
-      ((property-list-p object) (encode-plist object s))
-      ((association-list-p object) (encode-alist object s))
-      (T (encode object s)))))
+  (encode-json object))
 
 (defmacro with-layout ((&rest env-for-layout) &body body)
   (let ((layout-path (merge-pathnames *default-layout-path*

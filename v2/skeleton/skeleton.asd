@@ -15,10 +15,6 @@
                ;; HTML Template
                :cl-emb
 
-               ;; for rendering JSON
-               :yason
-               :trivial-types
-
                ;; for CL-DBI
                :datafly
                :sxql)
