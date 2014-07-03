@@ -10,6 +10,8 @@
                 :<clack-middleware-session>)
   (:import-from :clack.middleware.backtrace
                 :<clack-middleware-backtrace>)
+  (:import-from :clack.middleware.let
+                :<clack-middleware-let>)
   (:import-from :ppcre
                 :scan
                 :regex-replace)
@@ -17,6 +19,7 @@
                 :*web*)
   (:import-from :<% @var name %>.config
                 :config
+                :productionp
                 :*static-directory*))
 (in-package :<% @var name %>.app)
 
@@ -32,4 +35,8 @@
                     :output (getf (config) :error-log))
      nil)
  <clack-middleware-session>
+ (if (productionp)
+     nil
+     (make-instance '<clack-middleware-let>
+                    :bindings '((datafly:*trace-sql* t))))
  *web*)
