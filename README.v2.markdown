@@ -167,6 +167,13 @@ Route patterns may also contain "wildcard" parameters. They are accessible by `s
   ))
 ```
 
+If you'd like to write a regular expression for URL rule, `:regexp t` should work for it.
+
+```common-lisp
+(defroute ("/hello/([\\w]+)" :regexp t) (&key captures)
+  (format nil "Hello, ~A!" (first captures)))
+```
+
 Normally, routes are matched in the order they are defined. Only the first route matched is invoked and rest of them just will be ignored. But, a route can punt processing to the next matching route using `next-route`.
 
 ```common-lisp

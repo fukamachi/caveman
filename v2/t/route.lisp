@@ -5,7 +5,7 @@
         :cl-test-more))
 (in-package :caveman2-test)
 
-(plan 19)
+(plan 22)
 
 (defvar *app*)
 
@@ -50,6 +50,21 @@
                                :request-method :post)))
     '("okay")
     "Named route")
+
+(defroute hello ("/hello/([\\w]+)$" :regexp t) (&key captures)
+  (format nil "Hello, ~A!" (first captures)))
+(is (third (clack:call *app* '(:path-info "/hello/Eitaro"
+                               :request-method :get)))
+    '("Hello, Eitaro!")
+    "Regular expression")
+(is (first (clack:call *app* '(:path-info "/hello/Eitaro&Fukamachi"
+                               :request-method :get)))
+    404
+    "Regular expression")
+(is (first (clack:call *app* '(:path-info "/hello/"
+                               :request-method :get)))
+    404
+    "Regular expression")
 
 (setf *app* (make-instance '<app>))
 (defroute index (*app* "/" :method :get) () "Hello")
