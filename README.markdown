@@ -90,7 +90,7 @@ Route pattern may contain "keyword" to put the value into the argument.
   (format nil "Hello, ~A" (getf params :name)))
 ```
 
-The above controller will be invoked when you access to "/hello/Eitarow" and "/hello/Tomohiro", and then `(getf params :name)` will be "Eitarow" and "Tomohiro".
+The above controller will be invoked when you access to "/hello/Eitaro" and "/hello/Tomohiro", and then `(getf params :name)` will be "Eitaro" and "Tomohiro".
 
 Route patterns may also contain "wildcard" parameters. They are accessible to run `(getf params :splat)`.
 
@@ -133,7 +133,7 @@ Normally, routes are matched in the order they are defined. Only the first route
 ```common-lisp
 @url GET "/guess/:who"
 (defun guess-me (params)
-  (if (string= (getf params :who) "Eitarow")
+  (if (string= (getf params :who) "Eitaro")
       "You got me!"
       (next-route)))
 
@@ -223,7 +223,7 @@ You can access to the configuration plist anywhere, by using `caveman:config`.
 
 ## Author
 
-* Eitarow Fukamachi (e.arrows@gmail.com)
+* Eitaro Fukamachi (e.arrows@gmail.com)
 
 ## Contributors
 
@@ -231,7 +231,7 @@ You can access to the configuration plist anywhere, by using `caveman:config`.
 
 ## Copyright
 
-Copyright (c) 2011 Eitarow Fukamachi
+Copyright (c) 2011 Eitaro Fukamachi
 
 ## License
 

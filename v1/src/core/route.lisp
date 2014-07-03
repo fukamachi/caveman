@@ -1,7 +1,7 @@
 #|
   This file is a part of Caveman package.
   URL: http://github.com/fukamachi/caveman
-  Copyright (c) 2011 Eitarow Fukamachi <e.arrows@gmail.com>
+  Copyright (c) 2011 Eitaro Fukamachi <e.arrows@gmail.com>
 
   Caveman is freely distributable under the LLGPL License.
 |#
@@ -149,5 +149,5 @@ Caveman.Route provides an useful annotation `url' to define a Caveman Action.
 "
 
 @doc:AUTHOR "
-* Eitarow Fukamachi (e.arrows@gmail.com)
+* Eitaro Fukamachi (e.arrows@gmail.com)
 "

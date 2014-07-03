@@ -1,6 +1,6 @@
 #|
   This file is a part of caveman project.
-  Copyright (c) 2013 Eitarow Fukamachi (e.arrows@gmail.com)
+  Copyright (c) Eitaro Fukamachi (e.arrows@gmail.com)
 |#
 
 (in-package :cl-user)
@@ -9,7 +9,7 @@
 (in-package :caveman2-test-asd)
 
 (defsystem caveman2-test
-  :author "Eitarow Fukamachi"
+  :author "Eitaro Fukamachi"
   :license "LLGPL"
   :depends-on (:caveman2
                :cl-fad

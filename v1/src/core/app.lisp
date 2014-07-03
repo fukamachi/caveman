@@ -1,7 +1,7 @@
 #|
   This file is a part of Caveman package.
   URL: http://github.com/fukamachi/caveman
-  Copyright (c) 2011 Eitarow Fukamachi <e.arrows@gmail.com>
+  Copyright (c) 2011 Eitaro Fukamachi <e.arrows@gmail.com>
 
   Caveman is freely distributable under the LLGPL License.
 |#
@@ -116,7 +116,7 @@ Caveman.App provides a base class `<app>' for Caveman Applications.
 "
 
 @doc:AUTHOR "
-* Eitarow Fukamachi (e.arrows@gmail.com)
+* Eitaro Fukamachi (e.arrows@gmail.com)
 "
 
 @doc:SEE "

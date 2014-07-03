@@ -1,7 +1,7 @@
 #|
   This file is a part of Caveman package.
   URL: http://github.com/fukamachi/caveman
-  Copyright (c) 2011 Eitarow Fukamachi <e.arrows@gmail.com>
+  Copyright (c) 2011 Eitaro Fukamachi <e.arrows@gmail.com>
 
   Caveman is freely distributable under the LLGPL License.
 |#
@@ -13,7 +13,7 @@
 
 (defsystem caveman
   :version "12.08.0"
-  :author "Eitarow Fukamachi"
+  :author "Eitaro Fukamachi"
   :license "LLGPL"
   :depends-on (:clack
                :anaphora

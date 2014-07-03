@@ -143,7 +143,7 @@ Route pattern may contain "keyword" to put the value into the argument.
   (format nil "Hello, ~A" name))
 ```
 
-The above controller will be invoked when you access to "/hello/Eitarow" or "/hello/Tomohiro", and then `name` will be "Eitarow" and "Tomohiro".
+The above controller will be invoked when you access to "/hello/Eitaro" or "/hello/Tomohiro", and then `name` will be "Eitaro" and "Tomohiro".
 
 `(&key name)` is almost same as a lambda list of Common Lisp, excepts it always allows other keys.
 
@@ -178,7 +178,7 @@ Normally, routes are matched in the order they are defined. Only the first route
 
 ```common-lisp
 (defroute "/guess/:who" (&key who)
-  (if (string= (getf params :who) "Eitarow")
+  (if (string= (getf params :who) "Eitaro")
       "You got me!"
       (next-route)))
 
@@ -209,7 +209,7 @@ Parameter keys contain square brackets ("[" & "]") will be parsed as structured 
 ```common-lisp
 (defroute "/edit" (&key _parsed)
   (format nil "~S" (getf _parsed :|person|)))
-;=> "(:|name| \"Eitarow\" :|email| \"e.arrows@gmail.com\" :|birth| (:|year| 2000 :|month| 1 :|day| 1))"
+;=> "(:|name| \"Eitaro\" :|email| \"e.arrows@gmail.com\" :|birth| (:|year| 2000 :|month| 1 :|day| 1))"
 ```
 
 Blank keys mean they have multiple values.

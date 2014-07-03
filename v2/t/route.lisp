@@ -115,22 +115,22 @@
     '("I have no name yet.")
     "@route")
 (is (third (clack:call *app* '(:path-info "/myname"
-                               :query-string "name=Eitarow"
+                               :query-string "name=Eitaro"
                                :request-method :get)))
-    '("My name is Eitarow.")
+    '("My name is Eitaro.")
     "@route")
 (is (third (clack:call *app* '(:path-info "/hello"
                                :request-method :get)))
     '("Hello, Guest")
     "@route")
-(is (third (clack:call *app* '(:path-info "/hello/Eitarow"
+(is (third (clack:call *app* '(:path-info "/hello/Eitaro"
                                :request-method :get)))
-    '("Hello, Eitarow")
+    '("Hello, Eitaro")
     "@route")
-(is (third (clack:call *app* '(:path-info "/hello/Eitarow"
+(is (third (clack:call *app* '(:path-info "/hello/Eitaro"
                                :query-string "id=12345"
                                :request-method :get)))
-    '("Hello, Eitarow")
+    '("Hello, Eitaro")
     "@route")
 
 (defroute add-item (*app* "/post" :method :post) (&key _parsed)

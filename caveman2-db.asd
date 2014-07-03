@@ -5,7 +5,7 @@
 
 (defsystem caveman2-db
   :version "0.1"
-  :author "Eitarow Fukamachi"
+  :author "Eitaro Fukamachi"
   :license "LLGPL"
   :depends-on (:caveman-middleware-dbimanager
                :dbi

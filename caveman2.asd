@@ -1,12 +1,12 @@
 #|
   This file is a part of caveman project.
-  Copyright (c) 2011 Eitarow Fukamachi (e.arrows@gmail.com)
+  Copyright (c) Eitaro Fukamachi (e.arrows@gmail.com)
 |#
 
 #|
   Lightweight web application framework
 
-  Author: Eitarow Fukamachi (e.arrows@gmail.com)
+  Author: Eitaro Fukamachi (e.arrows@gmail.com)
 |#
 
 (in-package :cl-user)
@@ -16,7 +16,7 @@
 
 (defsystem caveman2
   :version "2.1.1"
-  :author "Eitarow Fukamachi"
+  :author "Eitaro Fukamachi"
   :license "LLGPL"
   :depends-on (:ningle
                :cl-project

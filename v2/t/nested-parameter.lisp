@@ -57,16 +57,16 @@
     nil
     "NIL")
 
-(is-params '(:|name| "Eitarow" :|age| 26)
-           '(:|name| "Eitarow" :|age| 26)
+(is-params '(:|name| "Eitaro" :|age| 26)
+           '(:|name| "Eitaro" :|age| 26)
            "Not-nested case")
 
-(is-params '(:|friend_id[]| 1 :|friend_id[]| 2 :|age| 26 :|me[name]| "Eitarow")
-           '(:|friend_id| (1 2) :|age| 26 :|me| (:|name| "Eitarow"))
+(is-params '(:|friend_id[]| 1 :|friend_id[]| 2 :|age| 26 :|me[name]| "Eitaro")
+           '(:|friend_id| (1 2) :|age| 26 :|me| (:|name| "Eitaro"))
            "Normal case")
 
-(is-params '(:|me[name]| "Eitarow" :|me[birthday][year]| 1987 :|me[birthday][month]| 13)
-           '(:|me| (:|name| "Eitarow" :|birthday| (:|year| 1987 :|month| 13)))
+(is-params '(:|me[name]| "Eitaro" :|me[birthday][year]| 1987 :|me[birthday][month]| 13)
+           '(:|me| (:|name| "Eitaro" :|birthday| (:|year| 1987 :|month| 13)))
            "Nested case")
 
 (is-params '(:|Check[date]| "2013/11/05"
@@ -97,15 +97,15 @@
              :|submit| "Save")
            "Multiple records")
 
-(is-params '(:|name[| "Eitarow" :|age| 26)
-           '(:|name[| "Eitarow" :|age| 26)
+(is-params '(:|name[| "Eitaro" :|age| 26)
+           '(:|name[| "Eitaro" :|age| 26)
            "Invalid key name")
-(is-params'(:|name]| "Eitarow" :|age| 26)
-          '(:|name]| "Eitarow" :|age| 26)
+(is-params'(:|name]| "Eitaro" :|age| 26)
+          '(:|name]| "Eitaro" :|age| 26)
           "Invalid key name")
 
-(is-params '(:|my name[family]| "Eitarow" :|age| 26)
-           '(:|my name| (:|family| "Eitarow") :|age| 26)
+(is-params '(:|my name[family]| "Eitaro" :|age| 26)
+           '(:|my name| (:|family| "Eitaro") :|age| 26)
            "Key name contains a space")
 
 (is-params'(:|item [game] type| "Hardware")
