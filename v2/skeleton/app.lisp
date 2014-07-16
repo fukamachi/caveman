@@ -10,6 +10,8 @@
                 :<clack-middleware-static>)
   (:import-from :clack.middleware.session
                 :<clack-middleware-session>)
+  (:import-from :clack.middleware.accesslog
+                :<clack-middleware-accesslog>)
   (:import-from :clack.middleware.backtrace
                 :<clack-middleware-backtrace>)
   (:import-from :ppcre
@@ -30,6 +32,9 @@
               path
               nil))
   :root *static-directory*)
+ (if (productionp)
+     nil
+     (make-instance '<clack-middleware-accesslog>))
  (if (getf (config) :error-log)
      (make-instance '<clack-middleware-backtrace>
                     :output (getf (config) :error-log))
