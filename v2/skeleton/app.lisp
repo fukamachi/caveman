@@ -2,6 +2,8 @@
 
 (defpackage <% @var name %>.app
   (:use :cl)
+  (:import-from :clack
+                :call)
   (:import-from :clack.builder
                 :builder)
   (:import-from :clack.middleware.static
@@ -10,8 +12,6 @@
                 :<clack-middleware-session>)
   (:import-from :clack.middleware.backtrace
                 :<clack-middleware-backtrace>)
-  (:import-from :clack.middleware.let
-                :<clack-middleware-let>)
   (:import-from :ppcre
                 :scan
                 :regex-replace)
@@ -37,6 +37,8 @@
  <clack-middleware-session>
  (if (productionp)
      nil
-     (make-instance '<clack-middleware-let>
-                    :bindings '((datafly:*trace-sql* t))))
+     (lambda (app)
+       (lambda (env)
+         (let ((datafly:*trace-sql* t))
+           (call app env)))))
  *web*)
