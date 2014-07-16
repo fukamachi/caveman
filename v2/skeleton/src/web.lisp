@@ -14,7 +14,8 @@
 ;; Application
 
 (defclass <web> (<app>) ())
-(defparameter *web* (make-instance '<web>))
+(defvar *web* (make-instance '<web>))
+(clear-routing-rules *web*)
 
 ;;
 ;; Routing rules

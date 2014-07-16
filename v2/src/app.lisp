@@ -12,6 +12,7 @@
                 :headers)
   (:import-from :ningle
                 :next-route
+                :clear-routing-rules
                 :*context*
                 :*request*
                 :*response*
@@ -23,6 +24,7 @@
                 :not-found)
   (:export :<app>
            :next-route
+           :clear-routing-rules
            :*current-app*
            :*context*
            :*request*

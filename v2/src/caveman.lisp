@@ -9,6 +9,7 @@
   (:import-from :caveman2.app
                 :<app>
                 :next-route
+                :clear-routing-rules
                 :*context*
                 :*request*
                 :*response*
@@ -56,6 +57,7 @@
            :route
            :<app>
            :next-route
+           :clear-routing-rules
            :redirect
            :url-for
            :*context*
