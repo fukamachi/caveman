@@ -401,9 +401,41 @@ If you would like to set Content-Type "application/json" for all "*.json" reques
 (defroute ("/new.json" :method :POST) () ...)
 ```
 
-### Use session
+### Using session
 
 Session data is for memorizing user-specific data. `*session*` is a hash table represents session data.
+
+This example increments `:counter` in the session and displays it for each visitors.
+
+```common-lisp
+(defroute "/counter ()
+  (format nil "You came here ~A times."
+          (incf (gethash :counter *session* 0))))
+```
+
+Caveman2 stores the session data in-memory by default. To change it, specify `:store` to `<clack-middleware-session>` in "PROJECT_ROOT/app.lisp".
+
+This example uses RDBMS to store it.
+
+```diff
+      (make-instance '<clack-middleware-backtrace>
+                     :output (getf (config) :error-log))
+      nil)
+- <clack-middleware-session>
++ (<clack-middleware-session>
++  :store (make-instance 'clack.session.store.dbi:<clack-session-store-dbi>
++                        :connect-args (myapp.db:connection-settings)))
++
+  (if (productionp)
+      nil
+      (lambda (app)
+```
+
+NOTE: Don't forget to add `:clack-session-store-dbi` as `:depends-on` of your app. It is not a part of Clack.
+
+See the documentation of Clack.Session.Store.DBi for more informations.
+
+- [Clack.Session.Store.Dbi](http://quickdocs.org/clack/api#system-clack-session-store-dbi)
 
 ### Throw an HTTP status code
 
