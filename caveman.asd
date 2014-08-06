@@ -63,3 +63,6 @@
           (setf (fill-pointer seq) (read-sequence seq stream))
           seq)))
   :in-order-to ((test-op (test-op caveman-test))))
+
+(defmethod asdf:perform :after ((op asdf:load-op) (system (eql (asdf:find-system :caveman))))
+  (warn "\"caveman\" is deprecated now. Did you mean \"caveman2\"?"))
