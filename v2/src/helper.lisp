@@ -8,8 +8,8 @@
                 :routing-rule-identifier
                 :routing-rule-url-rule
                 :routing-rules)
-  (:import-from :clack.util.hunchentoot
-                :url-encode)
+  (:import-from :do-urlencode
+                :urlencode)
   (:export :redirect
            :url-for))
 (in-package :caveman2.helper)
@@ -23,8 +23,8 @@
     (return-from add-query-parameters base-url))
   (loop for (name value) on params by #'cddr
         collect (format nil "~A=~A"
-                        (url-encode (princ-to-string name))
-                        (url-encode (princ-to-string value)))
+                        (urlencode (princ-to-string name))
+                        (urlencode (princ-to-string value)))
         into parts
         finally
      (return

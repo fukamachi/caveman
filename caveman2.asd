@@ -21,7 +21,8 @@
   :depends-on (:ningle
                :cl-project
                :dbi
-               :cl-annot)
+               :cl-annot
+               :do-urlencode)
   :components ((:module "v2/src"
                 :components
                 ((:file "caveman" :depends-on ("app" "route" "helper" "skeleton"))

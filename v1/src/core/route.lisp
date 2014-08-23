@@ -15,8 +15,8 @@
   (:import-from :clack.util
                 :getf*
                 :remf*)
-  (:import-from :clack.util.hunchentoot
-                :url-encode)
+  (:import-from :do-urlencode
+                :urlencode)
   (:import-from :clack.util.route
                 :make-url-rule)
   (:import-from :cl-annot.util
@@ -93,8 +93,8 @@ Example:
     (return-from add-query-parameters base-url))
   (loop for (name value) on params by #'cddr
         collect (format nil "~A=~A"
-                        (url-encode (princ-to-string name))
-                        (url-encode (princ-to-string value)))
+                        (urlencode (princ-to-string name))
+                        (urlencode (princ-to-string value)))
         into parts
         finally
      (return
