@@ -595,7 +595,7 @@ In Caveman, add the middleware to `builder` in "PROJECT_ROOT/app.lisp".
 
 ```common-lisp
 (ql:quickload :clack-middleware-postmodern)
-(import 'clack.middleware.clsql:<clack-middleware-postmodern>)
+(import 'clack.middleware.postmodern:<clack-middleware-postmodern>)
 
 (builder
  (<clack-middleware-postmodern>
