@@ -408,7 +408,7 @@ Session data is for memorizing user-specific data. `*session*` is a hash table r
 This example increments `:counter` in the session and displays it for each visitors.
 
 ```common-lisp
-(defroute "/counter ()
+(defroute "/counter" ()
   (format nil "You came here ~A times."
           (incf (gethash :counter *session* 0))))
 ```
