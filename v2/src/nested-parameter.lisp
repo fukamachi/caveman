@@ -4,21 +4,19 @@
   (:export :parse-parameters))
 (in-package :caveman2.nested-parameter)
 
-(defun parse-parameters (params-plist)
-  (let ((params (make-hash-table :test 'eq)))
+(defun parse-parameters (params-alist)
+  (let ((params (make-hash-table :test 'equal)))
     (labels ((process (key val)
-               (declare (optimize speed)
-                        (type keyword key))
-               (let* ((keyname (symbol-name key))
-                      (keys (if (char= (aref keyname (1- (length keyname))) #\])
-                                (parse-key keyname)
-                                (list key))))
+               (declare (optimize speed))
+               (let ((keys (if (char= (aref key (1- (length key))) #\])
+                               (parse-key key)
+                               (list key))))
                  (if (cdr keys)
                      (build-val keys val params)
                      (setf (gethash (car keys) params) val)))))
-      (loop for (key val) on params-plist by #'cddr
+      (loop for (key . val) in params-alist
             do (process key val)))
-    (expand-to-plist params)))
+    (expand-to-alist params)))
 
 (defun build-val (nested-keys val current)
   (etypecase current
@@ -35,7 +33,7 @@
            (setf (gethash key current)
                  (if (string= (car nested-keys) "")
                      (make-array 0 :adjustable t :fill-pointer t)
-                     (make-hash-table :test 'eq))))
+                     (make-hash-table :test 'equal))))
          (build-val nested-keys val
                     (gethash key current))))))
 
@@ -52,11 +50,11 @@
            (build-val nested-keys val next))
          (progn
            (when (= (length current) 0)
-             (vector-push-extend (make-hash-table :test 'eq)
+             (vector-push-extend (make-hash-table :test 'equal)
                                  current))
            (let ((next (aref current (1- (length current)))))
              (when (nth-value 1 (gethash (car nested-keys) next))
-               (setf next (make-hash-table :test 'eq))
+               (setf next (make-hash-table :test 'equal))
                (vector-push-extend next current))
              (build-val nested-keys val next)))))))
 
@@ -65,7 +63,7 @@
         for (nested-key new-pos) = (multiple-value-list (peek-key key pos))
         while nested-key
         do (setf pos new-pos)
-        collect (intern nested-key :keyword)))
+        collect nested-key))
 
 (declaim (inline peek-key))
 (declaim (ftype (function (string integer) t) peek-key))
@@ -90,12 +88,12 @@
             (values (subseq string start)
                     (length string))))))
 
-(defun expand-to-plist (obj)
+(defun expand-to-alist (obj)
   (typecase obj
     (hash-table (loop for k being the hash-keys in obj using (hash-value v)
-                      append (list k (expand-to-plist v))))
+                      collect (cons k (expand-to-alist v))))
     ((and array
           (not string))
      (loop for a across obj
-           collect (expand-to-plist a)))
+           collect (expand-to-alist a)))
     (T obj)))

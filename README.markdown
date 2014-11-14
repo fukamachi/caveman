@@ -178,7 +178,7 @@ Normally, routes are matched in the order they are defined. Only the first route
 
 ```common-lisp
 (defroute "/guess/:who" (&key who)
-  (if (string= (getf params :who) "Eitaro")
+  (if (string= who "Eitaro")
       "You got me!"
       (next-route)))
 
@@ -208,8 +208,8 @@ Parameter keys contain square brackets ("[" & "]") will be parsed as structured 
 
 ```common-lisp
 (defroute "/edit" (&key _parsed)
-  (format nil "~S" (getf _parsed :|person|)))
-;=> "(:|name| \"Eitaro\" :|email| \"e.arrows@gmail.com\" :|birth| (:|year| 2000 :|month| 1 :|day| 1))"
+  (format nil "~S" (cdr (assoc "person" _parsed :test #'string=))))
+;=> "((\"name\" . \"Eitaro\") (\"email\" . \"e.arrows@gmail.com\") (\"birth\" . ((\"year\" . 2000) (\"month\" . 1) (\"day\" . 1))))"
 ```
 
 Blank keys mean they have multiple values.
@@ -228,8 +228,8 @@ Blank keys mean they have multiple values.
 
 ```common-lisp
 (defroute "/add" (&key _parsed)
-  (format nil "~S" (getf _parsed :|items|)))
-;=> "((:|name| \"WiiU\" :|price| \"30000\") (:|name| \"PS4\" :|price| \"69000\"))"
+  (format nil "~S" (assoc "items" _parsed :test #'string=)))
+;=> "(((\"name\" . \"WiiU\") (\"price\" . \"30000\")) ((\"name\" . \"PS4\") (\"price\" . \"69000\")))"
 ```
 
 ### Templates

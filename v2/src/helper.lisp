@@ -5,9 +5,11 @@
                 :*current-app*
                 :*response*)
   (:import-from :ningle.app
-                :routing-rule-identifier
-                :routing-rule-url-rule
-                :routing-rules)
+                :mapper)
+  (:import-from :myway
+                :mapper-routes
+                :route-name
+                :url-for)
   (:import-from :do-urlencode
                 :urlencode)
   (:export :redirect
@@ -35,11 +37,11 @@
                  params-string)))))
 
 (defun url-for (route-name &rest params)
-  (let ((routing-rule (find-if #'(lambda (rule)
-                                   (string-equal (routing-rule-identifier rule) route-name))
-                               (routing-rules *current-app*))))
-    (if routing-rule
+  (let ((route (find-if #'(lambda (route)
+                            (string-equal (route-name route) route-name))
+                        (mapper-routes (mapper *current-app*)))))
+    (if route
         (multiple-value-bind (base-url rest-params)
-            (clack.util.route:url-for (routing-rule-url-rule routing-rule) params)
+            (url-for route params)
           (add-query-parameters base-url rest-params))
         (error "No route found for ~S" route-name))))
