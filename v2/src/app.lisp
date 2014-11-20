@@ -41,12 +41,13 @@
 
 (defclass <app> (ningle:<app>) ())
 
-(let ((package-app-map (make-hash-table :test 'eq)))
-  (defmethod initialize-instance :after ((app <app>) &key)
-    (setf (gethash *package* package-app-map) app))
+(defvar *package-app-map* (make-hash-table :test 'eq))
 
-  (defun find-package-app (package)
-    (gethash package package-app-map)))
+(defmethod initialize-instance :after ((app <app>) &key)
+  (setf (gethash *package* *package-app-map*) app))
+
+(defun find-package-app (package)
+  (gethash package *package-app-map*))
 
 (defmethod call ((this <app>) env)
   (declare (ignore env))
