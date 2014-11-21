@@ -16,6 +16,7 @@
   :author "Eitaro Fukamachi"
   :license "LLGPL"
   :depends-on (:clack
+               :myway
                :anaphora
                :cl-ppcre
                :cl-syntax

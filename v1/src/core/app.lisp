@@ -12,8 +12,8 @@
         :clack
         :caveman.middleware.context
         :anaphora)
-  (:import-from :clack.util.route
-                :match)
+  (:import-from :myway.rule
+                :match-rule)
   (:import-from :caveman.context
                 :*request*
                 :*response*)
@@ -57,13 +57,13 @@
         @ignore _
         (let ((*next-route-function* #'(lambda () (dispatch-with-rules other-rules))))
           (multiple-value-bind (_ params)
-              (match url-rule method path-info :allow-head t)
+              (match-rule url-rule method path-info :allow-head t)
             @ignore _
-            (setf (slot-value req 'clack.request::query-parameters)
-                  (append
-                   params
-                   (slot-value req 'clack.request::query-parameters)))
-            (funcall fn (parameter req))))))
+            (funcall fn
+                     (nconc
+                      params
+                      (loop for (k . v) in (clack.request:parameter req)
+                            append (list (intern k :keyword) v))))))))
      (t (not-found)))))
 
 @export
@@ -95,7 +95,7 @@
 
 (defun member-rule (path-info method rules &key allow-head)
   (member-if #'(lambda (rule)
-                 (match rule method path-info :allow-head allow-head))
+                 (match-rule rule method path-info :allow-head allow-head))
              rules
              :key #'cadr))
 

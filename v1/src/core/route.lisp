@@ -17,8 +17,9 @@
                 :remf*)
   (:import-from :do-urlencode
                 :urlencode)
-  (:import-from :clack.util.route
-                :make-url-rule)
+  (:import-from :myway.rule
+                :make-rule
+                :rule-url-for)
   (:import-from :cl-annot.util
                 :progn-form-last
                 :definition-form-symbol
@@ -80,7 +81,7 @@ Example:
          (req (gensym "REQ")))
     `(list
       ',symbol
-      (make-url-rule ,url-rule :method ',method)
+      (make-rule ,url-rule :method ,(intern (string method) :keyword))
       #'(lambda (,req)
           (call ,(if (eq type 'defclass)
                      `(make-instance ',symbol)
@@ -122,7 +123,7 @@ Example:
     (unless route
       (error "Route not found for ~A" symbol))
     (multiple-value-bind (base-url rest-params)
-        (clack.util.route:url-for (second route) params)
+        (rule-url-for (second route) params)
       (add-query-parameters base-url rest-params))))
 
 (doc:start)
