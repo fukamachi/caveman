@@ -2,7 +2,7 @@
 (defpackage <% @var name %>-test
   (:use :cl
         :<% @var name %>
-        :cl-test-more))
+        :prove))
 (in-package :<% @var name %>-test)
 
 (plan nil)

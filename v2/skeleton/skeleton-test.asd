@@ -7,7 +7,7 @@
   :author "<% @var author %>"
   :license "<% @var license %>"
   :depends-on (:<% @var name %>
-               :cl-test-more)
+               :prove)
   :components ((:module "t"
                 :components
                 ((:file "<% @var name %>"))))
