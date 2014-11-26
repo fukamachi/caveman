@@ -15,7 +15,7 @@
                ;; HTML Template
                :cl-emb
 
-               ;; for CL-DBI
+               ;; for DB
                :datafly
                :sxql)
   :components ((:module "src"
