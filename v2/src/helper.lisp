@@ -9,7 +9,7 @@
   (:import-from :myway
                 :mapper-routes
                 :route-name
-                :url-for)
+                #+nil :url-for)
   (:import-from :do-urlencode
                 :urlencode)
   (:export :redirect
@@ -42,6 +42,6 @@
                         (mapper-routes (mapper *current-app*)))))
     (if route
         (multiple-value-bind (base-url rest-params)
-            (url-for route params)
+            (myway:url-for route params)
           (add-query-parameters base-url rest-params))
         (error "No route found for ~S" route-name))))
