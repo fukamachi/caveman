@@ -22,8 +22,7 @@
                :cl-project
                :dbi
                :cl-syntax-annot
-               :myway
-               :do-urlencode)
+               :myway)
   :components ((:module "v2/src"
                 :components
                 ((:file "caveman" :depends-on ("app" "route" "helper" "skeleton"))
