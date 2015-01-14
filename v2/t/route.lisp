@@ -172,20 +172,28 @@
     "@route")
 
 (defroute add-item (*app* "/post" :method :post) (&key _parsed)
-  (format nil "~S" (cdr (assoc "items" _parsed :test #'string=))))
+  (with-output-to-string (s)
+    (loop for item in (cdr (assoc "items" _parsed :test #'string=))
+          do (format s "~&name:~S / price:~S~%"
+                     (cdr (assoc "name" item :test #'string=))
+                     (cdr (assoc "price" item :test #'string=))))))
 
 (is (third (clack:call *app* '(:path-info "/post"
                                :query-string "items[][name]=WiiU&items[][price]=30000&items[][name]=PS4&items[][price]=69000"
                                :raw-body (flex:make-in-memory-input-stream #())
                                :request-method :post)))
-    '("(((\"name\" . \"WiiU\") (\"price\" . \"30000\")) ((\"name\" . \"PS4\") (\"price\" . \"69000\")))")
+    '("name:\"WiiU\" / price:\"30000\"
+name:\"PS4\" / price:\"69000\"
+")
     "@route")
 
 (is (third (clack:call *app* '(:path-info "/post"
                                :query-string "_PARSED=&items[][name]=WiiU&items[][price]=30000&items[][name]=PS4&items[][price]=69000"
                                :raw-body (flex:make-in-memory-input-stream #())
                                :request-method :post)))
-    '("(((\"name\" . \"WiiU\") (\"price\" . \"30000\")) ((\"name\" . \"PS4\") (\"price\" . \"69000\")))")
+    '("name:\"WiiU\" / price:\"30000\"
+name:\"PS4\" / price:\"69000\"
+")
     "@route")
 
 (finalize)
