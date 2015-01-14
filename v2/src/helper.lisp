@@ -10,8 +10,6 @@
                 :mapper-routes
                 :route-name
                 #+nil :url-for)
-  (:import-from :do-urlencode
-                :urlencode)
   (:export :redirect
            :url-for))
 (in-package :caveman2.helper)
