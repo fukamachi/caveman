@@ -102,7 +102,7 @@
     '("Hello again")
     "Full")
 
-(cl-annot:enable-annot-syntax)
+(syntax:use-syntax :annot)
 
 (setf *app* (make-instance '<app>))
 
