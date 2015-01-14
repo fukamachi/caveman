@@ -1,9 +1,9 @@
 (in-package :cl-user)
-(defpackage caveman2-test
+(defpackage caveman2-test.route
   (:use :cl
         :caveman2
         :cl-test-more))
-(in-package :caveman2-test)
+(in-package :caveman2-test.route)
 
 (plan 22)
 
