@@ -12,6 +12,9 @@
                :envy
                :cl-ppcre
 
+               ;; for @route annotation
+               :cl-syntax-annot
+
                ;; HTML Template
                :cl-emb
 
