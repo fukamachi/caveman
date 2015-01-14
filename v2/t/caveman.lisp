@@ -44,7 +44,8 @@
 
   (caveman2:make-project *project-root*)
   (load (merge-pathnames (format nil "~A.asd" *app-name*) *project-root*))
-  (asdf:load-system *app-name*)
+  #+quicklisp (ql:quickload *app-name*)
+  #-quicklisp (asdf:load-system *app-name*)
 
   (let* ((port (find-port-not-in-use)))
     (ok (funcall (intern #.(string :start) (string-upcase *app-name*)) :port port))
