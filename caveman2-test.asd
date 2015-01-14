@@ -15,7 +15,7 @@
                :cl-fad
                :usocket
                :drakma
-               :cl-test-more
+               :prove
                :trivial-types)
   :components ((:module "v2/t"
                 :serial t
@@ -24,8 +24,7 @@
                  (:test-file "route")
                  (:test-file "nested-parameter"))))
 
-  :defsystem-depends-on (:cl-test-more)
+  :defsystem-depends-on (:prove-asdf)
   :perform (test-op :after (op c)
-                    (funcall (intern #. (string :run-test-system) :cl-test-more)
-                             c)
-                    (asdf:clear-system c)))
+                    (funcall (intern #.(string :run-test-system) :prove.asdf)
+                             c)))
