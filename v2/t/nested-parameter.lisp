@@ -42,9 +42,10 @@
              collect k)
        :test #'equal)))
     ((and (association-list-p a)
-          (association-list-p b))
-     (loop for (a-key . a-val) in a
-           for (b-key . b-val) in b
+          (association-list-p b)
+          (not (listp (caar a))))
+     (loop for (a-key . a-val) in (sort (copy-list a) #'string< :key #'car)
+           for (b-key . b-val) in (sort (copy-list b) #'string< :key #'car)
            unless (and (equal-content-p a-key b-key)
                        (equal-content-p a-val b-val))
              do (return-from equal-content-p nil))
@@ -114,7 +115,7 @@
           "Invalid key name")
 
 (is-params '(("my name[family]" . "Eitaro") ("age" . 26))
-           '(("my name" . (("family" . "Eitaro") ("age" . 26))))
+           '(("my name" . (("family" . "Eitaro"))) ("age" . 26))
            "Key name contains a space")
 
 (is-params '(("item [game] type" . "Hardware"))
