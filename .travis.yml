@@ -11,7 +11,8 @@ install:
   - curl https://raw.githubusercontent.com/luismbo/cl-travis/master/install.sh | bash
 
 before_script:
+  - git clone https://github.com/fukamachi/quri ~/lisp/quri
   - git clone https://github.com/fukamachi/clack ~/lisp/clack
 
 script:
-  - cl -l prove -e '(setf prove:*debug-on-error* t)' -e '(or (prove:run :caveman2-test) (uiop:quit -1))'
+  - cl -l prove -e '(or (prove:run :caveman2-test) (uiop:quit -1))'
