@@ -47,6 +47,7 @@
   #+quicklisp (ql:quickload *app-name*)
   #-quicklisp (asdf:load-system *app-name*)
 
+  #+thread-support
   (let* ((port (find-port-not-in-use)))
     (ok (funcall (intern #.(string :start) (string-upcase *app-name*)) :port port))
     (multiple-value-bind (body status)
@@ -54,7 +55,9 @@
                                      port))
       (is status 200)
       (like body "Welcome to Caveman2"))
-    (ok (funcall (intern #.(string :stop) (string-upcase *app-name*))))))
+    (ok (funcall (intern #.(string :stop) (string-upcase *app-name*)))))
+  #-thread-support
+  (skip 4 "because your Lisp doesn't support threads"))
 
 (delete-package *cl-emb-intern-package-name*)
 
