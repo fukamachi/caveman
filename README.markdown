@@ -1,5 +1,7 @@
 # Caveman2 - Lightweight web application framework
 
+[![Build Status](https://travis-ci.org/fukamachi/caveman.svg?branch=master)](https://travis-ci.org/fukamachi/caveman)
+
 ## Usage
 
 ```common-lisp
