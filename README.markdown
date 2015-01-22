@@ -257,19 +257,19 @@ Caveman adopts [CL-EMB](http://www.common-lisp.net/project/cl-emb/) for the defa
 (import 'myapp.view:render)
 
 (render #P"users.tmpl"
-        :users (list ...)
-        :has-next-page T)
+        (list :users (list ...)
+              :has-next-page T))
 ```
 
 ```common-lisp
 (with-layout (:title "User List | MyApp")
   (render #P"users.tmpl"
-          :users (list ...)
-          :has-next-page T))
+          (list :users (list ...)
+                :has-next-page T)))
 
 (with-layout (#P"layout.tmpl" :title "User List | MyApp")
   (render #P"index.tmpl"
-          :visitor user))
+          `(:visitor ,user)))
 ```
 
 ### JSON API
