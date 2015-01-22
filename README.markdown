@@ -236,40 +236,31 @@ Blank keys mean they have multiple values.
 
 ### Templates
 
-Caveman adopts [CL-EMB](http://www.common-lisp.net/project/cl-emb/) for the default templating engine.
+Caveman adopts [Djula](http://mmontone.github.io/djula/) for the default templating engine.
 
 ```html
-<html>
-  <head>
-    <title><% @var title %></title>
-  </head>
-  <body>
-    <ul>
-      <% @loop users %>
-      <li><% @var name %></li>
-      <% @endloop %>
-    </ul>
-  </body>
-</html>
+{% extends "layouts/default.html" %}
+{% block title %}Users | MyApp{% endblock %}
+{% block content %}
+<div id="main">
+  <ul>
+  {% for user in users %}
+    <li><a href="{{ user.url }}">{{ user.name }}</a></li>
+  {% endfor %}
+  </ul>
+</div>
+{% endblock %}
 ```
 
 ```common-lisp
 (import 'myapp.view:render)
 
-(render #P"users.tmpl"
-        (list :users (list ...)
-              :has-next-page T))
-```
-
-```common-lisp
-(with-layout (:title "User List | MyApp")
-  (render #P"users.tmpl"
-          (list :users (list ...)
-                :has-next-page T)))
-
-(with-layout (#P"layout.tmpl" :title "User List | MyApp")
-  (render #P"index.tmpl"
-          `(:visitor ,user)))
+(render #P"users.html"
+        '(:users ((:url "/id/1"
+                   :name "nitro_idiot")
+                  (:url "/id/2"
+                   :name "meymao"))
+          :has-next-page T))
 ```
 
 ### JSON API
@@ -615,7 +606,7 @@ In Caveman, add the middleware to `builder` in "PROJECT_ROOT/app.lisp".
 
 * [Clack](http://clacklisp.org/) - Web application environment.
 * [ningle](http://8arrow.org/ningle/) - Super micro web application framework Caveman bases on.
-* [CL-EMB](http://www.common-lisp.net/project/cl-emb/) - HTML Templating engine.
+* [Djula](http://mmontone.github.io/djula/) - HTML Templating engine.
 * [CL-DBI](http://8arrow.org/cl-dbi/) - Database independent interface library.
 * [SxQL](http://8arrow.org/sxql/) - SQL builder library.
 * [Envy](https://github.com/fukamachi/envy) - Configuration switcher.

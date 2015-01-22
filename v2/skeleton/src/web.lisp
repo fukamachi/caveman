@@ -24,8 +24,7 @@
 ;; Routing rules
 
 (defroute "/" ()
-  (with-layout (:title "Welcome to Caveman2")
-    (render #P"index.tmpl")))
+  (render #P"index.html"))
 
 ;;
 ;; Error pages

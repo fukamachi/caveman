@@ -2,10 +2,10 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title><%= "<% @var title %\>" %></title>
+  <title>{% block title %}{% endblock %}</title>
   <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css">
 </head>
 <body>
-<%= "<% @var content -escape raw %\>" %>
+  {% block content %}{% endblock %}
 </body>
 </html>
