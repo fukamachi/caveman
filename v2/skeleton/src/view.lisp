@@ -7,56 +7,46 @@
                 :*response*)
   (:import-from :clack.response
                 :headers)
-  (:import-from :cl-emb
-                :*escape-type*
-                :*case-sensitivity*
-                :*function-package*
-                :execute-emb)
+  (:import-from :djula
+                :add-template-directory
+                :compile-template*
+                :render-template*
+                :*djula-execute-package*)
   (:import-from :datafly
                 :encode-json)
-  (:export :*default-layout-path*
-           :*default-layout-env*
-           :render
-           :render-json
-           :with-layout))
+  (:export :render
+           :render-json))
 (in-package :<% @var name %>.view)
 
-(defvar *default-layout-directory* #P"layouts/")
-(defvar *default-layout-path* #P"default.tmpl")
+(djula:add-template-directory *template-directory*)
 
-(defvar *default-layout-env* '())
+(defparameter *template-registry* (make-hash-table :test 'equal))
 
 (defun render (template-path &optional env)
-  (let ((emb:*escape-type* :html)
-        (emb:*case-sensitivity* nil))
-    (emb:execute-emb
-     (merge-pathnames template-path
-                      *template-directory*)
-     :env env)))
+  (let ((template (gethash template-path *template-registry*)))
+    (unless template
+      (setf template (djula:compile-template* (princ-to-string template-path)))
+      (setf (gethash template-path *template-registry*) template))
+    (apply #'djula:render-template*
+           template nil
+           env)))
 
 (defun render-json (object)
   (setf (headers *response* :content-type) "application/json")
   (encode-json object))
 
-(defmacro with-layout ((&rest env-for-layout) &body body)
-  (let ((layout-path (merge-pathnames *default-layout-path*
-                                      *default-layout-directory*)))
-    (when (pathnamep (car env-for-layout))
-      (setf layout-path (pop env-for-layout)))
 
-    `(let ((emb:*escape-type* :html)
-           (emb:*case-sensitivity* nil))
-       (emb:execute-emb
-        (merge-pathnames ,layout-path
-                         *template-directory*)
-        :env (list :content (progn ,@body)
-                   ,@env-for-layout
-                   *default-layout-env*)))))
+;;
+;; Execute package definition
 
-;; Define functions that are available in templates.
-(import '(<% @var name %>.config:config
-          <% @var name %>.config:appenv
-          <% @var name %>.config:developmentp
-          <% @var name %>.config:productionp
-          caveman2:url-for)
-        emb:*function-package*)
+(defpackage <% @var name %>.djula
+  (:use :cl)
+  (:import-from :<% @var name %>.config
+                :config
+                :appenv
+                :developmentp
+                :productionp)
+  (:import-from :caveman2
+                :url-for))
+
+(setf djula:*djula-execute-package* (find-package :<% @var name %>.djula))

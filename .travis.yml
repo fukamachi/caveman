@@ -13,6 +13,7 @@ install:
 before_script:
   - git clone https://github.com/fukamachi/quri ~/lisp/quri
   - git clone https://github.com/fukamachi/clack ~/lisp/clack
+  - git clone https://github.com/mmontone/djula ~/lisp/djula
 
 script:
   - cl -l prove -e '(or (prove:run :caveman2-test) (uiop:quit -1))'

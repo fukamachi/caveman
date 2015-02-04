@@ -30,36 +30,26 @@
 (defparameter *project-root*
   (merge-pathnames (format nil "~A/" *app-name*) *tmp-root*))
 
-(defparameter *cl-emb-intern-package-name*
-  (intern (format nil "CL-EMB-INTERN-~A" *app-name*)
-          :keyword))
+(when (cl-fad:file-exists-p *tmp-root*)
+  (cl-fad:delete-directory-and-files *tmp-root*))
+(ensure-directories-exist *tmp-root*)
 
-(let ((emb:*function-package* (eval
-                               `(defpackage ,*cl-emb-intern-package-name*
-                                  (:use :cl)))))
+(caveman2:make-project *project-root*)
+(load (merge-pathnames (format nil "~A.asd" *app-name*) *project-root*))
+#+quicklisp (ql:quickload *app-name*)
+#-quicklisp (asdf:load-system *app-name*)
 
-  (when (cl-fad:file-exists-p *tmp-root*)
-    (cl-fad:delete-directory-and-files *tmp-root*))
-  (ensure-directories-exist *tmp-root*)
-
-  (caveman2:make-project *project-root*)
-  (load (merge-pathnames (format nil "~A.asd" *app-name*) *project-root*))
-  #+quicklisp (ql:quickload *app-name*)
-  #-quicklisp (asdf:load-system *app-name*)
-
-  #+thread-support
-  (let* ((port (find-port-not-in-use)))
-    (ok (funcall (intern #.(string :start) (string-upcase *app-name*)) :port port))
-    (multiple-value-bind (body status)
-        (drakma:http-request (format nil "http://127.0.0.1:~D"
-                                     port))
-      (is status 200)
-      (like body "Welcome to Caveman2"))
-    (ok (funcall (intern #.(string :stop) (string-upcase *app-name*)))))
-  #-thread-support
-  (skip 4 "because your Lisp doesn't support threads"))
-
-(delete-package *cl-emb-intern-package-name*)
+#+thread-support
+(let* ((port (find-port-not-in-use)))
+  (ok (funcall (intern #.(string :start) (string-upcase *app-name*)) :port port))
+  (multiple-value-bind (body status)
+      (drakma:http-request (format nil "http://127.0.0.1:~D"
+                                   port))
+    (is status 200)
+    (like body "Welcome to Caveman2"))
+  (ok (funcall (intern #.(string :stop) (string-upcase *app-name*)))))
+#-thread-support
+(skip 4 "because your Lisp doesn't support threads")
 
 (finalize)
 

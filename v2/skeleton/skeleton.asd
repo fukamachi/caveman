@@ -16,7 +16,7 @@
                :cl-syntax-annot
 
                ;; HTML Template
-               :cl-emb
+               :djula
 
                ;; for DB
                :datafly
