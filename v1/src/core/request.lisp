@@ -52,21 +52,3 @@
          :allow-other-keys t
          :raw-body (shared-raw-body req)
          req))
-
-(doc:start)
-
-@doc:NAME "
-Caveman.Request - Request class for Caveman.
-"
-
-@doc:DESCRIPTION "
-Caveman.Request is a request class for Caveman. Caveman creates a `<request>' instance for each request and bind it to `*request*'.
-"
-
-@doc:AUTHOR "
-* Eitaro Fukamachi (e.arrows@gmail.com)
-"
-
-@doc:SEE "
-* Clack.Request
-"

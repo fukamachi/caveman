@@ -39,21 +39,3 @@
         result
         (progn (setf (body *response*) result)
                (finalize *response*)))))
-
-(doc:start)
-
-@doc:NAME "
-Caveman.Middleware.Context - Clack Middleware to set context for each request.
-"
-
-@doc:DESCRIPTION "
-This is a Clack Middleware to ensure context is set for each request.
-"
-
-@doc:AUTHOR "
-* Eitaro Fukamachi (e.arrows@gmail.com)
-"
-
-@doc:SEE "
-* Caveman.Context
-"

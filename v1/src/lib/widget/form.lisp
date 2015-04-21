@@ -57,22 +57,3 @@
 
 @export
 (defmethod validate ((this <caveman-widget-form>) values))
-
-(doc:start)
-
-@doc:NAME "
-Caveman.Widget.Form - Widget for generating 'form'.
-"
-
-@doc:SYNOPSIS "
-    (defvar form (make-form
-                  :method :POST
-                  :action \"/post\"
-                  :components other-widgets))
-    (add form widget)
-    (render form)
-"
-
-@doc:AUTHOR "
-* Eitaro Fukamachi (e.arrows@gmail.com)
-"

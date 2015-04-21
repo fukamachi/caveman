@@ -28,21 +28,3 @@
   (let ((cl-project:*skeleton-directory*
          *skeleton-directory*))
     (apply #'cl-project:make-project path params)))
-
-(doc:start)
-
-@doc:NAME "
-Caveman.Skeleton - Generating Application Skeleton.
-"
-
-@doc:SYNOPSIS "
-    (caveman.skeleton:generate #p\"lib/myapp\")
-"
-
-@doc:DESCRIPTION "
-Caveman.Skeleton provides a way to create a new Caveman Application.
-"
-
-@doc:AUTHOR "
-* Eitaro Fukamachi (e.arrows@gmail.com)
-"

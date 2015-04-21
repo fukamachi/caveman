@@ -38,8 +38,8 @@
   @ignore body
   (is status 200 "index (HEAD)"))
 
-(is (http-request (format nil "~A/not-found-hoge" *myapp-url*))
-    nil
+(is (nth-value 1 (http-request (format nil "~A/not-found-hoge" *myapp-url*)))
+    404
     "not found")
 
 @url GET "/member/:id/profile"

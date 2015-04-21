@@ -28,18 +28,3 @@
   (if (view this)
       (call (view this) params)
       ""))
-
-(doc:start)
-
-@doc:NAME "
-Caveman.Widget - Base component for View widget.
-"
-
-@doc:DESCRIPTION "
-* <caveman-widget>
-* render
-"
-
-@doc:AUTHOR "
-* Eitaro Fukamachi (e.arrows@gmail.com)
-"

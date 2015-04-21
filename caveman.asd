@@ -15,7 +15,7 @@
   :version "12.08.0"
   :author "Eitaro Fukamachi"
   :license "LLGPL"
-  :depends-on (:clack
+  :depends-on (:clack-v1-compat
                :myway
                :anaphora
                :cl-ppcre

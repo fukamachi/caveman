@@ -12,9 +12,6 @@
         :clack
         :cl-annot
         :cl-annot.doc)
-  (:import-from :clack.util
-                :getf*
-                :remf*)
   (:import-from :do-urlencode
                 :urlencode)
   (:import-from :myway.rule
@@ -125,30 +122,3 @@ Example:
     (multiple-value-bind (base-url rest-params)
         (rule-url-for (second route) params)
       (add-query-parameters base-url rest-params))))
-
-(doc:start)
-
-@doc:NAME "Caveman.Route"
-
-@doc:SYNOPSIS "
-    ;; for Function
-    @url GET \"/login\"
-    (defun login (req)
-      ;; response
-      )
-
-    ;; for Clack Component
-    @url GET \"/member/:id\"
-    (defclass <member-profile> (<component>) ())
-    (defmethod call ((this <member-profile>) req)
-      ;; response
-      )
-"
-
-@doc:DESCRIPTION "
-Caveman.Route provides an useful annotation `url' to define a Caveman Action.
-"
-
-@doc:AUTHOR "
-* Eitaro Fukamachi (e.arrows@gmail.com)
-"

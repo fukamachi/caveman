@@ -79,17 +79,3 @@
 @export
 (defun current-uri ()
   (caveman.request:request-uri *request*))
-
-(doc:start)
-
-@doc:NAME "
-Caveman - main package.
-"
-
-@doc:DESCRIPTION "
-This package is main package just for convenient. Your Caveman Application may use this package.
-"
-
-@doc:AUTHOR "
-* Eitaro Fukamachi (e.arrows@gmail.com)
-"

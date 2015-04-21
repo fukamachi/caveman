@@ -77,34 +77,3 @@ Example:
               for form = `(context ,(intern (string var) :keyword))
               collect `(,var ,form))
      ,@body))
-
-(doc:start)
-
-@doc:NAME "
-Caveman.Context - Managing current state for each request.
-"
-
-@doc:SYNOPSIS "
-    ;; In the controller.
-    
-    ;; Get context object.
-    (context)
-    ;=> #<HASH-TABLE :TEST EQL size 0/60 #x3020025FF5FD>
-    
-    ;; Access to each value.
-    (context :hoge)
-    ;=> \"Something set to :hoge.\"
-    
-    ;; Set to context
-    (setf (context :hoge) \"hogehoge\")
-"
-
-@doc:DESCRIPTION "
-Caveman.Context is for managing current state for each request. It is called \"Context\" in Caveman.
-
-Specifically, context is a hash table in global scope. you can access it with a function `context'. See SYNOPSIS for details.
-"
-
-@doc:AUTHOR "
-* Eitaro Fukamachi (e.arrows@gmail.com)
-"

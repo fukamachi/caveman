@@ -18,8 +18,6 @@
                 :build
                 :project-mode
                 :debug-mode-p)
-  (:import-from :clack.builder
-                :*builder-lazy-p*)
   (:import-from :<% @var name %>.app
                 :*app*)
   (:import-from :cl-ppcre
@@ -48,8 +46,9 @@
 
 @export
 (defun start (&key (mode :dev) (debug t) lazy port)
+  (declare (ignore lazy)) ;; XXX: lazy option is obsolete now
   (setf *project* (make-instance '<<% @var name %>>))
-  (caveman.project:start *project* :mode mode :debug debug :lazy lazy :port port))
+  (caveman.project:start *project* :mode mode :debug debug :port port))
 
 @export
 (defun stop ()

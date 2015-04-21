@@ -98,27 +98,3 @@
                  (match-rule rule method path-info :allow-head allow-head))
              rules
              :key #'cadr))
-
-(doc:start)
-
-@doc:NAME "
-Caveman.App - Caveman Application Class.
-"
-
-@doc:SYNOPSIS "
-    (defclass <myapp-app> (<app>) ())
-    (defvar *app* (make-instance '<myapp-app>))
-    (call *app*)
-"
-
-@doc:DESCRIPTION "
-Caveman.App provides a base class `<app>' for Caveman Applications.
-"
-
-@doc:AUTHOR "
-* Eitaro Fukamachi (e.arrows@gmail.com)
-"
-
-@doc:SEE "
-* Clack.Component
-"
