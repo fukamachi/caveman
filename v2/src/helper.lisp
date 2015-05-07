@@ -10,6 +10,8 @@
                 :mapper-routes
                 :route-name
                 #+nil :url-for)
+  (:import-from :quri
+                :url-encode)
   (:export :redirect
            :url-for))
 (in-package :caveman2.helper)
@@ -23,8 +25,8 @@
     (return-from add-query-parameters base-url))
   (loop for (name value) on params by #'cddr
         collect (format nil "~A=~A"
-                        (urlencode (princ-to-string name))
-                        (urlencode (princ-to-string value)))
+                        (url-encode (princ-to-string name))
+                        (url-encode (princ-to-string value)))
         into parts
         finally
      (return
