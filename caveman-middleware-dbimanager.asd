@@ -18,7 +18,7 @@
   :version "0.1"
   :author "Eitaro Fukamachi"
   :license "LLGPL"
-  :depends-on (:clack
+  :depends-on (:clack-v1-compat
                :dbi)
   :components ((:file "v2/src/middleware/dbimanager"))
   :description "Clack Middleware for managing CL-DBI connections")
