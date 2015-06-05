@@ -4,9 +4,8 @@
   (:import-from :<% @var name %>.config
                 :*template-directory*)
   (:import-from :caveman2
-                :*response*)
-  (:import-from :clack.response
-                :headers)
+                :*response*
+                :response-headers)
   (:import-from :djula
                 :add-template-directory
                 :compile-template*
@@ -32,7 +31,7 @@
            env)))
 
 (defun render-json (object)
-  (setf (headers *response* :content-type) "application/json")
+  (setf (getf (response-headers *response*) :content-type) "application/json")
   (encode-json object))
 
 

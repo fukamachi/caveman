@@ -5,11 +5,11 @@
                 :caveman-exception
                 :exception-code
                 :throw-code)
-  (:import-from :clack
+  (:import-from :lack.component
                 :call)
-  (:import-from :clack.response
-                :status
-                :headers)
+  (:import-from :lack.response
+                :response-status
+                :response-headers)
   (:import-from :ningle
                 :next-route
                 :clear-routing-rules
@@ -55,7 +55,7 @@
     (handler-case (call-next-method)
       (caveman-exception (c)
         (let ((code (exception-code c)))
-          (setf (status *response*) code)
+          (setf (response-status *response*) code)
           (or (on-exception this code)
               (princ-to-string c)))))))
 
@@ -65,14 +65,14 @@
 (defmethod make-response ((app <app>) &optional status headers body)
   (declare (ignore status headers body))
   (let ((res (call-next-method)))
-    (unless (headers res :content-type)
-      (setf (headers res :content-type) "text/html"))
-    (unless (headers res :X-Content-Type-Options)
-      (setf (headers res :X-Content-Type-Options) "nosniff"))
-    (unless (headers res :X-Frame-Options)
-      (setf (headers res :X-Frame-Options) "DENY"))
-    (unless (headers res :Cache-Control)
-      (setf (headers res :Cache-Control) "private"))
+    (unless (getf (response-headers res) :content-type)
+      (setf (getf (response-headers res) :content-type) "text/html"))
+    (unless (getf (response-headers res) :X-Content-Type-Options)
+      (setf (getf (response-headers res) :X-Content-Type-Options) "nosniff"))
+    (unless (getf (response-headers res) :X-Frame-Options)
+      (setf (getf (response-headers res) :X-Frame-Options) "DENY"))
+    (unless (getf (response-headers res) :Cache-Control)
+      (setf (getf (response-headers res) :Cache-Control) "private"))
     res))
 
 (defmethod on-exception ((this <app>) code)

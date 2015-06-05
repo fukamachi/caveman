@@ -15,10 +15,12 @@
 (in-package :caveman2-asd)
 
 (defsystem caveman2
-  :version "2.3.1"
+  :version "2.4.0"
   :author "Eitaro Fukamachi"
   :license "LLGPL"
   :depends-on (:ningle
+               :lack-request
+               :lack-response
                :cl-project
                :dbi
                :cl-syntax-annot

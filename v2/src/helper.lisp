@@ -4,6 +4,9 @@
   (:import-from :caveman2.app
                 :*current-app*
                 :*response*)
+  (:import-from :lack.response
+                :response-headers
+                :response-status)
   (:import-from :ningle.app
                 :mapper)
   (:import-from :myway
@@ -17,7 +20,9 @@
 (in-package :caveman2.helper)
 
 (defun redirect (url &optional (status 302))
-  (clack.response:redirect *response* url status))
+  (setf (getf (response-headers *response*) :location) url)
+  (setf (response-status *response*) status)
+  url)
 
 (defun add-query-parameters (base-url params)
   "Add a query parameters string of PARAMS to BASE-URL."

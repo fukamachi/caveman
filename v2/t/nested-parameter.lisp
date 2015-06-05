@@ -1,7 +1,7 @@
 (in-package :cl-user)
 (defpackage caveman2-nested-parameter-test
   (:use :cl
-        :cl-test-more)
+        :prove)
   (:import-from :caveman2.nested-parameter
                 :parse-parameters
                 :parse-key)
