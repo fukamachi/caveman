@@ -42,6 +42,7 @@
 #+thread-support
 (let* ((port (find-port-not-in-use)))
   (ok (funcall (intern #.(string :start) (string-upcase *app-name*)) :port port))
+  (sleep 0.5)
   (multiple-value-bind (body status)
       (drakma:http-request (format nil "http://127.0.0.1:~D"
                                    port))
