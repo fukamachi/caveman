@@ -12,6 +12,7 @@
   :author "Eitaro Fukamachi"
   :license "LLGPL"
   :depends-on (:caveman2
+               :lack-component
                :cl-fad
                :usocket
                :drakma

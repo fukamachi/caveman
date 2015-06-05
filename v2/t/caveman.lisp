@@ -2,7 +2,7 @@
 (defpackage caveman2-test
   (:use :cl
         :caveman2
-        :cl-test-more
+        :prove
         :usocket
         :cl-fad))
 (in-package :caveman2-test)

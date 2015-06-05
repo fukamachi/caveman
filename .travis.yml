@@ -11,7 +11,8 @@ install:
 
 before_script:
   - git clone https://github.com/fukamachi/clack ~/lisp/clack
-  - git clone https://github.com/fukamachi/ningle ~/lisp/ningle
+  - git clone https://github.com/fukamachi/lack ~/lisp/lack
+  - git clone -b clack-v2 https://github.com/fukamachi/ningle ~/lisp/ningle
 
 script:
   - cl -l prove -e '(or (prove:run :caveman2-test) (uiop:quit -1))'

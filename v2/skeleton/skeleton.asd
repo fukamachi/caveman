@@ -8,6 +8,7 @@
   :author "<% @var author %>"
   :license "<% @var license %>"
   :depends-on (:clack
+               :lack
                :caveman2
                :envy
                :cl-ppcre

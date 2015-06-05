@@ -19,6 +19,8 @@
   :author "Eitaro Fukamachi"
   :license "LLGPL"
   :depends-on (:ningle
+               :lack-request
+               :lack-response
                :cl-project
                :dbi
                :cl-syntax-annot

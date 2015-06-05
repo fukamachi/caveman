@@ -23,36 +23,31 @@
                 :url-for)
   (:import-from :caveman2.exception
                 :throw-code)
-  (:import-from :clack.request
-                :env
+  (:import-from :lack.request
+                :request-env
                 :request-method
-                :script-name
-                :path-info
-                :server-name
-                :server-port
-                :server-protocol
+                :request-script-name
+                :request-path-info
+                :request-server-name
+                :request-server-port
+                :request-server-protocol
                 :request-uri
-                :uri-scheme
-                :remote-addr
-                :remote-port
-                :query-string
-                :raw-body
-                :content-length
-                :content-type
-                :clack-handler
-                :referer
-                :user-agent
-                :securep
-                :cookies
-                :body-parameter
-                :query-parameter
-                :parameter)
-  (:import-from :clack.response
-                :status
-                :headers
-                :push-header
-                :body
-                :set-cookies)
+                :request-remote-addr
+                :request-remote-port
+                :request-query-string
+                :request-raw-body
+                :request-content-length
+                :request-content-type
+                :request-headers
+                :request-cookies
+                :request-body-parameters
+                :request-query-parameters
+                :request-parameters)
+  (:import-from :lack.response
+                :response-status
+                :response-headers
+                :response-body
+                :response-set-cookies)
   (:export :defroute
            :route
            :<app>
@@ -71,34 +66,30 @@
            :on-exception
            :throw-code
 
-           ;; from Clack.Request
+           ;; from Lack.Request
+           :request-env
            :request-method
-           :script-name
-           :path-info
-           :server-name
-           :server-port
-           :server-protocol
+           :request-script-name
+           :request-path-info
+           :request-server-name
+           :request-server-port
+           :request-server-protocol
            :request-uri
-           :uri-scheme
-           :remote-addr
-           :remote-port
-           :query-string
-           :raw-body
-           :content-length
-           :content-type
-           :clack-handler
-           :referer
-           :user-agent
-           :securep
-           :cookies
-           :body-parameter
-           :query-parameter
-           :parameter
+           :request-remote-addr
+           :request-remote-port
+           :request-query-string
+           :request-raw-body
+           :request-content-length
+           :request-content-type
+           :request-headers
+           :request-cookies
+           :request-body-parameters
+           :request-query-parameters
+           :request-parameters
 
            ;; from Clack.Response
-           :status
-           :headers
-           :push-header
-           :body
-           :set-cookies))
+           :response-status
+           :response-headers
+           :response-body
+           :response-set-cookies))
 (in-package :caveman2)
