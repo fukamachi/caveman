@@ -376,7 +376,7 @@ There are several special variables available during a HTTP request. `*request*`
 (http-referer *request*)
 
 ;; Set Content-Type header.
-(setf (headers *response* :content-type) "application/json")
+(setf (getf (response-headers *response* :content-type) "application/json")
 
 ;; Set HTTP status.
 (setf (status *response*) 304)
@@ -386,7 +386,7 @@ If you would like to set Content-Type "application/json" for all "*.json" reques
 
 ```common-lisp
 (defroute "/*.json" ()
-  (setf (headers *response* :content-type) "application/json")
+  (setf (getf (response-headers *response*) :content-type) "application/json")
   (next-route))
 
 (defroute "/user.json" () ...)
