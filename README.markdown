@@ -406,25 +406,31 @@ This example increments `:counter` in the session and displays it for each visit
           (incf (gethash :counter *session* 0))))
 ```
 
-Caveman2 stores the session data in-memory by default. To change it, specify `:store` to `<clack-middleware-session>` in "PROJECT_ROOT/app.lisp".
+Caveman2 stores the session data in-memory by default. To change it, specify `:store` to `:session` in "PROJECT_ROOT/app.lisp".
 
 This example uses RDBMS to store it.
 
 ```diff
-      (make-instance '<clack-middleware-backtrace>
-                     :output (getf (config) :error-log))
-      nil)
-- <clack-middleware-session>
-+ (<clack-middleware-session>
-+  :store (make-instance 'clack.session.store.dbi:<clack-session-store-dbi>
-+                        :connect-args (myapp.db:connection-settings)))
-+
++ (:import-from :lack.session.store.dbi
++               :make-dbi-store)
++ (:import-from :dbi
++               :connect)
++ (:import-from :appname.db
++               :connection-settings)
+...
+ (if (getf (config) :error-log)
+     '(:backtrace
+       :output (getf (config) :error-log))
+     nil)
+- :session
++  (:session
++   :store (make-dbi-store :connector (lambda () (apply #'connect (connection-settings))))
   (if (productionp)
       nil
       (lambda (app)
 ```
 
-NOTE: Don't forget to add `:clack-session-store-dbi` as `:depends-on` of your app. It is not a part of Clack.
+NOTE: Don't forget to add `:lack-session-store-dbi` as `:depends-on` of your app. It is not a part of Clack/Lack.
 
 See the documentation of Clack.Session.Store.DBi for more informations.
 
