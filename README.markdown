@@ -411,20 +411,14 @@ Caveman2 stores the session data in-memory by default. To change it, specify `:s
 This example uses RDBMS to store it.
 
 ```diff
-+ (:import-from :lack.session.store.dbi
-+               :make-dbi-store)
-+ (:import-from :dbi
-+               :connect)
-+ (:import-from :appname.db
-+               :connection-settings)
-...
- (if (getf (config) :error-log)
-     '(:backtrace
-       :output (getf (config) :error-log))
-     nil)
+      '(:backtrace
+        :output (getf (config) :error-log))
+      nil)
 - :session
-+  (:session
-+   :store (make-dbi-store :connector (lambda () (apply #'connect (connection-settings))))
++ (:session
++  :store (make-dbi-store :connector (lambda ()
++                                      (apply #'dbi:connect
++                                             (myapp.db:connection-settings)))))
   (if (productionp)
       nil
       (lambda (app)
@@ -432,9 +426,9 @@ This example uses RDBMS to store it.
 
 NOTE: Don't forget to add `:lack-session-store-dbi` as `:depends-on` of your app. It is not a part of Clack/Lack.
 
-See the documentation of Clack.Session.Store.DBi for more informations.
+See the source code of Lack.Session.Store.DBi for more informations.
 
-- [Clack.Session.Store.Dbi](http://quickdocs.org/clack/api#system-clack-session-store-dbi)
+- [Lack.Session.Store.Dbi](https://github.com/fukamachi/lack/blob/master/src/middleware/session/store/dbi.lisp)
 
 ### Throw an HTTP status code
 
@@ -465,7 +459,7 @@ Your application has functions named `start` and `stop` to start/stop your web a
 (myapp:start :port 8080)
 ```
 
-As Caveman bases on Clack, you can choose which server to run on -- Hunchentoot, mod_lisp or FastCGI.
+As Caveman bases on Clack/Lack, you can choose which server to run on -- Hunchentoot, mod_lisp or FastCGI.
 
 ```common-lisp
 (myapp:start :server :hunchentoot :port 8080)
@@ -563,11 +557,13 @@ Caveman outputs error backtraces to a file which is specified at `:error-log` in
 * [cl-closure-template](http://quickdocs.org/cl-closure-template/)
 * [Closure Templates Documentation](https://developers.google.com/closure/templates/docs/overview)
 
+<!-- Commenting out because these are old.
+
 ## Use another database library
 
 ### CLSQL
 
-You can use Clack.Middleware.Clsql to use CLSQL in Clack compliant application.
+You can use Lack.Middleware.Clsql to use CLSQL in Clack compliant application.
 
 In Caveman, add the middleware to `builder` in "PROJECT_ROOT/app.lisp".
 
@@ -608,9 +604,12 @@ In Caveman, add the middleware to `builder` in "PROJECT_ROOT/app.lisp".
 * [Clack.Middleware.Postmodern](http://quickdocs.org/clack/api#system-clack-middleware-postmodern)
 * [Postmodern](http://marijnhaverbeke.nl/postmodern/)
 
+-->
+
 ## See Also
 
 * [Clack](http://clacklisp.org/) - Web application environment.
+* [Lack](https://github.com/fukamachi/lack) - The core of Clack.
 * [ningle](http://8arrow.org/ningle/) - Super micro web application framework Caveman bases on.
 * [Djula](http://mmontone.github.io/djula/) - HTML Templating engine.
 * [CL-DBI](http://8arrow.org/cl-dbi/) - Database independent interface library.
