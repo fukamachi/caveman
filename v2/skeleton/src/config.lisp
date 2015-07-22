@@ -35,7 +35,7 @@
   (envy:config #.(package-name *package*) key))
 
 (defun appenv ()
-  (asdf::getenv (config-env-var #.(package-name *package*))))
+  (uiop:getenv (config-env-var #.(package-name *package*))))
 
 (defun developmentp ()
   (string= (appenv) "development"))

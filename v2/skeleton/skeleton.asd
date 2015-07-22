@@ -12,6 +12,7 @@
                :caveman2
                :envy
                :cl-ppcre
+               :uiop
 
                ;; for @route annotation
                :cl-syntax-annot
