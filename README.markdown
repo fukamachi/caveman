@@ -466,19 +466,21 @@ As Caveman bases on Clack/Lack, you can choose which server to run on -- Hunchen
 (myapp:start :server :fcgi :port 8080)
 ```
 
-I recommend you to use Hunchentoot in local machine and use FastCGI for production environment.
+I recommend you to use Hunchentoot in local machine and use FastCGI/Woo for production environment.
 
-You can also start your application by using [Shelly](https://github.com/fukamachi/shelly).
+You can also start your application by using [clackup command](https://github.com/fukamachi/clack/blob/master/roswell/clackup.ros).
 
-    $ APP_ENV=development shly -Lclack clackup app.lisp --server :fcgi --port 8080
+    $ ros install clack
+    $ which clackup
+    /Users/nitro_idiot/.roswell/bin/clackup
 
-Shelly allows you to execute a Common Lisp function like a shell command.
+    $ APP_ENV=development clackup --server :fcgi --port 8080 app.lisp
 
 ### Hot Deployment
 
 Though Caveman doesn't have a feature for hot deployment, [Server::Starter](http://search.cpan.org/~kazuho/Server-Starter-0.15/lib/Server/Starter.pm) -- a Perl module -- makes it easy.
 
-    $ APP_ENV=production start_server --port 8080 -- shly start --server :fcgi
+    $ APP_ENV=production start_server --port 8080 -- clackup --server :fcgi app.lisp
 
 To restart the server, send HUP signal (`kill -HUP <pid>`) to the `start_server` process.
 
@@ -615,7 +617,7 @@ In Caveman, add the middleware to `builder` in "PROJECT_ROOT/app.lisp".
 * [CL-DBI](http://8arrow.org/cl-dbi/) - Database independent interface library.
 * [SxQL](http://8arrow.org/sxql/) - SQL builder library.
 * [Envy](https://github.com/fukamachi/envy) - Configuration switcher.
-* [Shelly](https://github.com/fukamachi/shelly) - Script to run Common Lisp from shell.
+* [Roswell](https://github.com/snmsts/roswell) - Common Lisp implementation manager.
 
 ## Author
 
