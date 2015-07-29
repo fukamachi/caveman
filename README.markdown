@@ -9,8 +9,7 @@
 
 @route GET "/"
 (defun index ()
-  (with-layout (:title "Welcome to My site")
-    (render #P"index.tmpl")))
+  (render #P"index.tmpl"))
 
 @route GET "/hello"
 (defun say-hello (&key (|name| "Guest"))
