@@ -13,8 +13,6 @@
         :clack
         :clack.builder)
   (:shadow :stop)
-  (:import-from :cl-fad
-                :file-exists-p)
   (:import-from :caveman.context
                 :*project*)
   (:export :debug-mode-p
@@ -55,7 +53,7 @@
                        (package-name (symbol-package (type-of this)))
                        :keyword)
                       (format nil "config/~(~A~).lisp" mode))))
-    (when (file-exists-p config-file)
+    (when (probe-file config-file)
       (eval
        (read-from-string
         (slurp-file config-file))))))

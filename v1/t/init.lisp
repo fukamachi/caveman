@@ -30,8 +30,7 @@
 (defvar *myapp-url*
     (format nil "http://127.0.0.1:~D" *myapp-port*))
 
-(when (cl-fad:file-exists-p *myapp-root*)
-  (cl-fad:delete-directory-and-files *myapp-root*))
+(uiop:delete-directory-tree *myapp-root* :validate t :if-does-not-exist :ignore)
 (ensure-directories-exist *project-root*)
 
 (caveman.skeleton:generate *myapp-root*)

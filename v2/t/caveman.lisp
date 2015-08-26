@@ -3,8 +3,7 @@
   (:use :cl
         :caveman2
         :prove
-        :usocket
-        :cl-fad))
+        :usocket))
 (in-package :caveman2-test)
 
 (plan 4)
@@ -30,8 +29,8 @@
 (defparameter *project-root*
   (merge-pathnames (format nil "~A/" *app-name*) *tmp-root*))
 
-(when (cl-fad:file-exists-p *tmp-root*)
-  (cl-fad:delete-directory-and-files *tmp-root*))
+(when (probe-file *tmp-root*)
+  (uiop:delete-directory-tree *tmp-root* :validate t :if-does-not-exist :ignore))
 (ensure-directories-exist *tmp-root*)
 
 (caveman2:make-project *project-root*)

@@ -13,7 +13,7 @@
   :license "LLGPL"
   :depends-on (:caveman2
                :lack-component
-               :cl-fad
+               :uiop
                :usocket
                :drakma
                :prove

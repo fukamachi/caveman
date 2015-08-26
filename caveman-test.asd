@@ -14,7 +14,7 @@
 (defsystem caveman-test
   :depends-on (:caveman
                :cl-test-more
-               :cl-fad
+               :uiop
                :drakma
                :usocket)
   :components ((:module "v1/t"

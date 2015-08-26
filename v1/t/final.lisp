@@ -10,5 +10,7 @@
 (diag "myapp stop")
 (funcall (intern "STOP" :myapp))
 
-(cl-fad:delete-directory-and-files (asdf:component-pathname (asdf:find-system :myapp)))
+
+(uiop:delete-directory-tree (asdf:component-pathname (asdf:find-system :myapp))
+                            :validate t :if-does-not-exist :ignore)
 (finalize)

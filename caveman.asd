@@ -21,7 +21,6 @@
                :cl-ppcre
                :cl-syntax
                :cl-syntax-annot
-               :cl-fad
                :cl-emb
                :local-time
                :cl-project
