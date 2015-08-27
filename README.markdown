@@ -262,6 +262,15 @@ Caveman adopts [Djula](http://mmontone.github.io/djula/) for the default templat
           :has-next-page T))
 ```
 
+If you want to get something from a database or execute any function using [Djula](http://mmontone.github.io/djula/) you have to explicity call `list` when passing the arguments to render so that the code executes.
+
+```common-lisp
+(import 'myapp.view:render)
+
+(render #P"users.html"
+        (list :users (get-users-from-db)))
+```
+
 ### JSON API
 
 This is an example of a JSON API.
