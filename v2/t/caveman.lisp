@@ -43,8 +43,7 @@
   (ok (funcall (intern #.(string :start) (string-upcase *app-name*)) :port port))
   (sleep 0.5)
   (multiple-value-bind (body status)
-      (drakma:http-request (format nil "http://127.0.0.1:~D"
-                                   port))
+      (dex:get (format nil "http://127.0.0.1:~D" port))
     (is status 200)
     (like body "Welcome to Caveman2"))
   (ok (funcall (intern #.(string :stop) (string-upcase *app-name*)))))

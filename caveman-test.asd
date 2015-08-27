@@ -15,7 +15,7 @@
   :depends-on (:caveman
                :cl-test-more
                :uiop
-               :drakma
+               :dexador
                :usocket)
   :components ((:module "v1/t"
                 :serial t

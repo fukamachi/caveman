@@ -15,7 +15,7 @@
                :lack-component
                :uiop
                :usocket
-               :drakma
+               :dexador
                :prove
                :trivial-types)
   :components ((:module "v2/t"

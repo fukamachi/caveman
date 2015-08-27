@@ -3,7 +3,6 @@
   (:use :cl
         :caveman
         :cl-test-more
-        :drakma
         :myapp.app)
   (:import-from :caveman-test.init
                 :*myapp-url*))
@@ -13,7 +12,7 @@
 
 (cl-syntax:use-syntax :annot)
 
-(is (http-request *myapp-url*)
+(is (dex:get *myapp-url*)
     "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
 <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"ja\" xml:lang=\"ja\">
@@ -28,17 +27,17 @@
 </html>
 "
     "index (GET)")
-(is (http-request *myapp-url* :method :POST)
+(is (dex:get *myapp-url* :method :POST)
     "Hello, Caveman!"
     "index (POST)")
 
 (multiple-value-bind (body status)
-    (http-request *myapp-url*
+    (dex:get *myapp-url*
                   :method :HEAD)
   @ignore body
   (is status 200 "index (HEAD)"))
 
-(is (nth-value 1 (http-request (format nil "~A/not-found-hoge" *myapp-url*)))
+(is (nth-value 1 (dex:get (format nil "~A/not-found-hoge" *myapp-url*)))
     404
     "not found")
 
@@ -46,7 +45,7 @@
 (defun member-profile (params)
   (format nil "Member Profile: ~d" (getf params :id)))
 
-(is (http-request (format nil "~A/member/11/profile" *myapp-url*))
+(is (dex:get (format nil "~A/member/11/profile" *myapp-url*))
     "Member Profile: 11"
     "GET")
 
@@ -56,10 +55,9 @@
           (getf params :name)
           (getf params :pass)))
 
-(is (http-request (format nil "~A/login" *myapp-url*)
-                  :method :post
-                  :parameters '(("NAME" . "fukamachi")
-                                ("PASS" . "lispiscool")))
+(is (dex:post (format nil "~A/login" *myapp-url*)
+              :parameters '(("NAME" . "fukamachi")
+                            ("PASS" . "lispiscool")))
     "Name: fukamachi / Pass: lispiscool"
     "POST")
 
@@ -68,7 +66,7 @@
   @ignore params
   (princ-to-string (type-of *context*)))
 
-(is (http-request (format nil "~A/context" *myapp-url*))
+(is (dex:get (format nil "~A/context" *myapp-url*))
     "HASH-TABLE"
     "context")
 
@@ -77,7 +75,7 @@
   @ignore params
   (princ-to-string (type-of *request*)))
 
-(is (http-request (format nil "~A/request" *myapp-url*))
+(is (dex:get (format nil "~A/request" *myapp-url*))
     "<REQUEST>"
     "request")
 
@@ -86,7 +84,7 @@
   @ignore params
   (princ-to-string (type-of *response*)))
 
-(is (http-request (format nil "~A/response" *myapp-url*))
+(is (dex:get (format nil "~A/response" *myapp-url*))
     "<RESPONSE>"
     "response")
 
@@ -100,8 +98,14 @@
   @ignore params
   "This is the next route.")
 
-(is (http-request (format nil "~A/next" *myapp-url*))
+(is (dex:get (format nil "~A/next" *myapp-url*))
     "(This is the next route.)"
     "next-route")
 
 (finalize)
+
+
+
+
+
+
