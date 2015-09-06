@@ -10,9 +10,10 @@
            :connect-db))
 (in-package :caveman.middleware.dbimanager)
 
-(defvar *dbi-manager* nil
-  "An instance of `dbi-manager' for the current HTTP request.
-Since this variable meant to be bound lexically, this is available only during a HTTP request.")
+(defvar *dbi-manager*)
+(setf (documentation '*dbi-manager* 'variable)
+      "An instance of `dbi-manager' for the current HTTP request.
+This variable is only bound during the HTTP request.")
 
 (defclass dbi-manager ()
   ((database-settings :type list
