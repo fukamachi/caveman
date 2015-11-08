@@ -373,6 +373,30 @@ The connection is alive during the Lisp session and will be reused in each HTTP 
 
 `retrieve-all` and the query language came from [datafly](https://github.com/fukamachi/datafly) and [SxQL](https://github.com/fukamachi/sxql). See those documentations for more informations.
 
+#### Crane
+
+[Crane](http://eudoxia.me/crane/) is an non-opinionated ORM for Common Lisp. To use it with Caveman2 add it to your package-list and `use` it in src/db.lisp. Follow the setup steps listed on the [Crane](http://eudoxia.me/crane/) website. 
+
+Here is an example of using [Crane](http://eudoxia.me/crane/) in an POST route with Caveman2 (this assumes that you are `use`ing [Crane](http://eudoxia.me/crane/) in the web.lisp source file):
+
+```common-lisp
+(deftable person ()
+    (first-name :type text)
+    (last-name :type text))
+
+(defroute ("/people" :method :POST) (&key _parsed)
+  (create-from-plist 'person (plist-keyword-args _parsed))
+  "Created")
+```
+
+The helper creates a `plist` with keywords formatted in a way that [Crane](http://eudoxia.me/crane/) requires from an `alist`, which is the request params are in.
+
+```common-lisp
+(defun plist-keyword-args (args)
+  (alexandria:flatten (loop for val in args
+                         collect (list (alexandria:make-keyword (string-upcase (car val))) (cdr val)))))
+```
+
 ### Set HTTP headers or HTTP status
 
 There are several special variables available during a HTTP request. `*request*` and `*response*` represents a request and a response. If you are familiar with [Clack](http://clacklisp.org/), these are instances of subclasses of [Clack.Request](http://quickdocs.org/clack/api#package-CLACK.REQUEST) and [Clack.Response](http://quickdocs.org/clack/api#package-CLACK.RESPONSE).
@@ -624,6 +648,7 @@ In Caveman, add the middleware to `builder` in "PROJECT_ROOT/app.lisp".
 * [Djula](http://mmontone.github.io/djula/) - HTML Templating engine.
 * [CL-DBI](http://8arrow.org/cl-dbi/) - Database independent interface library.
 * [SxQL](http://8arrow.org/sxql/) - SQL builder library.
+* [Crane](http://eudoxia.me/crane/) - ORM libraru.
 * [Envy](https://github.com/fukamachi/envy) - Configuration switcher.
 * [Roswell](https://github.com/snmsts/roswell) - Common Lisp implementation manager.
 
