@@ -21,6 +21,15 @@
 (clear-routing-rules *web*)
 
 ;;
+;; Flash function
+(defun flash (&optional value)
+  (if value
+      (setf (gethash :flash *session*) value)
+      (let ((msg (gethash :flash *session*)))
+        (flash "")
+        msg)))
+
+;;
 ;; Routing rules
 
 (defroute "/" ()

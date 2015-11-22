@@ -438,6 +438,27 @@ See the source code of Lack.Session.Store.DBi for more informations.
 
 - [Lack.Session.Store.Dbi](https://github.com/fukamachi/lack/blob/master/src/middleware/session/store/dbi.lisp)
 
+#### Flash
+
+Flash messages are used when you need information to persist after an action as an redirect. Write or read mode is decided by if a pass a parameter to the function or call it without parameters. The function is defined in `src/web.lisp`. The flash function is based on the functionality in Rails. 
+
+The flash message is persistent over redirects, the flash message is reset when you retrieve it.
+
+Example of adding a flash-message in an route: 
+```
+(defroute ("/people" :method :POST) (&key _parsed)
+  (create-person _parsed)
+  (flash "Created a new person.")
+  (redirect "/"))
+```
+
+To render the flash message call the function without parameters, if there is no flash message set the function returns `nil`:
+```
+(defroute "/" ()
+  (render #P"index.html"
+          (list  :flash (flash))))
+```
+
 ### Throw an HTTP status code
 
 ```common-lisp
