@@ -490,6 +490,8 @@ Though Caveman doesn't have a feature for hot deployment, [Server::Starter](http
 
     $ APP_ENV=production start_server --port 8080 -- clackup --server :fcgi app.lisp
 
+NOTE: Server::Starter requires the server to support binding on a specific fd, which means only `:fcgi` and `:woo` are the ones work with `start_server` command.
+
 To restart the server, send HUP signal (`kill -HUP <pid>`) to the `start_server` process.
 
 ### Error Log
