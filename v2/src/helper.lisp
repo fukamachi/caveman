@@ -15,8 +15,7 @@
                 #+nil :url-for)
   (:import-from :quri
                 :url-encode)
-  (:export :redirect
-           :url-for))
+  (:export :url-for))
 (in-package :caveman2.helper)
 
 (defun redirect (url &optional (status 302))

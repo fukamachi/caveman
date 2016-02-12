@@ -19,10 +19,10 @@
                 :make-response
                 :on-exception)
   (:import-from :caveman2.helper
-                :redirect
                 :url-for)
   (:import-from :caveman2.exception
-                :throw-code)
+                :throw-code
+                :redirect)
   (:import-from :lack.request
                 :request-env
                 :request-method

@@ -3,7 +3,11 @@
   (:use :cl)
   (:export :caveman-exception
            :throw-code
-           :exception-code))
+           :exception-code
+           :caveman-redirection
+           :redirection-to
+           :redirection-code
+           :redirect))
 (in-package :caveman2.exception)
 
 (defparameter *http-status*
@@ -70,3 +74,12 @@
 
 (defun throw-code (code)
   (error 'caveman-exception :code code))
+
+(define-condition caveman-redirection (error)
+  ((to :initarg :to :type string
+       :reader redirection-to)
+   (code :initarg :status :type integer :initform 302
+         :reader redirection-code)))
+
+(defun redirect (url &optional (code 302))
+  (error 'caveman-redirection :to url :code code))

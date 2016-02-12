@@ -4,7 +4,10 @@
   (:import-from :caveman2.exception
                 :caveman-exception
                 :exception-code
-                :throw-code)
+                :throw-code
+                :caveman-redirection
+                :redirection-to
+                :redirection-code)
   (:import-from :lack.component
                 :call)
   (:import-from :lack.response
@@ -57,7 +60,13 @@
         (let ((code (exception-code c)))
           (setf (response-status *response*) code)
           (or (on-exception this code)
-              (princ-to-string c)))))))
+              (princ-to-string c))))
+      (caveman-redirection (c)
+        (let ((to (redirection-to c))
+              (code (redirection-code c)))
+          (setf (getf (response-headers *response*) :location) to)
+          (setf (response-status *response*) code)
+          to)))))
 
 (defmethod not-found ((this <app>))
   (throw-code 404))
