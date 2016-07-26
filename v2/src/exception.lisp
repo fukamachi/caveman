@@ -78,7 +78,7 @@
 (define-condition caveman-redirection (error)
   ((to :initarg :to :type string
        :reader redirection-to)
-   (code :initarg :status :type integer :initform 302
+   (code :initarg :code :type integer :initform 302
          :reader redirection-code)))
 
 (defun redirect (url &optional (code 302))
