@@ -4,7 +4,8 @@
   (:import-from :<% @var name %>.config
                 :config)
   (:import-from :datafly
-                :*connection*
+                :*connection*)
+  (:import-from :cl-dbi
                 :connect-cached)
   (:export :connection-settings
            :db
