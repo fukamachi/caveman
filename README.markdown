@@ -86,6 +86,7 @@ Caveman2 provides 2 ways to define a route -- `@route` and `defroute`. You can c
 `@route` is an annotation macro defined by using [cl-annot](https://github.com/arielnetworks/cl-annot). It takes a method, an URL-string and a function.
 
 ```common-lisp
+;; in src/web.lisp
 @route GET "/"
 (defun index ()
   ...)
