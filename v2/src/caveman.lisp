@@ -21,6 +21,7 @@
   (:import-from :caveman2.helper
                 :url-for)
   (:import-from :caveman2.exception
+                :*exception-class*
                 :http-exception
                 :throw-code
                 :redirect)
@@ -64,6 +65,8 @@
            :make-request
            :make-response
            :make-project
+           :*exception-class*
+           :http-exception
            :on-exception
            :throw-code
 
