@@ -21,6 +21,7 @@
   (:import-from :caveman2.helper
                 :url-for)
   (:import-from :caveman2.exception
+                :http-exception
                 :throw-code
                 :redirect)
   (:import-from :lack.request

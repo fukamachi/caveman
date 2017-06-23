@@ -2,6 +2,7 @@
 (defpackage caveman2.app
   (:use :cl)
   (:import-from :caveman2.exception
+                :http-exception
                 :caveman-exception
                 :exception-code
                 :throw-code
@@ -56,6 +57,11 @@
   (declare (ignore env))
   (let ((*current-app* this))
     (handler-case (call-next-method)
+      (http-exception (c)
+        (let ((code (exception-code c)))
+          (setf (response-status *response*) code)
+          (or (on-exception this c)
+              (princ-to-string c))))
       (caveman-exception (c)
         (let ((code (exception-code c)))
           (setf (response-status *response*) code)
@@ -84,5 +90,9 @@
       (setf (getf (response-headers res) :Cache-Control) "private"))
     res))
 
-(defmethod on-exception ((this <app>) code)
-  nil)
+(defgeneric on-exception (app code)
+  (:method ((app <app>) code)
+    nil)
+  (:method ((app <app>) (c http-exception))
+    ;; for backward-compatibility
+    (on-exception app (exception-code c))))

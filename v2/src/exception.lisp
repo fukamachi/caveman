@@ -3,6 +3,7 @@
   (:use :cl)
   (:export :*exception-class*
            :caveman-exception
+           :http-exception
            :throw-code
            :exception-code
            :caveman-redirection
@@ -61,12 +62,12 @@
 (defun http-status-reason (code)
   (gethash code *http-status*))
 
-(defvar *exception-class* 'caveman-exception)
+(defvar *exception-class* 'http-exception)
 
 (define-condition caveman-exception (error)
   ((code :initarg :code :type integer :initform 500
          :reader exception-code))
-  (:documentation "")
+  (:documentation "Simple HTTP exception class")
   (:report
    (lambda (condition stream)
      (let ((code (exception-code condition)))
@@ -74,6 +75,10 @@
                "~D~:[~;~:* ~A~]"
                code
                (http-status-reason code))))))
+
+(define-condition http-exception (caveman-exception)
+  ()
+  (:documentation "Customizable HTTP exception class"))
 
 (defun throw-code (code &rest args)
   (apply #'error *exception-class* :code code args))
