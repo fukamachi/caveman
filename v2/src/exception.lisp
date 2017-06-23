@@ -1,7 +1,8 @@
 (in-package :cl-user)
 (defpackage caveman2.exception
   (:use :cl)
-  (:export :caveman-exception
+  (:export :*exception-class*
+           :caveman-exception
            :throw-code
            :exception-code
            :caveman-redirection
@@ -60,7 +61,9 @@
 (defun http-status-reason (code)
   (gethash code *http-status*))
 
-(define-condition caveman-exception (simple-error)
+(defvar *exception-class* 'caveman-exception)
+
+(define-condition caveman-exception (error)
   ((code :initarg :code :type integer :initform 500
          :reader exception-code))
   (:documentation "")
@@ -72,8 +75,8 @@
                code
                (http-status-reason code))))))
 
-(defun throw-code (code)
-  (error 'caveman-exception :code code))
+(defun throw-code (code &rest args)
+  (apply #'error *exception-class* :code code args))
 
 (define-condition caveman-redirection (error)
   ((to :initarg :to :type string
