@@ -23,6 +23,7 @@
   (:import-from :caveman2.exception
                 :*exception-class*
                 :http-exception
+                :exception-code
                 :throw-code
                 :redirect)
   (:import-from :lack.request
@@ -67,6 +68,7 @@
            :make-project
            :*exception-class*
            :http-exception
+           :exception-code
            :on-exception
            :throw-code
 
