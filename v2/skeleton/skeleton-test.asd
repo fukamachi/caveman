@@ -1,14 +1,11 @@
-(in-package :cl-user)
-(defpackage <% @var name %>-test-asd
-  (:use :cl :asdf))
-(in-package :<% @var name %>-test-asd)
-
-(defsystem <% @var name %>-test
+(defsystem "<% @var name %>-test"
+  :defsystem-depends-on ("prove-asdf")
   :author "<% @var author %>"
   :license "<% @var license %>"
-  :depends-on (:<% @var name %>
-               :prove)
+  :depends-on ("<% @var name %>"
+               "prove")
   :components ((:module "t"
                 :components
-                ((:file "<% @var name %>"))))
-  :perform (load-op :after (op c) (asdf:clear-system c)))
+                ((:test-file "<% @var name %>"))))
+  :description "Test system for <% @var name %>"
+  :perform (test-op (op c) (symbol-call :prove-asdf :run-test-system c)))

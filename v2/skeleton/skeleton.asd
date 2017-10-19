@@ -1,28 +1,23 @@
-(in-package :cl-user)
-(defpackage <% @var name %>-asd
-  (:use :cl :asdf))
-(in-package :<% @var name %>-asd)
-
-(defsystem <% @var name %>
-  :version "0.1"
+(defsystem "<% @var name %>"
+  :version "0.1.0"
   :author "<% @var author %>"
   :license "<% @var license %>"
-  :depends-on (:clack
-               :lack
-               :caveman2
-               :envy
-               :cl-ppcre
-               :uiop
+  :depends-on ("clack"
+               "lack"
+               "caveman2"
+               "envy"
+               "cl-ppcre"
+               "uiop"
 
                ;; for @route annotation
-               :cl-syntax-annot
+               "cl-syntax-annot"
 
                ;; HTML Template
-               :djula
+               "djula"
 
                ;; for DB
-               :datafly
-               :sxql)
+               "datafly"
+               "sxql")
   :components ((:module "src"
                 :components
                 ((:file "main" :depends-on ("config" "view" "db"))
@@ -31,4 +26,4 @@
                  (:file "db" :depends-on ("config"))
                  (:file "config"))))
   :description "<% @var description %>"
-  :in-order-to ((test-op (load-op <% @var name %>-test))))
+  :in-order-to ((test-op (test-op "<% @var name %>-test"))))
