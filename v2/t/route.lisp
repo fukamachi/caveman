@@ -13,94 +13,106 @@
 
 (setf *app* (make-instance '<app>))
 (defroute "/" () "Welcome")
-(is (third (call *app* '(:path-info "/"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("Welcome"))
 
 (setf *app* (make-instance '<app>))
 (defroute ("/") () "Welcome again")
-(is (third (call *app* '(:path-info "/"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("Welcome again"))
 
 (setf *app* (make-instance '<app>))
 (defroute ("/" :method :post) () "Can you still get me?")
-(is (first (call *app* '(:path-info "/"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (first (call *app* `(:path-info "/"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     404
     ":method :post")
-(is (third (call *app* '(:path-info "/"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :post)))
+(is (third (call *app* `(:path-info "/"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :post
+                         :headers ,(make-hash-table))))
     '("Can you still get me?")
     ":method :post")
 
 (setf *app* (make-instance '<app>))
 (defroute (*app* "/") () "Hello")
-(is (third (call *app* '(:path-info "/"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("Hello")
     "Specify an app")
 
 (setf *app* (make-instance '<app>))
 (defroute index "/" () "Hello")
-(is (third (call *app* '(:path-info "/"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("Hello")
     "Named route")
 (defroute index ("/new" :method :post) () "okay")
-(is (third (call *app* '(:path-info "/new"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :post)))
+(is (third (call *app* `(:path-info "/new"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :post
+                         :headers ,(make-hash-table))))
     '("okay")
     "Named route")
 
 (defroute hello ("/hello/([\\w]+)$" :regexp t) (&key captures)
   (format nil "Hello, ~A!" (first captures)))
-(is (third (call *app* '(:path-info "/hello/Eitaro"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/hello/Eitaro"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("Hello, Eitaro!")
     "Regular expression")
-(is (first (call *app* '(:path-info "/hello/Eitaro&Fukamachi"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (first (call *app* `(:path-info "/hello/Eitaro&Fukamachi"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     404
     "Regular expression")
-(is (first (call *app* '(:path-info "/hello/"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (first (call *app* `(:path-info "/hello/"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     404
     "Regular expression")
 
 (setf *app* (make-instance '<app>))
 (defroute index (*app* "/" :method :get) () "Hello")
-(is (third (call *app* '(:path-info "/"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("Hello")
     "Full")
 (defroute index (*app* "/" :method :get) () "Hello again")
-(is (third (call *app* '(:path-info "/"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("Hello again")
     "Full")
 
@@ -124,52 +136,60 @@
 (defun say-hello (&key (name "Guest"))
   (format nil "Hello, ~A" name))
 
-(is (third (call *app* '(:path-info "/"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("Welcome")
     "@route")
-(is (third (call *app* '(:path-info "/new"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/new"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("Create something")
     "@route")
-(is (third (call *app* '(:path-info "/new"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :post)))
+(is (third (call *app* `(:path-info "/new"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :post
+                         :headers ,(make-hash-table))))
     '("Create something")
     "@route")
-(is (third (call *app* '(:path-info "/myname"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/myname"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("I have no name yet.")
     "@route")
-(is (third (call *app* '(:path-info "/myname"
-                              :query-string "name=Eitaro"
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/myname"
+                         :query-string "name=Eitaro"
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("My name is Eitaro.")
     "@route")
-(is (third (call *app* '(:path-info "/hello"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/hello"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("Hello, Guest")
     "@route")
-(is (third (call *app* '(:path-info "/hello/Eitaro"
-                              :query-string ""
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/hello/Eitaro"
+                         :query-string ""
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("Hello, Eitaro")
     "@route")
-(is (third (call *app* '(:path-info "/hello/Eitaro"
-                              :query-string "id=12345"
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :get)))
+(is (third (call *app* `(:path-info "/hello/Eitaro"
+                         :query-string "id=12345"
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :get
+                         :headers ,(make-hash-table))))
     '("Hello, Eitaro")
     "@route")
 
@@ -180,19 +200,21 @@
                      (cdr (assoc "name" item :test #'string=))
                      (cdr (assoc "price" item :test #'string=))))))
 
-(is (third (call *app* '(:path-info "/post"
-                              :query-string "items[][name]=WiiU&items[][price]=30000&items[][name]=PS4&items[][price]=69000"
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :post)))
+(is (third (call *app* `(:path-info "/post"
+                         :query-string "items[][name]=WiiU&items[][price]=30000&items[][name]=PS4&items[][price]=69000"
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :post
+                         :headers ,(make-hash-table))))
     '("name:\"WiiU\" / price:\"30000\"
 name:\"PS4\" / price:\"69000\"
 ")
     "@route")
 
-(is (third (call *app* '(:path-info "/post"
-                              :query-string "_PARSED=&items[][name]=WiiU&items[][price]=30000&items[][name]=PS4&items[][price]=69000"
-                              :raw-body (flex:make-in-memory-input-stream #())
-                              :request-method :post)))
+(is (third (call *app* `(:path-info "/post"
+                         :query-string "_PARSED=&items[][name]=WiiU&items[][price]=30000&items[][name]=PS4&items[][price]=69000"
+                         :raw-body (flex:make-in-memory-input-stream #())
+                         :request-method :post
+                         :headers ,(make-hash-table))))
     '("name:\"WiiU\" / price:\"30000\"
 name:\"PS4\" / price:\"69000\"
 ")
