@@ -8,21 +8,13 @@ env:
     - ROSWELL_INSTALL_DIR=$HOME/.roswell
   matrix:
     - LISP=sbcl-bin
-    - LISP=ccl
+    - LISP=ccl-bin
 
 install:
   # Install Roswell
-  - curl -L https://raw.githubusercontent.com/snmsts/roswell/$ROSWELL_BRANCH/scripts/install-for-ci.sh | sh
+  - curl -L https://raw.githubusercontent.com/roswell/roswell/$ROSWELL_BRANCH/scripts/install-for-ci.sh | sh
   - ros install prove
-
-cache:
-  directories:
-    - $HOME/.roswell
-    - $HOME/.config/common-lisp
-
-before_script:
-  - ros --version
-  - ros config
+  - ros install fukamachi/cl-project
 
 script:
   - run-prove caveman2-test.asd
