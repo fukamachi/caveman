@@ -4,7 +4,7 @@
   :license "<% @var license %>"
   :depends-on ("<% @var name %>"
                "prove")
-  :components ((:module "t"
+  :components ((:module "tests"
                 :components
                 ((:test-file "<% @var name %>"))))
   :description "Test system for <% @var name %>"
