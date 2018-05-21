@@ -318,7 +318,7 @@ This is a typical example.
   `(:application-root ,(asdf:component-pathname (asdf:find-system :myapp))))
 
 (defconfig |development|
-  '(:debug T
+  `(:debug T
     :databases
     ((:maindb :sqlite3 :database-name ,(merge-pathnames #P"test.db"
                                                         *application-root*)))))
