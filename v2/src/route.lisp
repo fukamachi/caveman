@@ -96,7 +96,25 @@
                           ,(add-app-if-omitted routing-rule)
                           (list :identifier ',name)))
                   (function ,name)))))
-      (list `(defroute ,(gensym "BODY") ,@args))
+      (list  (destructuring-bind (routing-rule lambda-list &rest body) args
+               (multiple-value-bind (body declarations documentation)
+                    (alexandria:parse-body body :documentation t)
+                  `(setf (apply #'ningle:route
+                                ,(add-app-if-omitted routing-rule))
+                         (lambda (,params)
+                           (declare (ignorable ,params))
+                           ,@(if documentation (list documentation))
+                           ,@(if lambda-list
+                                 `((destructuring-bind ,(make-lambda-list lambda-list)
+                                       ,(if (need-parsed-parameters lambda-list)
+                                            `(append (list
+                                                      ,(intern *parsed-parameters-symbol-name* :keyword)
+                                                      (parse-parameters ,params))
+                                                     ,(params-form params lambda-list))
+                                            (params-form params lambda-list))
+                                     ,@declarations
+                                     ,@body))
+                                 body))))))
       (T `(defroute (,(car args)) ,@(cdr args))))))
 
 (defun canonicalize-method (method)
