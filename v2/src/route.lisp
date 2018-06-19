@@ -75,37 +75,28 @@
       (symbol
        (destructuring-bind (name routing-rule lambda-list &rest body) args
          `(prog1
-              (defun ,name ,(make-lambda-list lambda-list)
-                ,@body)
+              ,(multiple-value-bind (body declarations documentation)
+                   (alexandria:parse-body body :documentation t)
+                 `(defun ,name (,params)
+                    (declare (ignorable ,params))
+                    ,(or documentation (format nil "Handler for ~a" routing-rule))
+                    ,@(if lambda-list
+                          `((destructuring-bind ,(make-lambda-list lambda-list)
+                                ,(if (need-parsed-parameters lambda-list)
+                                  `(append (list
+                                            ,(intern *parsed-parameters-symbol-name* :keyword)
+                                            (parse-parameters ,params))
+                                           ,(params-form params lambda-list))
+                                  (params-form params lambda-list))
+                              ,@(if declarations (list declarations) nil)
+                              ,@body))
+                         body)))
             (setf (apply #'ningle:route
                          (append
                           ,(add-app-if-omitted routing-rule)
                           (list :identifier ',name)))
-                  (lambda (,params)
-                    (declare (ignorable ,params))
-                    ,(if lambda-list
-                         `(apply (function ,name) ,(if (need-parsed-parameters lambda-list)
-                                                       `(append (list
-                                                                 ,(intern *parsed-parameters-symbol-name* :keyword)
-                                                                 (parse-parameters ,params))
-                                                                ,(params-form params lambda-list))
-                                                       (params-form params lambda-list)))
-                         `(funcall (function ,name))))))))
-      (list
-       (destructuring-bind (routing-rule lambda-list &rest body) args
-         `(setf (apply #'ningle:route
-                       ,(add-app-if-omitted routing-rule))
-                (lambda (,params)
-                  (declare (ignorable ,params))
-                  ,(if lambda-list
-                       `(apply (lambda ,(make-lambda-list lambda-list) ,@body)
-                               ,(if (need-parsed-parameters lambda-list)
-                                    `(append (list
-                                              ,(intern *parsed-parameters-symbol-name* :keyword)
-                                              (parse-parameters ,params))
-                                             ,(params-form params lambda-list))
-                                    (params-form params lambda-list)))
-                       `(progn ,@body))))))
+                  (function ,name)))))
+      (list `(defroute ,(gensym "BODY") ,@args))
       (T `(defroute (,(car args)) ,@(cdr args))))))
 
 (defun canonicalize-method (method)
