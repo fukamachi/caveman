@@ -88,7 +88,7 @@
                                             (parse-parameters ,params))
                                            ,(params-form params lambda-list))
                                   (params-form params lambda-list))
-                              ,@(if declarations (list declarations) nil)
+                              ,@declarations
                               ,@body))
                          body)))
             (setf (apply #'ningle:route
