@@ -79,7 +79,7 @@
                    (alexandria:parse-body body :documentation t)
                  `(defun ,name (,params)
                     (declare (ignorable ,params))
-                    ,(or documentation (format nil "Handler for ~a" routing-rule))
+                    ,@(if documentation (list documentation))
                     ,@(if lambda-list
                           `((destructuring-bind ,(make-lambda-list lambda-list)
                                 ,(if (need-parsed-parameters lambda-list)
