@@ -34,7 +34,6 @@
 (ensure-directories-exist *tmp-root*)
 
 (caveman2:make-project *project-root*)
-(load (merge-pathnames (format nil "~A.asd" *app-name*) *project-root*))
 #+quicklisp (ql:quickload *app-name*)
 #-quicklisp (asdf:load-system *app-name*)
 

@@ -159,13 +159,13 @@ Route patterns may also contain "wildcard" parameters. They are accessible by `s
 ```common-lisp
 (defroute "/say/*/to/*" (&key splat)
   ; matches /say/hello/to/world
-  splat ;=> ("hello" "world")
-  ))
+  (format nil "~A" splat))
+;=> (hello world)
 
 (defroute "/download/*.*" (&key splat)
   ; matches /download/path/to/file.xml
-  splat ;=> ("path/to/file" "xml")
-  ))
+  (format nil "~A" splat)) 
+;=> (path/to/file xml)
 ```
 
 If you'd like to write a regular expression for URL rule, `:regexp t` should work for it.
@@ -318,7 +318,7 @@ This is a typical example.
   `(:application-root ,(asdf:component-pathname (asdf:find-system :myapp))))
 
 (defconfig |development|
-  '(:debug T
+  `(:debug T
     :databases
     ((:maindb :sqlite3 :database-name ,(merge-pathnames #P"test.db"
                                                         *application-root*)))))

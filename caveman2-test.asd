@@ -4,6 +4,7 @@
 |#
 
 (defsystem "caveman2-test"
+  :defsystem-depends-on ("prove-asdf")
   :author "Eitaro Fukamachi"
   :license "LLGPL"
   :depends-on ("caveman2"
@@ -19,6 +20,4 @@
                 ((:test-file "caveman")
                  (:test-file "route")
                  (:test-file "nested-parameter"))))
-
-  :defsystem-depends-on ("prove-asdf")
-  :perform (test-op (op c) (symbol-call :prove.asdf :run-test-system c)))
+  :perform (test-op (op c) (symbol-call :prove-asdf :run-test-system c)))

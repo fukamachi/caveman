@@ -1,5 +1,5 @@
 (defsystem "<% @var name %>"
-  :version "0.1"
+  :version "0.1.0"
   :author "<% @var author %>"
   :license "<% @var license %>"
   :depends-on ("clack"
@@ -26,4 +26,4 @@
                  (:file "db" :depends-on ("config"))
                  (:file "config"))))
   :description "<% @var description %>"
-  :in-order-to ((test-op (load-op "<% @var name %>-test"))))
+  :in-order-to ((test-op (test-op "<% @var name %>-test"))))
