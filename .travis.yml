@@ -17,4 +17,5 @@ install:
   - ros install fukamachi/cl-project
 
 script:
+  - ros -s caveman2-test
   - run-prove caveman2-test.asd
