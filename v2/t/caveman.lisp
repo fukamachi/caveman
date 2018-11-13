@@ -34,6 +34,9 @@
 (ensure-directories-exist *tmp-root*)
 
 (caveman2:make-project *project-root*)
+(asdf:load-asd (make-pathname :defaults *project-root*
+                              :name *app-name*
+                              :type "asd"))
 #+quicklisp (ql:quickload *app-name*)
 #-quicklisp (asdf:load-system *app-name*)
 
