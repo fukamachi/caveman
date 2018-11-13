@@ -18,4 +18,6 @@ install:
 
 script:
   - ros -s caveman2-test
+  - ros -s caveman2 -e '(caveman2:make-project (pathname "~/common-lisp/myapp/"))'
+  - ros -s myapp
   - run-prove caveman2-test.asd
