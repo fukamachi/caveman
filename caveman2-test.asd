@@ -8,6 +8,7 @@
   :author "Eitaro Fukamachi"
   :license "LLGPL"
   :depends-on ("caveman2"
+               "clack-handler-hunchentoot"
                "lack-component"
                "uiop"
                "usocket"
