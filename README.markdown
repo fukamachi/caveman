@@ -18,26 +18,26 @@
 
 ## About Caveman2
 
-### What's the difference from Caveman "1"?
+### What's different from Caveman "1"?
 
-All of them. Caveman2 was written from scratch.
+Everything. Caveman2 was written from scratch.
 
-These are noticeable points.
+These are noteworthy points.
 
-* Bases on [ningle](http://8arrow.org/ningle/)
-* Database integration
-* New separated configuration system ([Envy](https://github.com/fukamachi/envy))
-* New routing macro
+* Is based on [ningle](http://8arrow.org/ningle/)
+* Has database integration
+* Uses new, separate configuration system ([Envy](https://github.com/fukamachi/envy))
+* Has new routing macro
 
-### The reason I wrote it from scratch
+### The reason I wrote it from scratch:
 
-One of the most frequently asked questions was "Which should I use ningle or Caveman? What are the differences?" I think it was because the roles of them were too similar. Both of them are saying "micro" and no database support.
+One of the most frequently asked questions was "Which should I use: ningle or Caveman? What are the differences?" I think these were asked so frequently because Caveman and ningle were too similar. Both of them are called "micro", and had no database support.
 
-Caveman2 is no more "micro" web application framework. It supports CL-DBI and has database connection management by default. Caveman has started growing up.
+With Caveman2, Caveman is no longer a "micro" web application framework. It supports CL-DBI, and has database connection management by default. Caveman has started growing up.
 
 ## Design Goal
 
-Caveman is intended to be a collection of common parts of web applications. Caveman has 3 rules to make decisions.
+Caveman is intended to be a collection of common parts of web applications. With Caveman2, I use three rules to make decisions:
 
 * Be extensible.
 * Be practical.
@@ -45,7 +45,7 @@ Caveman is intended to be a collection of common parts of web applications. Cave
 
 ## Quickstart
 
-You came here because you're interested in living like a caveman, right? There's no Disneyland, but it's good place to start. Let's get into a cave.
+You came here because you're interested in living like a caveman, right? This isn't Disneyland, but we can start here. Let's get into a cave!
 
 ### Installation
 
@@ -81,9 +81,9 @@ Caveman2 is now available on [Quicklisp](https://www.quicklisp.org/beta/).
 
 ### Routing
 
-Caveman2 provides 2 ways to define a route -- `@route` and `defroute`. You can choose which to use.
+Caveman2 provides 2 ways to define a route -- `@route` and `defroute`. You can use either.
 
-`@route` is an annotation macro defined by using [cl-annot](https://github.com/arielnetworks/cl-annot). It takes a method, an URL-string and a function.
+`@route` is an annotation macro, defined by using [cl-annot](https://github.com/arielnetworks/cl-annot). It takes a method, a URL-string, and a function.
 
 ```common-lisp
 @route GET "/"
@@ -96,9 +96,9 @@ Caveman2 provides 2 ways to define a route -- `@route` and `defroute`. You can c
   (format nil "Welcome, ~A" |name|))
 ```
 
-This is similar to Caveman1's `@url` except its argument list. You don't have to specify an argument when you don't need it.
+This is similar to Caveman1's `@url` except for its argument list. You don't have to specify an argument when it is not required.
 
-`defroute` is just a macro. It provides same feature to `@route`.
+`defroute` is just a macro. It provides the same functionality as `@route`.
 
 ```common-lisp
 (defroute index "/" ()
@@ -137,16 +137,16 @@ Since Caveman bases on ningle, Caveman also has the [Sinatra](http://www.sinatra
 (defroute ("/" :method :ANY) () ...)
 ```
 
-Route pattern may contain "keyword" to put the value into the argument.
+Route patterns may contain "keywords" to put the value into the argument.
 
 ```common-lisp
 (defroute "/hello/:name" (&key name)
   (format nil "Hello, ~A" name))
 ```
 
-The above controller will be invoked when you access to "/hello/Eitaro" or "/hello/Tomohiro", and then `name` will be "Eitaro" and "Tomohiro".
+The above controller will be invoked when you access "/hello/Eitaro" or "/hello/Tomohiro", and `name` will be "Eitaro" or "Tomohiro", as appropriate.
 
-`(&key name)` is almost same as a lambda list of Common Lisp, excepts it always allows other keys.
+`(&key name)` is almost same as a lambda list of Common Lisp, except it always allows other keys.
 
 ```common-lisp
 (defroute "/hello/:name" (&rest params &key name)
@@ -154,7 +154,7 @@ The above controller will be invoked when you access to "/hello/Eitaro" or "/hel
   )
 ```
 
-Route patterns may also contain "wildcard" parameters. They are accessible by `splat`.
+Route patterns may also contain "wildcard" parameters. They are accessible by using `splat`.
 
 ```common-lisp
 (defroute "/say/*/to/*" (&key splat)
@@ -168,14 +168,14 @@ Route patterns may also contain "wildcard" parameters. They are accessible by `s
 ;=> (path/to/file xml)
 ```
 
-If you'd like to write a regular expression for URL rule, `:regexp t` should work for it.
+If you'd like to write use a regular expression in a URL rule, `:regexp t` should work.
 
 ```common-lisp
 (defroute ("/hello/([\\w]+)" :regexp t) (&key captures)
   (format nil "Hello, ~A!" (first captures)))
 ```
 
-Normally, routes are matched in the order they are defined. Only the first route matched is invoked and rest of them just will be ignored. But, a route can punt processing to the next matching route using `next-route`.
+Normally, routes are tested for a match in the order they are defined, and only the first route matched is invoked, with the following routes being ignored. However, a route can continue testing for matches in the list, by including `next-route`.
 
 ```common-lisp
 (defroute "/guess/:who" (&key who)
@@ -195,7 +195,7 @@ You can return following formats as the result of `defroute`.
 
 ### Structured query/post parameters
 
-Parameter keys contain square brackets ("[" & "]") will be parsed as structured parameters. You can access the parsed parameters as `_parsed` in routers.
+Parameter keys containing square brackets ("[" & "]") will be parsed as structured parameters. You can access the parsed parameters as `_parsed` in routers.
 
 ```html
 <form action="/edit">
@@ -235,7 +235,7 @@ Blank keys mean they have multiple values.
 
 ### Templates
 
-Caveman adopts [Djula](http://mmontone.github.io/djula/) for the default templating engine.
+Caveman uses [Djula](http://mmontone.github.io/djula/) as its default templating engine.
 
 ```html
 {% extends "layouts/default.html" %}
@@ -262,7 +262,7 @@ Caveman adopts [Djula](http://mmontone.github.io/djula/) for the default templat
           :has-next-page T))
 ```
 
-If you want to get something from a database or execute any function using [Djula](http://mmontone.github.io/djula/) you have to explicity call `list` when passing the arguments to render so that the code executes.
+If you want to get something from a database or execute a function using [Djula](http://mmontone.github.io/djula/) you must explicity call `list` when passing the arguments to render so that the code executes.
 
 ```common-lisp
 (import 'myapp.view:render)
@@ -302,9 +302,9 @@ You can change these rules by rewriting "PROJECT_ROOT/app.lisp". See [Clack.Midd
 
 ### Configuration
 
-Caveman adopts [Envy](https://github.com/fukamachi/envy) as a configuration switcher. It allows to define multiple configurations and to switch them by an environment variable.
+Caveman adopts [Envy](https://github.com/fukamachi/envy) as a configuration switcher. This allows definition of  multiple configurations and switching between them according to an environment variable.
 
-This is a typical example.
+This is a typical example:
 
 ```common-lisp
 (defpackage :myapp.config
@@ -335,7 +335,7 @@ This is a typical example.
 
 Every configuration is a property list. You can choose the configuration which to use by setting `APP_ENV`.
 
-To get a value from the current configuration, call `myapp.config:config` with a key you want.
+To get a value from the current configuration, call `myapp.config:config` with the key you want.
 
 ```common-lisp
 (import 'myapp.config:config)
@@ -369,13 +369,13 @@ When you add `:databases` to the configuration, Caveman enables database support
         (where (:>= :age 20))))))
 ```
 
-The connection is alive during the Lisp session and will be reused in each HTTP requests.
+The connection is alive during the Lisp session, and will be reused in every HTTP request.
 
-`retrieve-all` and the query language came from [datafly](https://github.com/fukamachi/datafly) and [SxQL](https://github.com/fukamachi/sxql). See those documentations for more informations.
+`retrieve-all` and the query language came from [datafly](https://github.com/fukamachi/datafly) and [SxQL](https://github.com/fukamachi/sxql). See those sets of documentation for more information.
 
 ### Set HTTP headers or HTTP status
 
-There are several special variables available during a HTTP request. `*request*` and `*response*` represents a request and a response. If you are familiar with [Clack](http://clacklisp.org/), these are instances of subclasses of [Clack.Request](http://quickdocs.org/clack/api#package-CLACK.REQUEST) and [Clack.Response](http://quickdocs.org/clack/api#package-CLACK.RESPONSE).
+There are several special variables available during a HTTP request. `*request*` and `*response*` represent a request and a response. If you are familiar with [Clack](http://clacklisp.org/), these are instances of subclasses of [Clack.Request](http://quickdocs.org/clack/api#package-CLACK.REQUEST) and [Clack.Response](http://quickdocs.org/clack/api#package-CLACK.RESPONSE).
 
 ```common-lisp
 (use-package :caveman2)
@@ -390,7 +390,7 @@ There are several special variables available during a HTTP request. `*request*`
 (setf (status *response*) 304)
 ```
 
-If you would like to set Content-Type "application/json" for all "*.json" requests, `next-route` will help you.
+If you would like to set Content-Type "application/json" for all "*.json" requests, `next-route` can be used.
 
 ```common-lisp
 (defroute "/*.json" ()
@@ -404,9 +404,9 @@ If you would like to set Content-Type "application/json" for all "*.json" reques
 
 ### Using session
 
-Session data is for memorizing user-specific data. `*session*` is a hash table represents session data.
+Session data is for memorizing user-specific data. `*session*` is a hash table that stores session data.
 
-This example increments `:counter` in the session and displays it for each visitors.
+This example increments `:counter` in the session, and displays it for each visitor.
 
 ```common-lisp
 (defroute "/counter" ()
@@ -414,9 +414,9 @@ This example increments `:counter` in the session and displays it for each visit
           (incf (gethash :counter *session* 0))))
 ```
 
-Caveman2 stores the session data in-memory by default. To change it, specify `:store` to `:session` in "PROJECT_ROOT/app.lisp".
+Caveman2 stores session data in-memory by default. To change this, specify `:store` to `:session` in "PROJECT_ROOT/app.lisp".
 
-This example uses RDBMS to store it.
+This example uses RDBMS to store session data.
 
 ```diff
       '(:backtrace
@@ -434,7 +434,7 @@ This example uses RDBMS to store it.
 
 NOTE: Don't forget to add `:lack-session-store-dbi` as `:depends-on` of your app. It is not a part of Clack/Lack.
 
-See the source code of Lack.Session.Store.DBi for more informations.
+See the source code of Lack.Session.Store.DBi for more information.
 
 - [Lack.Session.Store.Dbi](https://github.com/fukamachi/lack/blob/master/src/middleware/session/store/dbi.lisp)
 
@@ -450,7 +450,7 @@ See the source code of Lack.Session.Store.DBi for more informations.
 
 ### Specify error pages
 
-To specify error pages for 404, 500 or so, define a method `on-exception` of your app.
+To specify error pages for 404, 500 or such, define a method `on-exception` of your app.
 
 ```common-lisp
 (defmethod on-exception ((app <web>) (code (eql 404)))
@@ -461,20 +461,20 @@ To specify error pages for 404, 500 or so, define a method `on-exception` of you
 
 ### Start a server
 
-Your application has functions named `start` and `stop` to start/stop your web application. This is a example assuming that the name of your application is "myapp".
+Your application has functions named `start` and `stop` to start/stop your web application. This is a example that assumes that the name of your application is "myapp".
 
 ```common-lisp
 (myapp:start :port 8080)
 ```
 
-As Caveman bases on Clack/Lack, you can choose which server to run on -- Hunchentoot, mod_lisp or FastCGI.
+As Caveman is based on Clack/Lack, you can choose which server to run on -- Hunchentoot, mod_lisp or FastCGI.
 
 ```common-lisp
 (myapp:start :server :hunchentoot :port 8080)
 (myapp:start :server :fcgi :port 8080)
 ```
 
-I recommend you to use Hunchentoot in local machine and use FastCGI/Woo for production environment.
+I recommend you use Hunchentoot on a local machine, and use FastCGI/Woo in a production environment.
 
 You can also start your application by using [clackup command](https://github.com/fukamachi/clack/blob/master/roswell/clackup.ros).
 
@@ -622,9 +622,9 @@ In Caveman, add the middleware to `builder` in "PROJECT_ROOT/app.lisp".
 
 * [Clack](http://clacklisp.org/) - Web application environment.
 * [Lack](https://github.com/fukamachi/lack) - The core of Clack.
-* [ningle](http://8arrow.org/ningle/) - Super micro web application framework Caveman bases on.
+* [ningle](http://8arrow.org/ningle/) - Super micro web application framework that Caveman is based on.
 * [Djula](http://mmontone.github.io/djula/) - HTML Templating engine.
-* [CL-DBI](http://8arrow.org/cl-dbi/) - Database independent interface library.
+* [CL-DBI](http://8arrow.org/cl-dbi/) - Database-independent interface library.
 * [SxQL](http://8arrow.org/sxql/) - SQL builder library.
 * [Envy](https://github.com/fukamachi/envy) - Configuration switcher.
 * [Roswell](https://github.com/snmsts/roswell) - Common Lisp implementation manager.
