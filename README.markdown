@@ -384,7 +384,7 @@ There are several special variables available during a HTTP request. `*request*`
 (http-referer *request*)
 
 ;; Set Content-Type header.
-(setf (getf (response-headers *response* :content-type) "application/json")
+(setf (getf (response-headers *response*) :content-type) "application/json")
 
 ;; Set HTTP status.
 (setf (status *response*) 304)
