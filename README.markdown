@@ -460,8 +460,14 @@ To specify error pages for 404, 500 or such, define a method `on-exception` of y
 ```
 
 ### Start a server
+This is a example that assumes that the name of your application is "myapp".
+Before starting the server, you must first load your app.
 
-Your application has functions named `start` and `stop` to start/stop your web application. This is a example that assumes that the name of your application is "myapp".
+```common-lisp
+(ql:quickload :myapp)
+```
+
+Your application has functions named `start` and `stop` to start/stop your web application. 
 
 ```common-lisp
 (myapp:start :port 8080)
