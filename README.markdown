@@ -80,7 +80,7 @@ Caveman2 is now available on [Quicklisp](https://www.quicklisp.org/beta/).
 ```
 
 ### Start a server
-This is a example that assumes that the name of your application is "myapp".
+This is an example that assumes that the name of your application is "myapp".
 Before starting the server, you must first load your app.
 
 ```common-lisp
@@ -93,14 +93,14 @@ Your application has functions named `start` and `stop` to start/stop your web a
 (myapp:start :port 8080)
 ```
 
-As Caveman is based on Clack/Lack, you can choose which server to run on -- Hunchentoot, mod_lisp or FastCGI.
+As Caveman is based on Clack/Lack, you can choose which server to run on -- Hunchentoot, Woo or Wookie, etc.
 
 ```common-lisp
 (myapp:start :server :hunchentoot :port 8080)
 (myapp:start :server :fcgi :port 8080)
 ```
 
-I recommend you use Hunchentoot on a local machine, and use FastCGI/Woo in a production environment.
+I recommend you use Hunchentoot on a local machine, and use Woo in a production environment.
 
 You can also start your application by using [clackup command](https://github.com/fukamachi/clack/blob/master/roswell/clackup.ros).
 
