@@ -2,11 +2,9 @@
 (defpackage <% @var name %>-test
   (:use :cl
         :<% @var name %>
-        :prove))
+        :rove))
 (in-package :<% @var name %>-test)
 
-(plan nil)
-
-;; blah blah blah.
-
-(finalize)
+(deftest test-target-1
+  (testing "should (= 1 1) to be true"
+    (ok (= 1 1))))
