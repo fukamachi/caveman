@@ -1,12 +1,11 @@
 (in-package :cl-user)
 (defpackage caveman.middleware.dbimanager
-  (:use :cl
-        :clack)
+  (:use :cl)
   (:import-from :dbi
                 :connect
                 :disconnect
                 :ping)
-  (:export :<caveman-middleware-dbimanager>
+  (:export :*lack-middleware-dbimanager*
            :connect-db))
 (in-package :caveman.middleware.dbimanager)
 
@@ -21,19 +20,13 @@ This variable is only bound during the HTTP request.")
    (connections :initform (make-hash-table :test 'eql)))
   (:documentation "Class for managing CL-DBI connections."))
 
-(defclass <caveman-middleware-dbimanager> (<middleware>)
-  ((dbi-manager :type dbi-manager))
-  (:documentation "Clack Middleware for using CL-DBI.
-This is similar to `<clack-middleware-dbi>', except this doesn't always connect (and disconnect) for each HTTP requests."))
-
-(defmethod initialize-instance :after ((this <caveman-middleware-dbimanager>) &key database-settings)
-  (setf (slot-value this 'dbi-manager)
-        (make-instance 'dbi-manager
-                       :database-settings database-settings)))
-
-(defmethod call ((this <caveman-middleware-dbimanager>) env)
-  (let ((*dbi-manager* (slot-value this 'dbi-manager)))
-    (call-next this env)))
+(defparameter *lack-middleware-dbimanager*
+  (lambda (app &key database-settings)
+    (let ((dbi-manager (make-instance 'dbi-manager
+                                      :database-settings database-settings)))
+      (lambda (env)
+        (let ((*dbi-manager* dbi-manager))
+          (funcall app env))))))
 
 (defmethod get-connection ((manager dbi-manager) &optional database-name)
   "Return a connected DBI connection for a database for `database-name'.
