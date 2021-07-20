@@ -224,6 +224,23 @@ You can return following formats as the result of `defroute`.
 * Pathname
 * Clack's response list (containing Status, Headers and Body)
 
+### Redirection
+
+Redirect to another route with`(redirect "url")`. A second optional argument is the status code, 302 by default.
+
+### Reverse URLs
+
+When you defined routes with names, you can find the URL from a name with `(url-for route-name &rest params)`.
+
+The function will throw an error if no route is found.
+
+### More helper functions
+
+See also:
+
+- `add-query-parameters base-url params`
+
+
 ### Structured query/post parameters
 
 Parameter keys containing square brackets ("[" & "]") will be parsed as structured parameters. You can access the parsed parameters as `_parsed` in routers.
