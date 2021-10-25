@@ -79,6 +79,37 @@ Caveman2 is now available on [Quicklisp](https://www.quicklisp.org/beta/).
 ;   writing /path/to/myapp/templates/layout/default.tmpl
 ```
 
+### Start a server
+This is an example that assumes that the name of your application is "myapp".
+Before starting the server, you must first load your app.
+
+```common-lisp
+(ql:quickload :myapp)
+```
+
+Your application has functions named `start` and `stop` to start/stop your web application. 
+
+```common-lisp
+(myapp:start :port 8080)
+```
+
+As Caveman is based on Clack/Lack, you can choose which server to run on -- Hunchentoot, Woo or Wookie, etc.
+
+```common-lisp
+(myapp:start :server :hunchentoot :port 8080)
+(myapp:start :server :fcgi :port 8080)
+```
+
+I recommend you use Hunchentoot on a local machine, and use Woo in a production environment.
+
+You can also start your application by using [clackup command](https://github.com/fukamachi/clack/blob/master/roswell/clackup.ros).
+
+    $ ros install clack
+    $ which clackup
+    /Users/nitro_idiot/.roswell/bin/clackup
+
+    $ APP_ENV=development clackup --server :fcgi --port 8080 app.lisp
+
 ### Routing
 
 Caveman2 provides 2 ways to define a route -- `@route` and `defroute`. You can use either.
@@ -192,6 +223,23 @@ You can return following formats as the result of `defroute`.
 * String
 * Pathname
 * Clack's response list (containing Status, Headers and Body)
+
+### Redirection
+
+Redirect to another route with`(redirect "url")`. A second optional argument is the status code, 302 by default.
+
+### Reverse URLs
+
+When you defined routes with names, you can find the URL from a name with `(url-for route-name &rest params)`.
+
+The function will throw an error if no route is found.
+
+### More helper functions
+
+See also:
+
+- `add-query-parameters base-url params`
+
 
 ### Structured query/post parameters
 
@@ -459,30 +507,6 @@ To specify error pages for 404, 500 or such, define a method `on-exception` of y
                    *template-directory*))
 ```
 
-### Start a server
-
-Your application has functions named `start` and `stop` to start/stop your web application. This is a example that assumes that the name of your application is "myapp".
-
-```common-lisp
-(myapp:start :port 8080)
-```
-
-As Caveman is based on Clack/Lack, you can choose which server to run on -- Hunchentoot, mod_lisp or FastCGI.
-
-```common-lisp
-(myapp:start :server :hunchentoot :port 8080)
-(myapp:start :server :fcgi :port 8080)
-```
-
-I recommend you use Hunchentoot on a local machine, and use FastCGI/Woo in a production environment.
-
-You can also start your application by using [clackup command](https://github.com/fukamachi/clack/blob/master/roswell/clackup.ros).
-
-    $ ros install clack
-    $ which clackup
-    /Users/nitro_idiot/.roswell/bin/clackup
-
-    $ APP_ENV=development clackup --server :fcgi --port 8080 app.lisp
 
 ### Hot Deployment
 
