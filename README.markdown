@@ -283,7 +283,7 @@ Blank keys mean they have multiple values.
 
 ### Templates
 
-Caveman uses [Djula](http://mmontone.github.io/djula/) as its default templating engine.
+Caveman uses [Djula](http://mmontone.github.io/djula/djula/) as its default templating engine.
 
 ```html
 {% extends "layouts/default.html" %}
