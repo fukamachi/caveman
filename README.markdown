@@ -259,6 +259,12 @@ Parameter keys containing square brackets ("[" & "]") will be parsed as structur
 (defroute "/edit" (&key _parsed)
   (format nil "~S" (cdr (assoc "person" _parsed :test #'string=))))
 ;=> "((\"name\" . \"Eitaro\") (\"email\" . \"e.arrows@gmail.com\") (\"birth\" . ((\"year\" . 2000) (\"month\" . 1) (\"day\" . 1))))"
+
+;; With assoc-utils
+(ql:quickload :assoc-utils)
+(import 'assoc-utils:aget)
+(defroute "/edit" (&key _parsed)
+  (format nil "~S" (aget _parsed "person")))
 ```
 
 Blank keys mean they have multiple values.
